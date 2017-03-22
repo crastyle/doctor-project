@@ -24,6 +24,8 @@ keywords: `node` `typescript` `angular2` `ionic2`
 
 安装项目局部环境
 
+		
+	cd doctor-project
 	npm i	
 	
 	
