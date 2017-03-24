@@ -1,21 +1,14 @@
 'use strict';
 
 import gulp     from 'gulp';
-import webpack  from 'webpack';
 import path     from 'path';
-import sync     from 'run-sequence';
 import rename   from 'gulp-rename';
 import template from 'gulp-template';
 import fs       from 'fs';
 import yargs    from 'yargs';
 import lodash   from 'lodash';
 import gutil    from 'gulp-util';
-import serve    from 'browser-sync';
 import del      from 'del';
-import webpackDevMiddelware from 'webpack-dev-middleware';
-import webpachHotMiddelware from 'webpack-hot-middleware';
-import colorsSupported      from 'supports-color';
-import historyApiFallback   from 'connect-history-api-fallback';
 import autoRegister from './autoRegister.js'
 
 let root = 'src';
