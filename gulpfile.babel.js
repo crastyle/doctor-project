@@ -19,7 +19,7 @@ let resolveToApp = (glob = '') =>{
 };
 
 let resolveToPages = (glob = '') =>{
-    return path.join(root,'app',glob); // app/pages/{glob}
+    return path.join(root,'router',glob); // app/pages/{glob}
 };
 
 // map of all paths
@@ -41,7 +41,7 @@ gulp.task('page', () => {
     const name = yargs.argv.name;
     const parentPath = yargs.argv.parent || '';
     const destPath = path.join(resolveToApp(), parentPath, name);
-    const pagefile = path.join(resolveToPages(), 'app.module.ts');
+    const pagefile = path.join(resolveToPages(), 'index.js');
     let upperName = name.substr(0,1).toUpperCase() + name.substr(1, name.length-1)
     console.log(upperName)
     autoRegister(name, pagefile);

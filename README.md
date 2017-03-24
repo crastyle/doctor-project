@@ -1,42 +1,27 @@
 # 关爱患者项目
 
 ### [需求链接](https://mrleolong.github.io/huanzheguanhuai)
+### [原型](http://nb3avb.axshare.com/#g=1)
 
-  [ionic](http://ionicframework.com/docs/)
+## Build Setup
 
-  [ng2](https://angular.cn/docs/ts/latest/api/)
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
+
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 
-
-
-
-keywords: `node` `typescript` `angular2` `ionic2`
-
-### 项目依赖nodejs环境，需要安装 [nodejs](www.nodejs.org)
-
-
-	$  git clone https://github.com/crastyle/doctor-project.git
-	
-安装全局项目依赖环境
-
-	npm i cordova ionic -g	
-	
-
-安装项目局部环境
-
-		
-	cd doctor-project
-	npm i	
-	
-	
-启动项目
-
-	npm start
-
-编译项目
-
-	npm run build
-	
 根据`template`文件夹下建立好的模板，可使用`gulp page --name pageName`	来快速新建页面，例如
 	
 	gulp page --name productList
