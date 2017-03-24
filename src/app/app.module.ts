@@ -3,23 +3,20 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-import { TestPage } from '../pages/test/test'
-import { TaskPage } from '../pages/task/task'
+import { CropperPage } from '../pages/cropper/cropper'
+import { UserCenterPage } from '../pages/userCenter/userCenter'
 //@import
+
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     TabsPage,
-    TestPage,
-    TaskPage//@register
+    CropperPage,
+    UserCenterPage//@register
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -28,12 +25,10 @@ import { TaskPage } from '../pages/task/task'
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     TabsPage,
-    TestPage,
-    TaskPage//@register
+    CropperPage,
+    UserCenterPage//@register
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
