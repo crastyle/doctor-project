@@ -5,11 +5,15 @@
 
 ## Build Setup
 
+
+  $ git clone https://github.com/crastyle/doctor-project.git
+  
+
 ``` bash
-# install dependencies
+安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+在 localhost:8080 启动项目
 npm run dev
 
 # build for production with minification
@@ -19,10 +23,8 @@ npm run build
 npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-
-根据`template`文件夹下建立好的模板，可使用`gulp page --name pageName`	来快速新建页面，例如
+`gulp page --name pageName`	来快速新建页面，例如
 	
 	gulp page --name productList
 		
