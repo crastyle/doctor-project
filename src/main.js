@@ -5,11 +5,10 @@ import App from './App'
 import router from './router'
 // rem
 import './flexble.js'
-// 完整引入 Element
-import ElementUI from 'element-ui'
-import locale from 'element-ui/lib/locale/lang/en'
+// mint-ui
+import Mint from 'mint-ui'
 
-Vue.use(ElementUI, { locale })
+Vue.use(Mint)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
