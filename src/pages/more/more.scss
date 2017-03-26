@@ -1,2 +1,38 @@
+
+div .mint-cell-wrapper {
+  font-size: .4rem;
+}
+
 .morePage {
+  position: relative;
+  height: 100%;
+  font-size: .4rem;
+  text-align: left;
+  header {
+    height: 0.88rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  footer {
+    height: 1.0rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .more_body {
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    .more_cells{
+      padding-top: .2rem;
+    }
+  }
+  header ~ .more_body {
+    padding-top: 0.88rem;
+  }
 }
