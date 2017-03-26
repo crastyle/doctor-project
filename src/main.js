@@ -6,9 +6,8 @@ import router from './router'
 // rem
 import './flexble.js'
 // mint-ui
-import Mint from 'mint-ui'
-
-Vue.use(Mint)
+import 'mint-ui/lib/style.css'
+import "./styles/reset-ui.scss"
 Vue.config.productionTip = false
 
 new Vue({
