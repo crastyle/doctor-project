@@ -15,7 +15,7 @@ body {
   background: #f5f5f5;
 }
 <style lang="scss">
-  @import url("//unpkg.com/mint-ui/lib/style.css");
+  
   * {
     padding: 0;
     margin: 0;
