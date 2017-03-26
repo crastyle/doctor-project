@@ -1,10 +1,12 @@
+import Vue from 'vue'
+import { Switch } from 'mint-ui'
+Vue.component(Switch.name, Switch)
 export default {
   name: 'page-switch',
   data () {
     return {
       msg: 'Welcome to More',
-      value: '已开启',
-      infoValue: '已开启'
+      value: false
     }
   },
   methods: {
