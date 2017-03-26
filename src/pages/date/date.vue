@@ -3,7 +3,7 @@
         this is Date
     </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
     @import './date.scss';
 </style>
 <script src="./date"></script>
