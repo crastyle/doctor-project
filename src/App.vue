@@ -14,8 +14,7 @@
 body {
   background: #f5f5f5;
 }
-<style lang="scss">
-  
+
   * {
     padding: 0;
     margin: 0;
@@ -37,7 +36,7 @@ body {
   body, html {
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
   }
   body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article,
   aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
