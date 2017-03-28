@@ -18,6 +18,7 @@
     background: #F9F9F9;
     border-top: 1px solid #DCDCDC;
     height: 1.2rem;
+    line-height: 1.2rem;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -30,31 +31,53 @@
       -webkit-flex: 1;
       flex: 1;
       display: block;
+      position: relative;
       &.chat_footer_center {
         -webkit-box-flex: 3;
         -webkit-flex: 3;
         flex: 3;
-        textarea {
+        textarea, input {
           width: 100%;
+          height: 0.86rem;
           border: 1px solid #ccc;
           background: #fff;
           font-size: .4rem;
+          -webkit-border-radius:6px;
+          -moz-border-radius:6px;
+          border-radius:6px;
+          margin: 0.17rem 0;
+          color: #333;
+          padding: .1rem;
         }
       }
-      span {
-        width: 0.6rem;
-        height: 0.6rem;
-        background: url("../../assets/image/keyboard.png") no-repeat center center;
-        background-size: 100%;
+      .emotion {
+        width: 100%;
+        height: 100%;
+        background: url("../../assets/image/icon_voiceinput.png") no-repeat center center;
+        background-size: auto 0.64rem;
+        display: block;
+      }
+      .on.emotion {
+        width: 100%;
+        height: 100%;
+        background: url("../../assets/image/icon_textinput.png") no-repeat center center;
+        background-size: auto 0.64rem;
+        display: block;
       }
       input[type="file"] {
+        border: 1px solid #000;
         opacity: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
       }
-      input[type="button"] {
-        width: 0.6rem;
-        height: 0.52rem;
-        background: url("../../assets/image/photo.png") no-repeat center center;
-        background-size: 100%;
+      .chat_image {
+        width: 100%;
+        height: 100%;
+        background: url("../../assets/image/icon_image.png") no-repeat center center;
+        background-size: auto 0.64rem;
       }
     }
   }
@@ -104,8 +127,8 @@
         }
         &.left_voice {
           width: 2.8rem;
-          height: 0.7rem;
-          background: #fff url("../../assets/image/left_voice_icon.png") no-repeat left .2rem center;
+          height: 0.9rem;
+          background: #fff url("../../assets/image/icon_voice_opposite.png") no-repeat left .2rem center;
           background-size: .28rem .44rem;
           position: relative;
           span {
@@ -114,7 +137,8 @@
             position: absolute;
             right: -0.5rem;
             display: inline-block;
-            line-height: 0.7rem;
+            top:50%;
+            transform: translateY(-50%);
           }
         }
         &.left_link {
@@ -154,6 +178,15 @@
           transform: rotate(45deg);
         }
       }
+    }
+    .time {
+      color: #fff;
+      font-size: .24rem;
+      background: #D9D9D9;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      padding: .1rem;
     }
     .right_flex {
       align-items: center;
@@ -196,8 +229,8 @@
         }
         &.right_voice {
           width: 2.8rem;
-          height: 0.7rem;
-          background: #028BE6 url("../../assets/image/right_voice_icon.png") no-repeat right .2rem center;
+          height: 0.9rem;
+          background: #028BE6 url("../../assets/image/icon_voice_me.png") no-repeat right .2rem center;
           background-size: .28rem .44rem;
           position: relative;
           span {
@@ -206,7 +239,8 @@
             position: absolute;
             left: -0.5rem;
             display: inline-block;
-            line-height: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
           }
         }
         &.right_link {
