@@ -1,0 +1,46 @@
+@import "../../styles/app";
+.activeplanPage {
+    .item {
+        background: #fff;
+        padding-left: 10px;
+    }
+    .item-cell {
+        display: block;
+        min-height: 1.2rem;
+        line-height: 1.2rem;
+        display: -webkit-flex;
+        border-bottom: 1px solid #e5e5e5;
+        position: relative;
+        div.label {
+            color: #787878;
+            font-size: 20px;
+            -webkit-flex: 1;
+            text-align: center;
+        }
+        div.values {
+            -webkit-flex: 3;
+            color: #C8C8C8;
+            font-size: 20px;
+        }
+       
+        .cell-assign {
+            font-size: 14px;
+            color: #C8C8C8;
+        }
+      
+        &.arrow-right:after {
+            position: absolute;
+            top: 50%;
+            right: .42rem;
+            content: '';
+            background: url(../../assets/image/icon-arrow-right-gray.png) no-repeat;
+            width: .19rem;
+            height: .34rem;
+            background-size: 100%;
+            transform: translateY(-50%);
+        }
+    }
+    .section-button {
+        margin-top: 100px;
+    }
+}

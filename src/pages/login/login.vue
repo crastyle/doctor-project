@@ -14,7 +14,8 @@
                 <div class="mint-cell-title"><span class="mint-cell-text">性别</span>
                 </div>
                 <div class="mint-cell-value">
-                    <div class="sex-value">请选择性别</div>
+                    <div class="sex-value" @click="sex">{{sexStr}}</div>
+                    <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
                 </div>
             </div>
             <div class="mint-cell-right"></div>

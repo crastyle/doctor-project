@@ -8,16 +8,17 @@ export default {
   data() {
     return {
       msg: 'Welcome to Login',
-      sheetVisible: true,
+      sheetVisible: false,
+      sexStr: '请选择性别',
       actions: [{
         name: '男',
         method: () => {
-
+          this.sexStr = '男'
         }
       }, {
         name: '女',
         method: () => {
-
+          this.sexStr = '女'
         }
       }],
       validButtonText: '获取验证码',
@@ -25,14 +26,12 @@ export default {
     }
   },
   methods: {
-    setSex: function(){
-      console.log('111')
+    sex: function(){
+      this.sheetVisible = true
     },
     getCode: function() {
-
       let second = 60
       let _this = this
-
       if (_this.buttonStatus) {
         return false
       }

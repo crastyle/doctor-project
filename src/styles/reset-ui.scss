@@ -1,3 +1,4 @@
+@import 'app';
 .mint-field .mint-cell-title {
     text-align: left;
     width: 80px;
@@ -14,6 +15,71 @@
 .form-label {
     .sex-value {
         color: #757575;
+    }
+}
+
+.single-radio {
+    .mint-radiolist {
+        display: -webkit-flex;
+    }
+    .mint-radiolist-title {
+        display: none;
+    }
+    .mint-radiolist .mint-cell {
+        @include vertical();
+        height: 1.2rem;
+        margin-right: 20px;
+        .mint-cell-wrapper {
+            background: none;
+            padding: 0;
+        }
+        &:last-child {
+            background: none;
+        }
+        .mint-radiolist-label {
+            padding: 0;
+        }
+    }
+}
+
+.checklist {
+    .mint-checklist-title {
+        display: none;
+    }
+    .mint-cell-wrapper {
+        background: none;
+        padding: 0;
+    }
+    .mint-checkbox-label {
+        color: #787878;
+        font-size: 16px;
+    }
+    .mint-checklist-label {
+        padding: 0;
+    }
+    .mint-checklist {
+        margin-top: 10px;
+    }
+}
+
+.cal-header {
+    .title {
+        font-size: 20px;
+        color: #787878;
+    }
+}
+.__vev_calendar-wrapper .cal-wrapper .cal-body .weeks {
+    font-size: .32rem;
+    color: #999;
+}
+.__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item .date-num {
+    font-size: .32rem;
+    color: #333;
+}
+.__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item.today {
+    color: #333;
+    .is-today {
+        display: none;
     }
 }
 .doctor_dialog .mint-cell-wrapper {
