@@ -72,7 +72,7 @@
             <div class="more_hd">
               <label class="more_label" for="">姓名</label>
             </div>
-            <div class="more_ft arrow">
+            <div class="more_ft arrow" @click="changedShow">
               宋宝强先生
             </div>
           </div>
@@ -114,9 +114,58 @@
           </div>
         </div>
       </div>
+
+      <div class="doctor_dialog" style="display: block;">
+        <div class="doctor_mask doctor-mask_transparent"></div>
+        <div class="doctor_message">
+          <div class="doctor_hd">这是标题</div>
+          <div class="doctor_bd">
+            <!-- 姓名 年龄 手机号-->
+            <input type="text">
+            <!-- 验证码 -->
+            <div class="code">
+              <input type="text">
+              <input type="button" value="获取验证码" name="code">
+            </div>
+            <!-- 性别 -->
+            <div class="sex">
+              <mt-radio v-model="sexValue" :options="['男', '女']">
+              </mt-radio>
+            </div>
+
+          </div>
+          <div class="doctor_ft">
+            <a href="javascript:;" class="doctor_dialog_cancel">取消</a>
+            <a href="javascript:;">确定</a>
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 <style lang='scss' scoped>
     @import './more.scss';
 </style>
-<script src="./more"></script>
+<script>
+  import Vue from 'vue'
+  import { Switch, Radio } from 'mint-ui'
+  Vue.component(Switch.name, Switch)
+  Vue.component(Radio.name, Radio)
+  export default {
+    name: 'page-switch',
+    data () {
+      return {
+        msg: 'Welcome to More',
+        value: false,
+        sexValue: '男'
+      }
+    },
+    methods: {
+      handleChange(event) {
+        console.log(event)
+      },
+      changedShow () {
+      }
+    }
+  }
+
+</script>
