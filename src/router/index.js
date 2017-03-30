@@ -18,7 +18,6 @@ export default new Router({
   routes: [
     {path: '/',name: 'Hello',component: Hello},
     {path: '/more',name: 'More',component: More},
-    {path: '/login',name: 'Login',component: Login},
     {path: '/bindid',name: 'Bindid',component: Bindid},
     {path: '/bindcard',name: 'Bindcard',component: Bindcard},
     {path: '/bindqr',name: 'Bindqr',component: Bindqr},
