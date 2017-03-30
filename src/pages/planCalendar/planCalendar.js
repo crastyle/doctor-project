@@ -8,12 +8,11 @@ export default {
     return {
       msg: 'Welcome to PlanCalendar',
       demoEvents: [{
-        date: '2016/12/15',
-        title: 'Foo',
-        desc: 'longlonglong description'
-      }, {
-        date: '2016/11/12',
-        title: 'Bar'
+        date: '2017/04/01',
+        title: 'title'
+      },{
+        date: '2017/03/31',
+        title: 'title'
       }]
     }
   }

@@ -3,16 +3,20 @@
         <a href="javascript:;" class="item-cell">
             <div class="cell-date">2014年3月4日</div>
             <div class="cell-assign">农历二月初八</div>
-            <div class="label">更多</div>
+            <router-link to="more">
+                <div class="label">更多</div>
+            </router-link>
         </a>
 
         <div class="doctor-msg">
             <div class="doctor-avatar">
-                <div class="img-box">
-                    <img src="../../assets/image/demo-avatar.png" alt="">
-                    <div class="co">1</div>
-                </div>
-                <div class="name">宋宝强</div>
+                <router-link to="chat">
+                    <div class="img-box">
+                        <img src="../../assets/image/demo-avatar.png" alt="">
+                        <div class="co">1</div>
+                    </div>
+                    <div class="name">宋宝强</div>
+                </router-link>
             </div>
             <div class="medicine-tip">
                 <div class="tip">出院第<em>7</em>天</div>

@@ -68,6 +68,18 @@
         color: #787878;
     }
 }
+.__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item.event {
+    
+    .date-num {
+        color: #fff !important;
+    }
+    .is-event {
+        background: #028BE6;
+    }
+}
+.events-wrapper {
+    display: none;
+}
 .__vev_calendar-wrapper .cal-wrapper .cal-body .weeks {
     font-size: .32rem;
     color: #999;

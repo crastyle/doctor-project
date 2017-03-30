@@ -7,22 +7,27 @@ export default {
   name: 'Login',
   data() {
     return {
-      msg: 'Welcome to Login',
       sheetVisible: false,
-      sexStr: '请选择性别',
       actions: [{
         name: '男',
         method: () => {
-          this.sexStr = '男'
+          this.userInfo.sex = '男'
         }
       }, {
         name: '女',
         method: () => {
-          this.sexStr = '女'
+          this.userInfo.sex = '女'
         }
       }],
       validButtonText: '获取验证码',
-      buttonStatus: false
+      buttonStatus: false,
+      userInfo: {
+        userName: '李龙先生',
+        age: 26,
+        sex: '男',
+        tel: 15801929103,
+        code: 123456
+      }
     }
   },
   methods: {

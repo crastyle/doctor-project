@@ -24,8 +24,11 @@ body {
     -webkit-text-size-adjust: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+    max-width: 640px;
+    margin: 0 auto;
   }
   body{
+    
     color:#666;
     font-family: "Helvetica Neue",Helvetica,STHeiTi,sans-serif;
     line-height: 1.6;

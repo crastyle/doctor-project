@@ -16,7 +16,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {path: '/',name: 'Hello',component: Hello},
+    {path: '/',name: 'Hello',component: Login},
     {path: '/more',name: 'More',component: More},
     {path: '/bindid',name: 'Bindid',component: Bindid},
     {path: '/bindcard',name: 'Bindcard',component: Bindcard},

@@ -52,7 +52,9 @@
             </div>
         </div>
         <div class="section-button">
-            <mt-button type="primary" size="large">激活出院日历</mt-button>
+            <router-link to="keep">
+                <mt-button type="primary" size="large">激活出院日历</mt-button>
+            </router-link>
         </div>
     </div>
 </template>
