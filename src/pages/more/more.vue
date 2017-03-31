@@ -29,39 +29,6 @@
         <div class="more_cells">
           <div class="more_cell">
             <div class="more_hd">
-              <label class="more_label" for="">他汀(阿托伐他汀)</label>
-              <span>服用中</span>
-            </div>
-            <div class="more_ft">
-              <mt-switch v-model="value" @change="handleChange">
-              </mt-switch>
-            </div>
-          </div>
-          <div class="more_cell">
-            <div class="more_hd">
-              <label class="more_label" for="">长效降压(氨氯地平)</label>
-              <span>未服用</span>
-            </div>
-            <div class="more_ft">
-              <mt-switch v-model="value" @change="handleChange">
-              </mt-switch>
-            </div>
-          </div>
-          <div class="more_cell">
-            <div class="more_hd">
-              <label class="more_label" for="">其他药品</label>
-              <span>未服用</span>
-            </div>
-            <div class="more_ft">
-              <mt-switch v-model="value" @change="handleChange">
-              </mt-switch>
-            </div>
-          </div>
-        </div>
-
-        <div class="more_cells">
-          <div class="more_cell">
-            <div class="more_hd">
               <label class="more_label" for="">头像</label>
             </div>
             <div class="more_ft">
@@ -115,10 +82,10 @@
         </div>
       </div>
 
-      <div class="doctor_dialog" style="display: block;">
+      <div class="doctor_dialog" style="display: none;">
         <div class="doctor_mask doctor-mask_transparent"></div>
         <div class="doctor_message">
-          <div class="doctor_hd">这是标题</div>
+          <div class="doctor_hd">更改姓名</div>
           <div class="doctor_bd">
             <!-- 姓名 年龄 手机号-->
             <input type="text">

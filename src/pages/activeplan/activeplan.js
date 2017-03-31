@@ -8,6 +8,13 @@ export default {
   name: 'Activeplan',
   data() {
     return {
+      wayValue: [{
+        label: '短信',
+        value: 0
+      }, {
+        label: '电话',
+        value: 1
+      }],
       options: [{
         label: '短信',
         value: 0
@@ -93,9 +100,7 @@ export default {
       let year = select_date.getFullYear()
       let month = select_date.getMonth() + 1
       let day = select_date.getDate()
-      let hour = select_date.getHours()
-      let mins = select_date.getMinutes()
-      this.leavePickerValue = `${year}-${month}-${day} ${hour}:${mins}`
+      this.leavePickerValue = `${year}-${month}-${day}`
     },
     setForkTimePicker: function () {
       this.$refs.forkPicker.open()

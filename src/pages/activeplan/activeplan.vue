@@ -8,7 +8,7 @@
                 <div class="values" @click="setLeavePicker">
                     {{leavePickerValue}}
                 </div>
-                <mt-datetime-picker ref="picker" @confirm="confirmLeaveDate" v-model="leavePickerDate" type="datetime"></mt-datetime-picker>
+                <mt-datetime-picker ref="picker" @confirm="confirmLeaveDate" v-model="leavePickerDate" type="date"></mt-datetime-picker>
             </div>
         </div>
         <div class="item">
@@ -37,7 +37,7 @@
                     提醒方式
                 </div>
                 <div class="values single-radio">
-                    <mt-radio v-model="value" :options="options"></mt-radio>
+                  <mt-checklist :value="wayValue" :options="options"></mt-checklist>
                 </div>
             </div>
         </div>
@@ -64,5 +64,5 @@
 </style>
 
 <script src="./activeplan">
-    
+
 </script>

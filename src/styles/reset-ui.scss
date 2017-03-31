@@ -69,7 +69,7 @@
     }
 }
 .__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item.event {
-    
+
     .date-num {
         color: #fff !important;
     }
@@ -139,4 +139,33 @@
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
+}
+.activeplanPage .mint-cell-wrapper {
+  background-image: none;
+  padding: 0;
+}
+.activeplanPage .mint-cell:last-child {
+  background-image: none;
+}
+.single-radio .mint-checklist {
+  display: -webkit-flex;
+}
+.single-radio .mint-checklist .mint-cell{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  height: 1.2rem;
+  margin-right: 20px;
+}
+.single-radio .mint-checklist-label {
+  padding: 0;
+}
+.single-radio .mint-checklist-title {
+  margin: 0;
+}
+.checklist .mint-checkbox-core {
+  background-color: #F7FCFF;
+  border-radius: 5px;
+  border: 1px solid #73C7FF;
 }
