@@ -1,8 +1,8 @@
 export default {
-  name: 'Chat',
-  data () {
-    return {
-      msg: 'Welcome to Chat'
+    name: 'chat',
+    data(){
+        return {
+            msg: 'xxx'
+        }
     }
-  }
 }

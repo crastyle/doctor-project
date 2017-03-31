@@ -1,0 +1,45 @@
+@import "../../styles/app";
+.leavePage {
+    .item-cell {
+        display: block;
+        height: 1.4rem;
+        background: url(../../assets/image/out-background.png) no-repeat;
+        background-size: 100%;
+        @include vertical();
+        -webkit-box-align: start;
+        box-sizing: border-box;
+        padding-left: 16px;
+        position: relative;
+        .cell-date {
+            font-size: 20px;
+            color: #fff;
+        }
+        .cell-assign {
+            font-size: 14px;
+            color: #C8C8C8;
+        }
+        .label {
+            position: absolute;
+            top: 50%;
+            right: .77rem;
+            color: #fff;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+        &:after {
+            position: absolute;
+            top: 50%;
+            right: .42rem;
+            content: '';
+            background: url(../../assets/image/icon-arrow-right-gray.png) no-repeat;
+            width: .19rem;
+            height: .34rem;
+            background-size: 100%;
+            transform: translateY(-50%);
+        }
+    }
+    .section-button {
+        padding: 0 1.77rem;
+        margin-top: 4rem;
+    }
+}

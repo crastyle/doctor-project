@@ -1,0 +1,22 @@
+.bindcardPage {
+
+    .doctor-card {
+        margin: .9rem .6rem;
+    border-radius: 6px;
+    background: #fff;
+    padding: .6rem;
+    }
+    .doctor-name {
+        color: #333;
+        font-size: .46rem;
+        text-align: center;
+        margin-top: .48rem;
+    }
+    .section-button {
+        position: fixed;
+        bottom: 20px ;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+    }
+}

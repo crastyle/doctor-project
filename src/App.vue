@@ -24,8 +24,11 @@ body {
     -webkit-text-size-adjust: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+    max-width: 640px;
+    margin: 0 auto;
   }
   body{
+    
     color:#666;
     font-family: "Helvetica Neue",Helvetica,STHeiTi,sans-serif;
     line-height: 1.6;
@@ -36,7 +39,7 @@ body {
   body, html {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article,
   aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -122,12 +125,14 @@ body {
     -webkit-tap-highlight-color: rgba(255,0,0,0);
     outline: none;
   }
-
+  .section-button {
+    padding: 0 16px;
+  }
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    color: #2c3e50;
     background: #f2f2f2;
     color: #666;
     height: 100%;
