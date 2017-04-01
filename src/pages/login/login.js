@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import { Actionsheet, Field, Button} from 'mint-ui'
+import { Actionsheet, Field, Button } from 'mint-ui'
+import resource from '../../resource'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(Field.name, Field)
 Vue.component(Button.name, Button)
@@ -31,10 +32,10 @@ export default {
     }
   },
   methods: {
-    sex: function(){
+    sex: function () {
       this.sheetVisible = true
     },
-    getCode: function() {
+    getCode: function () {
       let second = 60
       let _this = this
       if (_this.buttonStatus) {
@@ -42,8 +43,8 @@ export default {
       }
       _this.buttonStatus = true
       this.validButtonText = `${second}重新获取`
-      let timer = setInterval(()=>{
-        second -- 
+      let timer = setInterval(() => {
+        second--
         _this.validButtonText = `${second}重新获取`
         if (second === 0) {
           _this.buttonStatus = false
@@ -51,6 +52,15 @@ export default {
           clearInterval(timer)
         }
       }, 1000)
+    },
+    login: function () {
+      let userName = this.userInfo.userName
+      let telephone = this.userInfo.tel
+      console.log(resource.register({
+        userName,
+        telephone
+      }))
     }
+
   }
 }

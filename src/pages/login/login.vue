@@ -26,7 +26,7 @@
         </mt-field>
         <div class="section-button">
             <router-link to="bindid">
-                <mt-button type="primary" size="large">验证登录</mt-button>
+                <mt-button type="primary" size="large" @click="login">验证登录</mt-button>
             </router-link>
         </div>
     </div>
