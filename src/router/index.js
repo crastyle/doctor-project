@@ -11,6 +11,8 @@ import Activeplan from '../pages/activeplan/activeplan.vue'
 import Keep from '../pages/keep/keep.vue'
 import PlanCalendar from '../pages/planCalendar/planCalendar.vue'
 import Chat from '../pages/chat/chat.vue'
+import Cropper from '../pages/cropper/cropper.vue'
+import LoginForm from '../components/LoginForm.vue'
 //@import
 Vue.use(Router)
 
@@ -26,7 +28,8 @@ export default new Router({
     {path: '/keep',name: 'Keep',component: Keep},
     {path: '/planCalendar',name: 'PlanCalendar',component: PlanCalendar},
     {path: '/login',name: 'Login',component: Login},
-    {path: '/chat',name: 'Chat',component: Chat}//@register
-   
+    {path: '/chat',name: 'Chat',component: Chat},
+    {path: '/loginform',name: 'LoginForm',component: LoginForm},
+    {path: '/cropper',name: 'Cropper',component: Cropper}//@register
   ]
 })

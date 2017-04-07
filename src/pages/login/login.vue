@@ -1,11 +1,12 @@
 <template>
     <div class="root">
         <div class="loginPage">
-            <div class="avatar-content">
+            <div class="avatar-content" @click="showLoginForm">
                 <img src="../../assets/image/demo-avatar.png" alt="" class="avatar">
                 <p class="tip">点击修改头像</p>
             </div>
         </div>
+        <LoginForm v-if="activeLoginForm"></LoginForm>
         <mt-field label="姓名" placeholder="输入姓名" v-model="userInfo.userName"></mt-field>
         <mt-field label="年龄" placeholder="请输入年龄" type="number" v-model="userInfo.age"></mt-field>
         <a data-v-6e328512="" class="mint-cell mint-field">
@@ -25,9 +26,7 @@
             <button class="valid-button" @click="getCode"  v-bind:class="{'disabled': buttonStatus}">{{validButtonText}}</button>
         </mt-field>
         <div class="section-button">
-            <router-link to="bindid">
                 <mt-button type="primary" size="large" @click="login">验证登录</mt-button>
-            </router-link>
         </div>
     </div>
 </template>

@@ -8,16 +8,15 @@ export default {
             let toast = Toast({
                 message: '请求中...'
             })
-                next(res => {
-                    toast.close()
-                    console.log(res)
-                    if (res.status !== 0) {
-                        Toast({
-                            message: res.statusText,
-                            duration: 2000
-                        })
-                    }
-                })
+            next(res => {
+                toast.close()
+                if (res.status !== 0) {
+                    Toast({
+                        message: res.statusText,
+                        duration: 2000
+                    })
+                }
+            })
 
         })
     },

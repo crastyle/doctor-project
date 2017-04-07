@@ -10,14 +10,15 @@
             或者点击这里<a href="">扫描医生二维码</a>
         </div>
         <div class="section-button">
-            <router-link to="bindcard">
-                <mt-button type="primary" size="large">验证登录</mt-button>
-            </router-link>
-            
+            <mt-button type="primary" @click="bindcard" size="large">验证登录</mt-button>
         </div>
     </div>
 </template>
+
 <style scoped lang="scss">
     @import './bindid.scss';
 </style>
-<script src="./bindid"></script>
+
+<script src="./bindid">
+    
+</script>

@@ -16,7 +16,7 @@
           </div>
           <div class="more_cell">
             <div class="more_hd">
-              <label class="more_label" for="">电话提醒</label>
+              <label class="more_label" for="">短信提醒</label>
               <span>已开启</span>
             </div>
             <div class="more_ft">
@@ -25,7 +25,20 @@
             </div>
           </div>
         </div>
-
+        <div class="more_cells">
+          <div class="more_cell">
+            <div class="more_hd">
+              <label class="more_label" for="">他汀（阿法司他汀）</label>
+              <span>服用中</span>
+            </div>
+          </div>
+          <div class="more_cell">
+            <div class="more_hd">
+              <label class="more_label" for="">长效降压</label>
+              <span>服用中</span>
+            </div>
+          </div>
+        </div>
         <div class="more_cells">
           <div class="more_cell">
             <div class="more_hd">
