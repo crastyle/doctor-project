@@ -9,7 +9,6 @@ import './flexble.js'
 import 'mint-ui/lib/style.css'
 import "./styles/reset-ui.scss"
 import resource from './resource'
-import vueResource from 'vue-resource'
 Vue.config.productionTip = false
 resource.interceports()
 new Vue({
