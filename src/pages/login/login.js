@@ -60,6 +60,9 @@ export default {
       }
       _this.buttonStatus = true
       this.validButtonText = `${second}重新获取`
+      resource.smsCode({
+        mobile: this.userInfo.tel
+      })
       let timer = setInterval(() => {
         second--
         _this.validButtonText = `${second}重新获取`

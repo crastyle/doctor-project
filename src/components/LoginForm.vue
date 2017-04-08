@@ -12,6 +12,7 @@
         </div>
     </div>
 </template>
+
 <style scoped lang="scss">
     .login-form {
         position: absolute;
@@ -20,15 +21,17 @@
         right: 0;
         bottom: 0;
         z-index: 555;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.8);
         display: -webkit-box;
         -webkit-box-align: center;
         -webkit-box-pack: center;
         -webkit-box-orient: vertical;
     }
+    
     .center {
         text-align: center;
     }
+    
     .login-panel {
         background: #fff;
         width: 80%;
@@ -50,7 +53,7 @@
                     email: '197203392@qq.com',
                     telephone: ''
                 }
-                
+    
             }
         },
         methods: {
