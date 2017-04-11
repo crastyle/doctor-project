@@ -1,58 +1,60 @@
 var cropper = require('./cropperController')
 import $ from 'jquery'
 import "../../styles/cropper.scss"
+import resource from '../../resource'
 export default {
   name: 'Cropper',
   data() {
     return {
-      msg: 'Welcome to Cropper'
+      msg: 'Welcome to Cropper',
+      cropperImagesOption: {
+        image: '',
+        x: 0,
+        y: 0,
+        height: 0,
+        width: 0,
+        bucket: 'patient'
+      },
+      redirect: ''
+    }
+  },
+  methods: {
+    upload () {
+      let _this = this
+      this.cropperImagesOption.x = parseInt(this.cropperImagesOption.x)
+      this.cropperImagesOption.y = parseInt(this.cropperImagesOption.y)
+      this.cropperImagesOption.height = parseInt(this.cropperImagesOption.height)
+      this.cropperImagesOption.width = parseInt(this.cropperImagesOption.width)
+       resource.uploadImageWithCrop(this.cropperImagesOption).then(res => {
+        let imgurl = res.body.result.imageUrl
+        _this.$router.push({name: _this.redirect, params: {imgurl: imgurl}})
+        
+      })
+    },
+    change(event) {
+      this.cropperImagesOption.image = event.target.files[0]
     }
   },
   mounted() {
+    
+    let _this = this
+    _this.redirect = this.$route.query.redirect
     $(function () {
       var $image = $('#viewPic');  //预览图片的容器
       var $inputImage = $('#upload');  // 上传图片file控件
       var $uploadBtn = $('#J-submit');  // 保存按钮
-      var cropperImagesOption = {   // 提交裁剪的参数
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-        file: $inputImage[0]
-      };
+   
       var options = {    // 裁剪的参数,正方形比例.
         aspectRatio: 1 / 1,
         crop: function (e) {
-          cropperImagesOption.x = e.x;
-          cropperImagesOption.y = e.y;
-          cropperImagesOption.width = e.width;
-          cropperImagesOption.height = e.height;
+          _this.cropperImagesOption.x = e.x;
+          _this.cropperImagesOption.y = e.y;
+          _this.cropperImagesOption.width = e.width;
+          _this.cropperImagesOption.height = e.height;
         }
       };
-      // Cropper
-      $image.on({
-        'build.cropper': function (e) {
-          console.log(e.type);
-        },
-        'built.cropper': function (e) {
-          console.log(e.type);
-        },
-        'cropstart.cropper': function (e) {
-          console.log(e.type, e.action);
-        },
-        'cropmove.cropper': function (e) {
-          console.log(e.type, e.action);
-        },
-        'cropend.cropper': function (e) {
-          console.log(e.type, e.action);
-        },
-        'crop.cropper': function (e) {
-          console.log(e.type, e.x, e.y, e.width, e.height, e.rotate, e.scaleX, e.scaleY);
-        },
-        'zoom.cropper': function (e) {
-          console.log(e.type, e.ratio);
-        }
-      }).cropper(options);
+     
+      $image.cropper(options);
 
 
       // Import image
@@ -85,29 +87,6 @@ export default {
           }
         }
       });
-      var form = new FormData();
-      for (var key in cropperImagesOption) {
-        form.append(key, cropperImagesOption[key]);
-      }
-
-
-
-      //关注这里就可以啦,点击提交的按钮,将图片提交到后台,url的接口由后台给你
-      $uploadBtn.on('click', function () {
-        $.ajax({
-          url: 'upload.php',   //图片上传的接口
-          method: 'post',
-          dataType: 'json',
-          data: form,
-          processData: false,  // 告诉jQuery不要去处理发送的数据
-          contentType: undefined,   // 告诉jQuery不要去设置Content-Type请求头
-          success: function (data) {
-            if (data.status == 1) {
-              //上传成功
-            }
-          }
-        })
-      })
     });
   }
 }

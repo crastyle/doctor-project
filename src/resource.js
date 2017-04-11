@@ -5,35 +5,53 @@ Vue.use(vueResource)
 export default {
     interceports() {
         Vue.http.interceptors.push((req, next) => {
-            console.log('xxx')
             req.method = "POST"
+            console.log(req)
+            let u = window.localStorage.getItem('u_uid')
+            let t = window.localStorage.getItem('u_token')
+            if (!u || u !== "undefined") {
+                if (!req.body) {
+                    req.body = {}
+                }
+                req.body['u'] = u
+                req.body['t'] = t
+                req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
+            }
             let toast = Toast({
                 message: '请求中...'
             })
             next(res => {
-                console.log(res)
                 toast.close()
-                if (res.status !== 0) {
+                if (!res.ok) {
                     Toast({
                         message: res.statusText,
                         duration: 2000
                     })
+                    return
+                }
+                if (res.ok && res.body.code !== 0) {
+                    Toast({
+                        message: res.body.message,
+                        duration: 2000
+                    })
+                    return
                 }
             })
         })
     },
     resource(url, params) {
         let doUrl = 'http://139.198.11.46:8080/' + url
+
         return Vue.http.post(doUrl, params)
     },
-  
+
     /**
      * @description 用来获取微信用户的openId
      * @param {*} params {code}
      * @return <promise>
      * @response openid
      */
-    oath (params) {
+    oath(params) {
         return this.resource('gateway/patient/oauth', params)
     },
 
@@ -43,14 +61,14 @@ export default {
      * @return <promise>
      * @response code
      */
-    jsApiConfig (params) {
+    jsApiConfig(params) {
         return this.resource('gateway/patient/jsApiConfig', params)
     },
     /**
      * @description 判断用户是否绑定手机号
      * @return {bind, openid, u, t}
      */
-    checkBind (params) {
+    checkBind(params) {
         return this.resource('patient/user/checkBind', params)
     },
     /**
@@ -91,14 +109,23 @@ export default {
         return this.resource('utility/smsCode', params)
     },
 
-    uploadImageWithCrop (params) {
+    uploadImageWithCrop(params) {
         let formData = new FormData();
-        for(let key in params) {
+        for (let key in params) {
             formData.append(key, params[key])
         }
-        return this.resource('utility/uploadImageWithCrop', params)
+        return this.resource('utility/uploadImageWithCrop', formData)
+    },
+
+    /**
+     * @description 绑定医生
+     * @params {identifyCode: string} 
+     */
+    bindDoctor(params) {
+        return this.resource('patient/myDoctor/bindDoctor', params)
+    },
+
+    doctorDetail (params) {
+        return this.resource('patient/myDoctor/intentionDoctorInfo', params)
     }
-
-
-
 }

@@ -7,14 +7,13 @@
             <input placeholder="输入七位有效数字" v-model="doctorID" type="tel">
         </div>
         <div class="bd-tips">
-            或者点击这里<a href="">扫描医生二维码</a>
+            或者点击这里<a href="javascript:;" @click="scanQR">扫描医生二维码</a>
         </div>
         <div class="section-button">
-            <mt-button type="primary" @click="bindcard" size="large">验证登录</mt-button>
+            <mt-button type="primary" @click="bindcard" size="large">提交</mt-button>
         </div>
     </div>
 </template>
-
 <style scoped lang="scss">
     @import './bindid.scss';
 </style>

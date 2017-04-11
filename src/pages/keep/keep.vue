@@ -25,7 +25,7 @@
                 <div class="tip-ass">记得按时吃药哦</div>
             </div>
         </div>
-        <div class="medicine-card">
+        <div class="medicine-card" v-bind:class="{'transition-hide': isTake}" v-if="!calendarCard">
             <div class="timer">
                 09:00 <i class="icon-love"></i>
             </div>
@@ -35,10 +35,11 @@
                 <li>其他</li>
             </ul>
             <div class="section-button">
-                <router-link to="plancalendar">
-                    <mt-button type="primary" size="large">吃完药请点这里</mt-button>
-                </router-link>
+                <mt-button type="primary" size="large"  @click="takeMedicine">吃完药请点这里</mt-button>
             </div>
+        </div>
+        <div class="calendar-card" v-show="calendarCard" v-bind:class="{'transition-hide': !calendarTransform}">
+            <vue-event-calendar :events="demoEvents"></vue-event-calendar>
         </div>
     </div>
 </template>

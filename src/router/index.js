@@ -18,7 +18,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {path: '/',name: 'Hello',component: Login},
+    {path: '/',name: 'Login',component: Login},
     {path: '/more',name: 'More',component: More},
     {path: '/bindid',name: 'Bindid',component: Bindid},
     {path: '/bindcard',name: 'Bindcard',component: Bindcard},
@@ -27,7 +27,6 @@ export default new Router({
     {path: '/activeplan',name: 'Activeplan',component: Activeplan},
     {path: '/keep',name: 'Keep',component: Keep},
     {path: '/planCalendar',name: 'PlanCalendar',component: PlanCalendar},
-    {path: '/login',name: 'Login',component: Login},
     {path: '/chat',name: 'Chat',component: Chat},
     {path: '/loginform',name: 'LoginForm',component: LoginForm},
     {path: '/cropper',name: 'Cropper',component: Cropper}//@register
