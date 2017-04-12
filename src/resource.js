@@ -13,9 +13,13 @@ export default {
                 if (!req.body) {
                     req.body = {}
                 }
-                req.body['u'] = u
-                req.body['t'] = t
-                req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
+                // req.body['u'] = u
+                // req.body['t'] = t
+                // req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
+
+                // req.body['u'] = '156e6fe21f5f45dbb1198d1bc3223cd6'
+                // req.body['t'] = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
+                // req.body['c'] = 'wechat'
             }
             let toast = Toast({
                 message: '请求中...'
@@ -127,5 +131,9 @@ export default {
 
     doctorDetail (params) {
         return this.resource('patient/myDoctor/intentionDoctorInfo', params)
+    },
+
+    activePlan(params) {
+        return this.resource('patient/plan/activePlan' ,params)
     }
 }

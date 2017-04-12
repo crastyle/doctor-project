@@ -31,7 +31,7 @@ export default {
          * 如果是，将得到的code发送给后台换取openId，保存openId到本地，重复以上步骤
          */
 
-        if (!ls_openId || ls_openId === "undefined"){
+        if (!ls_openId || ls_openId === "undefined") {
             if (!code && this.isWechat()) {
                 resource.jsApiConfig().then(res => {
                     let redirect_uri = encodeURIComponent(location.href)
@@ -57,5 +57,14 @@ export default {
     },
     isWechat() {
         return window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0
+    },
+    formatDate(time) {
+        let date = new Date(time)
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        month = month < 10 ? '0' + month : month
+        day = day < 10 ? '0' + day : day
+        return `${year}-${month}-${day}`
     }
 }
