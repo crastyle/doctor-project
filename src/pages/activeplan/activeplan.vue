@@ -37,7 +37,7 @@
                     提醒方式
                 </div>
                 <div class="values single-radio">
-                    <mt-checklist :value="wayValue" :options="options"></mt-checklist>
+                    <mt-checklist :value="wayValue" v-model="formData.remindWayList" :options="options"></mt-checklist>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                     所需药物
                 </div>
                 <div class="values checklist">
-                    <mt-checklist :value="defaultChecklist" :options="checklistOpt"></mt-checklist>
+                    <mt-checklist :value="defaultChecklist" v-model="formData.medicineList" :options="checklistOpt"></mt-checklist>
                 </div>
             </div>
         </div>

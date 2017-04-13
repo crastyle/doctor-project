@@ -10,7 +10,7 @@ import 'mint-ui/lib/style.css'
 import "./styles/reset-ui.scss"
 import resource from './resource'
 import base from './base'
-// import "vconsole"
+import "vconsole"
 Vue.config.productionTip = false
 resource.interceports()
 new Vue({

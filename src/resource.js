@@ -13,9 +13,9 @@ export default {
                 if (!req.body) {
                     req.body = {}
                 }
-                // req.body['u'] = u
-                // req.body['t'] = t
-                // req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
+                req.body['u'] = u
+                req.body['t'] = t
+                req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
 
                 // req.body['u'] = '156e6fe21f5f45dbb1198d1bc3223cd6'
                 // req.body['t'] = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
@@ -47,6 +47,10 @@ export default {
         let doUrl = 'http://139.198.11.46:8080/' + url
 
         return Vue.http.post(doUrl, params)
+    },
+
+    getTimestamp() {
+        return this.resource('utility/timestamp')
     },
 
     /**
@@ -129,11 +133,48 @@ export default {
         return this.resource('patient/myDoctor/bindDoctor', params)
     },
 
+    /**
+     * @description 解绑医生
+     * @params {identifyCode: string} 
+     */
+    unbindDoctor(params) {
+        return this.resource('patient/myDoctor/unBindDoctor', params)
+    },
+
     doctorDetail (params) {
         return this.resource('patient/myDoctor/intentionDoctorInfo', params)
     },
 
     activePlan(params) {
         return this.resource('patient/plan/activePlan' ,params)
+    },
+
+    /**
+     * @description 某天的签到信息
+     * @param {*} params 
+     */
+    diaryInfo(params) {
+        return this.resource('patient/diary/diaryInfo', params)
+    },
+    console(params) {
+        return this.resource('patient/console', params)
+    },
+
+    checkIn(params) {
+        return this.resource('patient/diary/checkIn', params)
+    },
+    userInfo() {
+        return this.resource('patient/user/userInfo')
+    },
+
+    planInfo() {
+        return this.resource('patient/plan/planInfo')
+    },
+    updateUserInfo(params) {
+        return this.resource('patient/user/updateUserSelective', params)
+    },
+
+    bindDoctorInfo(params) {
+        return this.resource('patient/myDoctor/bindDoctorInfo' ,params)
     }
 }

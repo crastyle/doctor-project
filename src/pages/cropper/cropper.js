@@ -19,16 +19,24 @@ export default {
     }
   },
   methods: {
-    upload () {
+    upload() {
       let _this = this
       this.cropperImagesOption.x = parseInt(this.cropperImagesOption.x)
       this.cropperImagesOption.y = parseInt(this.cropperImagesOption.y)
       this.cropperImagesOption.height = parseInt(this.cropperImagesOption.height)
       this.cropperImagesOption.width = parseInt(this.cropperImagesOption.width)
-       resource.uploadImageWithCrop(this.cropperImagesOption).then(res => {
+      resource.uploadImageWithCrop(this.cropperImagesOption).then(res => {
         let imgurl = res.body.result.imageUrl
-        _this.$router.push({name: _this.redirect, params: {imgurl: imgurl}})
-        
+        if(_this.redirect == "More") {
+          resource.updateUserInfo({headImg: imgurl}).then(res => {
+            if (res.body.code == 0) {
+              _this.$router.replace(_this.redirect)
+            }
+            
+          })
+        } else {
+          _this.$router.push({ name: _this.redirect, params: { imgurl: imgurl } })
+        }
       })
     },
     change(event) {
@@ -36,14 +44,14 @@ export default {
     }
   },
   mounted() {
-    
+
     let _this = this
     _this.redirect = this.$route.query.redirect
     $(function () {
       var $image = $('#viewPic');  //预览图片的容器
       var $inputImage = $('#upload');  // 上传图片file控件
       var $uploadBtn = $('#J-submit');  // 保存按钮
-   
+
       var options = {    // 裁剪的参数,正方形比例.
         aspectRatio: 1 / 1,
         crop: function (e) {
@@ -53,7 +61,7 @@ export default {
           _this.cropperImagesOption.height = e.height;
         }
       };
-     
+
       $image.cropper(options);
 
 

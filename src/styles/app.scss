@@ -10,3 +10,10 @@ $maincolor: #028BE6;
   -webkit-box-pack: center;
   -webkit-box-align: center;
 }
+@mixin ellipsisMulti($lineNum:1){
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $lineNum;
+    -webkit-box-orient: vertical;
+}

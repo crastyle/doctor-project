@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import base from '../../base'
-import { Radio, Checklist, DatetimePicker, Picker } from 'mint-ui'
+import { Radio, Checklist, DatetimePicker, Picker, Toast } from 'mint-ui'
+import resource from '../../resource'
 Vue.component(Radio.name, Radio)
 Vue.component(Checklist.name, Checklist)
 Vue.component(Picker.name, Picker)
@@ -12,7 +13,7 @@ export default {
       wayValue: [],
       options: [{
         label: '短信',
-        value: 0
+        value: 2
       }, {
         label: '电话',
         value: 1
@@ -22,13 +23,13 @@ export default {
       },
       checklistOpt: [{
         label: '他汀（阿托伐他汀）',
-        value: 0
+        value: '他汀（阿托伐他汀）'
       }, {
         label: '长效降压（氨氯地平)',
-        value: 1
+        value: '长效降压（氨氯地平)'
       }, {
         label: '其他',
-        value: 2
+        value: '其他'
       }],
       defaultChecklist: [],
       leavePicker: false,
@@ -41,12 +42,14 @@ export default {
 
       forkWeek: false,
       forkWeekValue: '请选择周期',
-      weeks: ['星期一','星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+      weeks: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
       formData: {
         leaveTime: new Date(this.leavePickerValue).getTime(),
         remindWeek: '',
         remindHour: 0,
-        remindMintes: 0,
+        remindMinute: 0,
+        remindWayList: [],
+        medicineList: []
       },
       weeksOptions: [{
         name: '星期一',
@@ -93,7 +96,7 @@ export default {
       }]
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.leavePickerValue = base.formatDate(Date.now())
   },
   methods: {
@@ -101,7 +104,7 @@ export default {
       console.log(new Date(this.leavePickerValue))
       this.$refs.picker.open()
     },
- 
+
     setForkTimePicker: function () {
       this.$refs.forkPicker.open()
     },
@@ -112,12 +115,44 @@ export default {
 
     },
     activePlan() {
-      console.log(this.leavePickerDate)
-      console.log(this.wayValue)
+      this.formData.leaveTime = parseInt((new Date(this.leavePickerValue).getTime()) / 1000)
       this.formData.remindHour = this.forkTimePickerDate.split(':')[0]
-      this.formData.remindMintes = this.forkTimePickerDate.split(':')[1]
-      console.log(this.forkTimePickerDate)
-      console.log(this.defaultChecklist)
+      this.formData.remindMinute = this.forkTimePickerDate.split(':')[1]
+      if (!this.formData.remindWeek) {
+        Toast({
+          message: '请选择提醒周期',
+          duration: 2000
+        })
+        return
+      }
+  
+      if (!this.formData['medicineList'] || this.formData['medicineList'].length == 0) {
+        Toast({
+          message: '请选择所用药物',
+          duration: 2000
+        })
+        return
+      }
+      if (!this.formData['remindWayList'] || this.formData['remindWayList'].length == 0) {
+        Toast({
+          message: '请选择提醒方式',
+          duration: 2000
+        })
+        return
+      }
+      let _this = this
+      resource.activePlan(this.formData).then(res => {
+        
+        if (res.body.code == 0) {
+          Toast({
+            message: '您已经激活成功',
+            duration: 2000
+          })
+          setTimeout(() => {
+            _this.$router.replace('keep')
+          }, 2000)
+        }
+      })
     }
   }
 }

@@ -119,6 +119,10 @@
             .tip-ass {
                 color: #787878;
                 font-size: 20px;
+                line-height: 20px;
+                height: 40px;
+                padding: 0 10px;
+                @include ellipsisMulti(2);
             }
         }
     }
