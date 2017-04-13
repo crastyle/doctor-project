@@ -27,11 +27,11 @@ export default {
       validButtonText: '获取验证码',
       buttonStatus: false,
       userInfo: {
-        name: 'li',
-        age: 26,
+        name: '',
+        age: '',
         sex: 1,
-        mobile: 18825154808,
-        smsCode: 123456,
+        mobile: '',
+        smsCode: '',
         headImg: '',
         openId: ''
       },

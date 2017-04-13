@@ -44,7 +44,7 @@ export default {
         })
     },
     resource(url, params) {
-        let doUrl = 'http://139.198.11.46:8080/' + url
+        let doUrl = 'czgy.mbjyy.net/' + url
 
         return Vue.http.post(doUrl, params)
     },

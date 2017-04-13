@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       msg: 'Welcome to Bindid',
-      doctorID: 1619354
+      doctorID: ''
     }
   },
   mounted() {
