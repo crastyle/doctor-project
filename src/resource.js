@@ -6,20 +6,19 @@ export default {
     interceports() {
         Vue.http.interceptors.push((req, next) => {
             req.method = "POST"
-            console.log(req)
             let u = window.localStorage.getItem('u_uid')
             let t = window.localStorage.getItem('u_token')
             if (!u || u !== "undefined") {
                 if (!req.body) {
                     req.body = {}
                 }
-                req.body['u'] = u
-                req.body['t'] = t
-                req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
+                // req.body['u'] = u
+                // req.body['t'] = t
+                // req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : ''
 
-                // req.body['u'] = '156e6fe21f5f45dbb1198d1bc3223cd6'
-                // req.body['t'] = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
-                // req.body['c'] = 'wechat'
+                req.body['u'] = '156e6fe21f5f45dbb1198d1bc3223cd6'
+                req.body['t'] = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
+                req.body['c'] = 'wechat'
             }
             let toast = Toast({
                 message: '请求中...'
@@ -44,7 +43,8 @@ export default {
         })
     },
     resource(url, params) {
-        let doUrl = 'czgy.mbjyy.net/' + url
+        // let doUrl = 'http://czgy.mbjyy.net/' + url
+        let doUrl = 'http://139.198.11.46:8080/' + url
 
         return Vue.http.post(doUrl, params)
     },
@@ -141,12 +141,12 @@ export default {
         return this.resource('patient/myDoctor/unBindDoctor', params)
     },
 
-    doctorDetail (params) {
+    doctorDetail(params) {
         return this.resource('patient/myDoctor/intentionDoctorInfo', params)
     },
 
     activePlan(params) {
-        return this.resource('patient/plan/activePlan' ,params)
+        return this.resource('patient/plan/activePlan', params)
     },
 
     /**
@@ -155,6 +155,10 @@ export default {
      */
     diaryInfo(params) {
         return this.resource('patient/diary/diaryInfo', params)
+    },
+
+    monthDiary(params) {
+        return this.resource('patient/diary/monthDiary', params)
     },
     console(params) {
         return this.resource('patient/console', params)
@@ -175,6 +179,15 @@ export default {
     },
 
     bindDoctorInfo(params) {
-        return this.resource('patient/myDoctor/bindDoctorInfo' ,params)
+        return this.resource('patient/myDoctor/bindDoctorInfo', params)
+    },
+
+    rongyunAppKey() {
+        return this.resource('rongyun/gateway/rongyunAppKey')
+    },
+    newtoken(params) {
+        params.app = 'patient'
+        return this.resource('rongyun/gateway/patient/newToken', params)
     }
+
 }
