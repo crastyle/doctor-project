@@ -9,17 +9,20 @@ export default {
       doctorInfo: {},
       userInfo: {},
       chatContent: '',
-      contentList: []
+      contentList: [],
+      msgType: true
     }
   },
   mounted() {
+
+  },
+  created() {
     let _this = this
     this.id = this.$route.query.id
     resource.bindDoctorInfo().then(res => {
       if (res.body.code == 0 && res.body.result.bindDoctorStatus == 1) {
         _this.doctorInfo = res.body.result
         _this.getHistoryRecord()
-        _this.receiveMsg()
       }
     })
     resource.userInfo().then(res => {
@@ -27,37 +30,49 @@ export default {
         _this.userInfo = res.body.result
       }
     })
-    bus.$emit('receiveMsg', function (e) {
-      console.log(22222222222)
+
+    bus.$on('receiveMsg', function (message) {
+      if (message.senderUserId === _this.$route.query.id) {
+        _this.contentList.push({
+          content: message.content.content,
+          type: 0,
+          headImg: _this.doctorInfo.headImg
+        })
+      }
+      console.log(message)
     })
-    bus.$on('receiveMsg', function () {
-      console.log(111111111111)
-    })
+    console.log(this.$store.message)
   },
-  created() {
-    bus.$emit('receiveMsg', function (e) {
-      console.log(22222222222)
-    })
-    bus.$on('receiveMsg', function () {
-      console.log(111111111111)
-    })
+  watch: {
+    'contentList': function () {
+      setTimeout(function(){
+        document.getElementById('content').scrollTop = document.getElementById('content').scrollHeight;
+      }, 100)
+    }
   },
 
   methods: {
-    receiveMsg(params) {
-      console.log('asdasdasd')
-      bus.$emit('receiveMsg', function (e) {
-        console.log(22222222222)
-      })
-      bus.$on('receiveMsg', function () {
-        console.log(111111111111)
-      })
-    },
     getHistoryRecord() {
+      let _this = this
       //getHistoryMessages
       RongIMClient.getInstance().getHistoryMessages(RongIMLib.ConversationType.PRIVATE, this.$route.query.id, null, 20, {
         onSuccess: function (list, hasMsg) {
-          console.log(list, 'list')
+          for (let i = 0; i < list.length; i++) {
+            if (list[i]['senderUserId'] === _this.$route.query.id) {
+              _this.contentList.push({
+                content: list[i].content.content,
+                type: 0,
+                headImg: _this.doctorInfo.headImg
+              })
+            } else if (list[i]['senderUserId'] === '156e6fe21f5f45dbb1198d1bc3223cd6') {
+              _this.contentList.push({
+                content: list[i].content.content,
+                type: 1,
+                headImg: _this.userInfo.headImg
+              })
+            }
+          }
+
           // hasMsg为boolean值，如果为true则表示还有剩余历史消息可拉取，为false的话表示没有剩余历史消息可供拉取。
           // list 为拉取到的历史消息列表
         },
@@ -65,7 +80,11 @@ export default {
           // APP未开启消息漫游或处理异常
           // throw new ERROR ......
         }
+
       });
+    },
+    changeStatus() {
+      this.msgType = !this.msgType
     },
     sendMsg() {
       let _this = this

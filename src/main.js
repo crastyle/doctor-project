@@ -12,12 +12,7 @@ import resource from './resource'
 import base from './base'
 import {bus} from './bus'
 import Vuex from 'vuex'
-Vue.use(Vuex)
-const store = new Vuex.Store({
-  state: {
-    message: ''
-  }
-})
+
 // import "vconsole"
 Vue.config.productionTip = false
 
@@ -56,8 +51,6 @@ new Vue({
         // 接收到的消息
         onReceived: function (message) {
           // 判断消息类型
-          store.state.message = message
-          _this.$refs.receiveMsg(message)
           bus.$emit('receiveMsg', message)
           switch (message.messageType) {
             case RongIMClient.MessageType.TextMessage:
