@@ -19,7 +19,7 @@ export default {
     },
     getopenId() {
         let code = this.getUrlparams('code')
-        let ls_openId = window.localStorage.getItem('openId')
+        let ls_openId = window.localStorage.getItem('openid')
         // resource.jsApiConfig().then(res => {
         //   console.log(res)
         // })
@@ -31,22 +31,22 @@ export default {
          * 如果是，将得到的code发送给后台换取openId，保存openId到本地，重复以上步骤
          */
 
-        // if (!ls_openId || ls_openId === "undefined") {
-        //     if (!code && this.isWechat()) {
-        //         resource.jsApiConfig().then(res => {
-        //             let redirect_uri = encodeURIComponent(location.href)
-        //             let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
-        //             window.location.href = codeUrl
-        //         })
-        //     } else {
-        //         resource.oath({
-        //             code: code
-        //         }).then(res => {
-        //             let openId = res.body.result.openId
-        //             window.localStorage.setItem('openId', openId)
-        //         })
-        //     }
-        // }
+        if (!ls_openId || ls_openId === "undefined") {
+            if (!code && this.isWechat()) {
+                resource.jsApiConfig().then(res => {
+                    let redirect_uri = encodeURIComponent(location.href)
+                    let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
+                    window.location.href = codeUrl
+                })
+            } else {
+                resource.oath({
+                    code: code
+                }).then(res => {
+                    let openId = res.body.result.openId
+                    window.localStorage.setItem('openid', openId)
+                })
+            }
+        }
     },
     getUrlparams(name) {
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);

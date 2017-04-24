@@ -71,7 +71,7 @@ export default {
     })
   },
   methods: {
-    
+
     showTips() {
       Toast({
         message: this.leaveMessage,
@@ -84,6 +84,13 @@ export default {
         return resource.checkIn({ diaryTime: res.body.result.timestamp, medicineList: _this.medicineList })
       }).then(res => {
         if (res.body.code == 0) {
+
+          resource.getTimestamp().then(res => {
+            var date = new Date(res.body.result.timestamp * 1000)
+            _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
+
+          })
+
           _this.demoEvents.push({
             date: base.formatEventDate(Date.now())
           })
@@ -125,12 +132,13 @@ export default {
           _this.isDetail = true
         }, 350)
 
-        if (res.body.code == 0 && res.body.result.checkInTime) {
-          for (var i = 0; i < _this.checklistOpt.length; i++) {
-            _this.checklistOpt[i]['disabled'] = true
-          }
+        for (var i = 0; i < _this.checklistOpt.length; i++) {
+          _this.checklistOpt[i]['disabled'] = true
+        }
+        if(res.body.result.medicine) {
           _this.medicineList = res.body.result.medicine.split(',')
         }
+        
       })
     },
     changeMonth(month) {
@@ -148,7 +156,7 @@ export default {
       }
     },
     goChat() {
-      this.$router.push({name: 'Chat', query: {id: this.doctorInfo.doctorUserGid}})
+      this.$router.push({ name: 'Chat', query: { id: this.doctorInfo.doctorUserGid } })
     }
   }
 }

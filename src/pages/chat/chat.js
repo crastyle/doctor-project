@@ -13,9 +13,7 @@ export default {
       msgType: true
     }
   },
-  mounted() {
 
-  },
   created() {
     let _this = this
     this.id = this.$route.query.id
@@ -64,7 +62,7 @@ export default {
                 type: 0,
                 headImg: _this.doctorInfo.headImg
               })
-            } else if (list[i]['senderUserId'] === '156e6fe21f5f45dbb1198d1bc3223cd6') {
+            } else if (list[i]['senderUserId'] === localStorage.getItem('userid')) {
               _this.contentList.push({
                 content: list[i].content.content,
                 type: 1,

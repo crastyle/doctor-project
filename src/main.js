@@ -10,7 +10,7 @@ import 'mint-ui/lib/style.css'
 import "./styles/reset-ui.scss"
 import resource from './resource'
 import base from './base'
-import {bus} from './bus'
+import { bus } from './bus'
 import Vuex from 'vuex'
 
 // import "vconsole"
@@ -20,7 +20,6 @@ resource.interceports()
 new Vue({
   el: '#app',
   router,
-  store,
   template: '<App/>',
   components: { App },
   mounted() {
@@ -30,10 +29,15 @@ new Vue({
   },
   created() {
     let _this = this
+    localStorage.removeItem('openId')
+    localStorage.removeItem('u_uid')
+    localStorage.removeItem('u_token')
+    let userid = localStorage.getItem('userid')
+    if (!userid) return false
     resource.rongyunAppKey().then(res => {
       if (res.body.code == 0) {
         base.initIm(res.body.result.appKey)
-        resource.newtoken({ userGid: '156e6fe21f5f45dbb1198d1bc3223cd6' }).then(res => {
+        resource.newtoken({ userGid: userid }).then(res => {
           if (res.body.code == 0) {
             base.watchIM()
             _this.receiveMsg()
