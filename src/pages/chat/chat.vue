@@ -16,7 +16,7 @@
     <div class="chat_zone">
       <div class="chat_footer" @click="changeStatus">
         <!-- 添加on为语音状态 -->
-        <i class="emotion"></i>
+        <i class="emotion" v-bind:class="{'on': !msgType}"></i>
       </div>
       <div class="chat_footer chat_footer_center" v-if="msgType">
         <!-- 输入框状态 -->

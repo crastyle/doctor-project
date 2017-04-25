@@ -8,7 +8,7 @@ export default {
       currentTime: ''
     }
   },
-  mounted() {
+  created() {
     let _this = this
     resource.checkStatus().then(res => {
       if (res.body.result.activeRemindStatus == 1) {

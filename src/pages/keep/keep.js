@@ -49,7 +49,12 @@ export default {
       return resource.diaryInfo({ diaryTime: res.body.result.timestamp })
     }).then(res => {
       // _this.medicineList = res.body.result.medicine.split(',')
-      _this.remindTime = res.body.result.remindHour + ':' + res.body.result.remindMinute
+      let hour = res.body.result.remindHour
+      let minute = res.body.result.remindMinute
+      
+      hour = hour < 10 ? '0' + hour : hour
+      minute = minute < 10 ? '0' + minute : minute
+      _this.remindTime =  hour + ':' + minute
       _this.checkInStatus = res.body.result.checkInStatus
       if (res.body.result.checkInStatus) {
         _this.calendarTransform = true
@@ -157,6 +162,9 @@ export default {
     },
     goChat() {
       this.$router.push({ name: 'Chat', query: { id: this.doctorInfo.doctorUserGid } })
+    },
+    getUnReceiveMsg() {
+      
     }
   }
 }

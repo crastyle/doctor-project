@@ -37,9 +37,7 @@ export default {
           headImg: _this.doctorInfo.headImg
         })
       }
-      console.log(message)
     })
-    console.log(this.$store.message)
   },
   watch: {
     'contentList': function () {

@@ -7,18 +7,6 @@
             <label class="more_label" for="">{{remindWay == 1 ? '电话' : '短信'}}</label>
             <span>已开启</span>
           </div>
-          <div class="more_ft">
-          <mt-radio v-model="remindWay" @change="handleChangeMobile"></mt-radio>
-          </div>
-        </div>
-  
-      </div>
-      <div class="more_cells">
-        <div class="more_cell" v-for="item in medicineList">
-          <div class="more_hd">
-            <label class="more_label" for="">{{item}}</label>
-            <span>服用中</span>
-          </div>
         </div>
       </div>
       <div class="more_cells">
@@ -151,8 +139,6 @@
           bindDoctorStatus: '',
           smsCode: ''
         },
-        medicineList: [],
-        remindWayList: [],
         showMobile: false
   
       }

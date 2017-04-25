@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { Actionsheet, Field, Button, Toast } from 'mint-ui'
 import resource from '../../resource'
 import base from '../../base'
+import { bus } from '../../bus'
 import LoginForm from '../../components/LoginForm'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(Field.name, Field)
@@ -43,35 +44,14 @@ export default {
     LoginForm: LoginForm
   },
   mounted() {
-
-    let ls_openId = window.localStorage.getItem('openid')
-    // let ls_openId = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
-    console.log(ls_openId)
-    let _this = this
-
-    /**
-     * 在登录的时候，先检测是否有opeind已经保存
-     * 如果没有的话，走微信登录的流程
-     * 如果有的话，根据openId来检测该用户是否绑定了手机
-     * 如果已经绑定了手机，跳转至绑定医生的界面
-     * 如果没有绑定手机，则走正常流程
-     */
     if (this.$route.params.imgurl) {
       this.userInfo.headImg = this.$route.params.imgurl
     }
-    if (!ls_openId || ls_openId === "undefined") {
-      base.getopenId()
-    } else {
-      resource.checkBind({ openId: ls_openId }).then(res => {
-        // 已经绑定手机
-        if (res.body.result.bind) {
-          window.localStorage.setItem('userid', res.body.result.u)
-          window.localStorage.setItem('token', res.body.result.t)
-          _this.$router.replace('bindid')
-        }
-      })
-    }
   },
+  created() {
+    this.userInfo.openId = this.$route.query.openId
+  },
+
   methods: {
     showLoginForm: function () {
       this.$router.push({ name: 'Cropper', query: { redirect: 'Login' } })
@@ -156,10 +136,21 @@ export default {
         })
         return false
       }
-      this.userInfo.openId = localStorage.getItem('openid')
       resource.register(this.userInfo).then(res => {
         console.log(res)
         if (res.body.code == 0) {
+          resource.rongyunAppKey().then(res => {
+            if (res.body.code == 0) {
+              base.initIm(res.body.result.appKey)
+              resource.newtoken({ userGid: userid }).then(res => {
+                if (res.body.code == 0) {
+                  base.watchIM()
+                  _this.receiveMsg()
+                  base.connectIM(res.body.result.token)
+                }
+              })
+            }
+          })
           Toast({
             message: '注册成功',
             duration: 2000,
@@ -171,6 +162,38 @@ export default {
 
             _this.$router.replace('bindid')
           }, 2000)
+        }
+      })
+    },
+    receiveMsg() {
+
+      let _this = this
+      // 消息监听器
+      RongIMClient.setOnReceiveMessageListener({
+        // 接收到的消息
+        onReceived: function (message) {
+          // 判断消息类型
+          bus.$emit('receiveMsg', message)
+          switch (message.messageType) {
+            case RongIMClient.MessageType.TextMessage:
+              // 发送的消息内容将会被打印
+              console.log(message.content.content);
+              break;
+            case RongIMClient.MessageType.VoiceMessage:
+              // 对声音进行预加载                
+              // message.content.content 格式为 AMR 格式的 base64 码
+              RongIMLib.RongIMVoice.preLoaded(message.content.content);
+              break;
+            case RongIMClient.MessageType.ImageMessage:
+              // do something...
+              break;
+            case RongIMClient.MessageType.UnknownMessage:
+              // do something...
+              break;
+            default:
+            // 自定义消息
+            // do something...
+          }
         }
       })
     }

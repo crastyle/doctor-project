@@ -42,12 +42,6 @@
                     <mt-checklist :value="defaultChecklist" v-model="medicineList" :options="checklistOpt"></mt-checklist>
                 </div>
             </div>
-    
-            <!-- 
-                        <ul class="medicine-list">
-                            <li v-for="item in medicineList">{{item}}</li>
-                        </ul>
-                        -->
             <div class="section-button" v-if="!isDetail">
                 <mt-button type="primary" size="large" @click="checkIn">吃完药请点这里</mt-button>
             </div>
