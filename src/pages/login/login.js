@@ -49,7 +49,27 @@ export default {
     }
   },
   created() {
-    this.userInfo.openId = this.$route.query.openId
+
+    let code = base.getUrlparams('code')
+    let _this = this
+    if (!code) {
+      resource.jsApiConfig().then(res => {
+        let redirect_uri = encodeURIComponent(location.href)
+        let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
+        window.location.href = codeUrl
+      })
+    } else {
+      resource.oath({ code: code }).then(res => {
+        this.userInfo.openId = res.body.result.openId
+        return resource.checkBind({ openId: res.body.result.openId })
+      }).then(res => {
+        if (res.body.result.bind) {
+          localStorage.setItem('userid', res.body.result.u)
+          localStorage.setItem('token', res.body.result.t)
+          _this.$router.replace('bindid')
+        }
+      })
+    }
   },
 
   methods: {
@@ -137,63 +157,32 @@ export default {
         return false
       }
       resource.register(this.userInfo).then(res => {
-        console.log(res)
         if (res.body.code == 0) {
+          Toast({
+            message: '注册成功',
+            duration: 2000,
+            position: 'middle'
+          })
+          let token = res.body.result.t
+          let userid = res.body.result.u
+          window.localStorage.setItem('userid', userid)
+          window.localStorage.setItem('token', token)
           resource.rongyunAppKey().then(res => {
             if (res.body.code == 0) {
               base.initIm(res.body.result.appKey)
               resource.newtoken({ userGid: userid }).then(res => {
                 if (res.body.code == 0) {
                   base.watchIM()
-                  _this.receiveMsg()
-                  base.connectIM(res.body.result.token)
+                  base.receiveMsg()
+                  base.connectIM(token)
                 }
               })
             }
           })
-          Toast({
-            message: '注册成功',
-            duration: 2000,
-            position: 'middle'
-          })
-          window.localStorage.setItem('userid', res.body.result.u)
-          window.localStorage.setItem('token', res.body.result.t)
           setTimeout(() => {
 
             _this.$router.replace('bindid')
           }, 2000)
-        }
-      })
-    },
-    receiveMsg() {
-
-      let _this = this
-      // 消息监听器
-      RongIMClient.setOnReceiveMessageListener({
-        // 接收到的消息
-        onReceived: function (message) {
-          // 判断消息类型
-          bus.$emit('receiveMsg', message)
-          switch (message.messageType) {
-            case RongIMClient.MessageType.TextMessage:
-              // 发送的消息内容将会被打印
-              console.log(message.content.content);
-              break;
-            case RongIMClient.MessageType.VoiceMessage:
-              // 对声音进行预加载                
-              // message.content.content 格式为 AMR 格式的 base64 码
-              RongIMLib.RongIMVoice.preLoaded(message.content.content);
-              break;
-            case RongIMClient.MessageType.ImageMessage:
-              // do something...
-              break;
-            case RongIMClient.MessageType.UnknownMessage:
-              // do something...
-              break;
-            default:
-            // 自定义消息
-            // do something...
-          }
         }
       })
     }

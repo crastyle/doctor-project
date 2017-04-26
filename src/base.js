@@ -150,4 +150,60 @@ export default {
             }
         });
     },
+    receiveMsg() {
+        RongIMClient.setOnReceiveMessageListener({
+            // 接收到的消息
+            onReceived: function (message) {
+                bus.$emit('receiveMsg', message)
+                // 判断消息类型
+                switch (message.messageType) {
+                    case RongIMClient.MessageType.TextMessage:
+                        // 发送的消息内容将会被打印
+                        console.log(message.content.content);
+                        break;
+                    case RongIMClient.MessageType.VoiceMessage:
+                        // 对声音进行预加载                
+                        // message.content.content 格式为 AMR 格式的 base64 码
+                        RongIMLib.RongIMVoice.preLoaded(message.content.content);
+                        break;
+                    case RongIMClient.MessageType.ImageMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.DiscussionNotificationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.LocationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.RichContentMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.DiscussionNotificationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.InformationNotificationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.ContactNotificationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.ProfileNotificationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.CommandNotificationMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.CommandMessage:
+                        // do something...
+                        break;
+                    case RongIMClient.MessageType.UnknownMessage:
+                        // do something...
+                        break;
+                    default:
+                    // 自定义消息
+                    // do something...
+                }
+            }
+        });
+    }
 }
