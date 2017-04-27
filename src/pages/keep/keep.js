@@ -89,13 +89,10 @@ export default {
         return resource.checkIn({ diaryTime: res.body.result.timestamp, medicineList: _this.medicineList })
       }).then(res => {
         if (res.body.code == 0) {
-
           resource.getTimestamp().then(res => {
             var date = new Date(res.body.result.timestamp * 1000)
             _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
-
           })
-
           _this.demoEvents.push({
             date: base.formatEventDate(Date.now())
           })
@@ -115,6 +112,7 @@ export default {
         if (res.body.code == 0) {
           let list = res.body.result
           for (let i = 0; i < list.length; i++) {
+            if (list[i]['checkInStatus'] == 1)
             _this.demoEvents.push({
               date: base.formatEventDate(list[i]['checkInTime'] * 1000),
               title: 'xxx'

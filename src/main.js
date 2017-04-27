@@ -25,7 +25,7 @@ new Vue({
   created() {
     let _this = this
     let route = this.$route.name
-    if (route !== 'Login') {
+    if (route !== 'Login' && route !== 'Cropper') {
       // 如果是在注册页面，让他授权登录
       resource.userInfo().then(res => {
         if (res.body.code == 0) {
@@ -44,8 +44,9 @@ new Vue({
                   if (res.body.code == 0) {
                     base.watchIM()
                     base.receiveMsg()
-                    base.connectIM(res.body.result.token)
-                    bus.$emit('imLoad')
+                    base.connectIM(res.body.result.token, function() {
+                      bus.$emit('imLoad')
+                    })
                   }
                 })
               }
@@ -60,7 +61,6 @@ new Vue({
             } else if (res.body.result.bindDoctorStatus == 0) {
               _this.$router.replace('bindid')
             } 
-
           })
         } else {
           _this.$router.replace('login')

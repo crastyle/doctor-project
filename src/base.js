@@ -1,4 +1,5 @@
 import resource from './resource'
+import {bus} from './bus'
 export default {
     validate: {
         isTelephone(val) {
@@ -119,10 +120,11 @@ export default {
             }
         });
     },
-    connectIM(token) {
+    connectIM(token, success) {
         RongIMClient.connect(token, {
             onSuccess: function (userId) {
                 console.log("Login successfully." + userId);
+                success()
             },
             onTokenIncorrect: function () {
                 console.log('token无效');

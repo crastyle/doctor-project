@@ -1,6 +1,6 @@
 <template>
   <div class="chatPage">
-    <header>张医生</header>
+    <mt-header :title="doctorInfo.name"></mt-header>
     <div class="chat_body clearfix" id="content">
       <!-- 左边 文字 -->
       <!-- 左边 链接加类left_link -->

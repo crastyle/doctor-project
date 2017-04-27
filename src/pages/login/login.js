@@ -51,30 +51,47 @@ export default {
   created() {
 
     let code = base.getUrlparams('code')
+    let openId = this.$route.query.openId
     let _this = this
-    if (!code) {
+
+    if (!code && !openId) {
       resource.jsApiConfig().then(res => {
         let redirect_uri = encodeURIComponent(location.href)
         let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
         window.location.href = codeUrl
       })
-    } else {
-      resource.oath({ code: code }).then(res => {
-        this.userInfo.openId = res.body.result.openId
-        return resource.checkBind({ openId: res.body.result.openId })
-      }).then(res => {
-        if (res.body.result.bind) {
-          localStorage.setItem('userid', res.body.result.u)
-          localStorage.setItem('token', res.body.result.t)
-          _this.$router.replace('bindid')
-        }
-      })
+    }
+    if (code) {
+      if (openId) {
+        _this.userInfo.openId = openId
+      } else {
+        resource.oath({ code: code }).then(res => {
+          this.userInfo.openId = res.body.result.openId
+          return resource.checkBind({ openId: res.body.result.openId })
+        }).then(res => {
+          if (res.body.result.bind) {
+            //检测用户状态 绑定医生？激活月视图？
+            localStorage.setItem('userid', res.body.result.u)
+            localStorage.setItem('token', res.body.result.t)
+            resource.checkStatus().then(res => {
+              if (res.body.result.activeRemindStatus == 1) {
+                _this.$router.replace('keep')
+              } else if (res.body.result.activeRemindStatus == 0) {
+                _this.$router.replace('activePlan')
+              } else if (res.body.result.bindDoctorStatus == 0) {
+                _this.$router.replace('bindid')
+              }
+            })
+
+          }
+        })
+      }
     }
   },
 
   methods: {
     showLoginForm: function () {
-      this.$router.push({ name: 'Cropper', query: { redirect: 'Login' } })
+      this.$router.push({ name: 'Cropper', query: { redirect: 'Login', openId: this.userInfo.openId } })
     },
     sex: function () {
       this.sheetVisible = true
