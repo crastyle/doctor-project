@@ -2,23 +2,10 @@
   <div class="morePage">
     <div class="more_body">
       <div class="more_cells">
-        <div class="more_cell" v-for="item in remindWayList">
+        <div class="more_cell">
           <div class="more_hd">
-            <label class="more_label" for="">{{item == 1 ? '电话' : '短信'}}</label>
+            <label class="more_label" for="">{{remindWay == 1 ? '电话' : '短信'}}</label>
             <span>已开启</span>
-          </div>
-          <div class="more_ft">
-            <mt-switch v-model="mobile_value" @change="handleChangeMobile" v-if="item == 1"></mt-switch>
-            <mt-switch v-model="sms_value" @change="handleChangeSms" v-if="item == 2"></mt-switch>
-          </div>
-        </div>
-  
-      </div>
-      <div class="more_cells">
-        <div class="more_cell" v-for="item in medicineList">
-          <div class="more_hd">
-            <label class="more_label" for="">{{item}}</label>
-            <span>服用中</span>
           </div>
         </div>
       </div>
@@ -152,8 +139,6 @@
           bindDoctorStatus: '',
           smsCode: ''
         },
-        medicineList: [],
-        remindWayList: [],
         showMobile: false
   
       }
@@ -298,8 +283,7 @@
       resource.planInfo().then(res => {
         console.log(res)
         if (res.body.code == 0) {
-          _this.medicineList = res.body.result.medicine.split(',')
-          _this.remindWayList = res.body.result.remindWay.split(',')
+          _this.remindWay = res.body.result.remindWay
         }
       })
   

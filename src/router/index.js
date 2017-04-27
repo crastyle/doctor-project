@@ -9,7 +9,6 @@ import Bindqr from '../pages/bindqr/bindqr.vue'
 import Leave from '../pages/leave/leave.vue'
 import Activeplan from '../pages/activeplan/activeplan.vue'
 import Keep from '../pages/keep/keep.vue'
-import PlanCalendar from '../pages/planCalendar/planCalendar.vue'
 import Chat from '../pages/chat/chat.vue'
 import Cropper from '../pages/cropper/cropper.vue'
 import LoginForm from '../components/LoginForm.vue'
@@ -26,7 +25,6 @@ export default new Router({
     {path: '/leave',name: 'Leave',component: Leave},
     {path: '/activeplan',name: 'Activeplan',component: Activeplan},
     {path: '/keep',name: 'Keep',component: Keep},
-    {path: '/planCalendar',name: 'PlanCalendar',component: PlanCalendar},
     {path: '/chat',name: 'Chat',component: Chat},
     {path: '/loginform',name: 'LoginForm',component: LoginForm},
     {path: '/cropper',name: 'Cropper',component: Cropper}//@register

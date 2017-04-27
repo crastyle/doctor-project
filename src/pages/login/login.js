@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { Actionsheet, Field, Button, Toast } from 'mint-ui'
 import resource from '../../resource'
 import base from '../../base'
+import { bus } from '../../bus'
 import LoginForm from '../../components/LoginForm'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(Field.name, Field)
@@ -43,40 +44,54 @@ export default {
     LoginForm: LoginForm
   },
   mounted() {
-
-    let ls_openId = window.localStorage.getItem('openId')
-    // let ls_openId = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
-    console.log(ls_openId)
-    let _this = this
-
-    /**
-     * 在登录的时候，先检测是否有opeind已经保存
-     * 如果没有的话，走微信登录的流程
-     * 如果有的话，根据openId来检测该用户是否绑定了手机
-     * 如果已经绑定了手机，跳转至绑定医生的界面
-     * 如果没有绑定手机，则走正常流程
-     */
-    if (!ls_openId || ls_openId === "undefined") {
-      base.getopenId()
-    } else {
-      resource.checkBind({ openId: ls_openId }).then(res => {
-        // 已经绑定手机
-        if (res.body.result.bind) {
-          window.localStorage.setItem('u_uid', res.body.result.u)
-          window.localStorage.setItem('u_token', res.body.result.t)
-          _this.$router.replace('bindid')
-        } else { //如果没有绑定手机，则走正常流程
-          if (this.$route.params.imgurl) {
-            this.userInfo.headImg = this.$route.params.imgurl
-          }
-          _this.userInfo.openId = ls_openId
-        }
-      })
+    if (this.$route.params.imgurl) {
+      this.userInfo.headImg = this.$route.params.imgurl
     }
   },
+  created() {
+
+    let code = base.getUrlparams('code')
+    let openId = this.$route.query.openId
+    let _this = this
+
+    if (!code && !openId) {
+      resource.jsApiConfig().then(res => {
+        let redirect_uri = encodeURIComponent(location.href)
+        let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
+        window.location.href = codeUrl
+      })
+    }
+    if (code) {
+      if (openId) {
+        _this.userInfo.openId = openId
+      } else {
+        resource.oath({ code: code }).then(res => {
+          this.userInfo.openId = res.body.result.openId
+          return resource.checkBind({ openId: res.body.result.openId })
+        }).then(res => {
+          if (res.body.result.bind) {
+            //检测用户状态 绑定医生？激活月视图？
+            localStorage.setItem('userid', res.body.result.u)
+            localStorage.setItem('token', res.body.result.t)
+            resource.checkStatus().then(res => {
+              if (res.body.result.activeRemindStatus == 1) {
+                _this.$router.replace('keep')
+              } else if (res.body.result.activeRemindStatus == 0) {
+                _this.$router.replace('activePlan')
+              } else if (res.body.result.bindDoctorStatus == 0) {
+                _this.$router.replace('bindid')
+              }
+            })
+
+          }
+        })
+      }
+    }
+  },
+
   methods: {
     showLoginForm: function () {
-      this.$router.push({ name: 'Cropper', query: { redirect: 'Login' } })
+      this.$router.push({ name: 'Cropper', query: { redirect: 'Login', openId: this.userInfo.openId } })
     },
     sex: function () {
       this.sheetVisible = true
@@ -159,15 +174,28 @@ export default {
         return false
       }
       resource.register(this.userInfo).then(res => {
-        console.log(res)
         if (res.body.code == 0) {
           Toast({
             message: '注册成功',
             duration: 2000,
             position: 'middle'
           })
-          window.localStorage.setItem('u_uid', res.body.result.u)
-          window.localStorage.setItem('u_token', res.body.result.t)
+          let token = res.body.result.t
+          let userid = res.body.result.u
+          window.localStorage.setItem('userid', userid)
+          window.localStorage.setItem('token', token)
+          resource.rongyunAppKey().then(res => {
+            if (res.body.code == 0) {
+              base.initIm(res.body.result.appKey)
+              resource.newtoken({ userGid: userid }).then(res => {
+                if (res.body.code == 0) {
+                  base.watchIM()
+                  base.receiveMsg()
+                  base.connectIM(token)
+                }
+              })
+            }
+          })
           setTimeout(() => {
 
             _this.$router.replace('bindid')

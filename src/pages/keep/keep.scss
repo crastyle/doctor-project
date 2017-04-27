@@ -42,7 +42,7 @@
         padding: 0 1.77rem;
         position: absolute;
         left: 0;
-        bottom: .6rem;
+        bottom: .2rem;
         width: 100%;
         box-sizing: border-box;
         .mint-button {
@@ -95,7 +95,6 @@
             border-radius: 8px;
             box-shadow: 0 0 14px 0px rgba(0, 0, 0, 0.2);
             line-height: normal;
-            
             @include vertical();
             &:after {
                 content: '';
@@ -141,7 +140,6 @@
             letter-spacing: 0px;
             margin: .18rem 0;
             border-bottom: 1px dashed #e2e2e2;
-
             .icon-love {
                 background: url(../../assets/image/icon-heart.png) no-repeat;
                 width: .26rem;
@@ -151,6 +149,9 @@
             }
         }
         .medicine-list {
+            .label {
+                font-size: .4rem;
+            }
             li {
                 font-size: 23px;
                 line-height: 38px;
@@ -162,6 +163,7 @@
             transform: perspective(600px) rotateY(90deg)
         }
     }
+
     .calendar-card {
         background: #fff;
         margin-top: 30px;
@@ -171,5 +173,59 @@
             transform: perspective(600px) rotateY(-90deg)
         }
     }
-    
+    .more_cells {
+        margin-bottom: .2rem;
+        background: #fff;
+        padding: 0 .2rem;
+        &:first-child {
+            margin-top: .2rem;
+        }
+        .more_cell {
+            padding: .2rem 0;
+            position: relative;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            border-bottom: 1px solid #D9D9D9;
+            .more_hd {
+                -webkit-box-flex: 1;
+                -webkit-flex: 1;
+                flex: 1;
+                text-align: left;
+                word-wrap: break-word;
+                word-break: break-all;
+                color: #333;
+                font-size: .4rem;
+               
+            }
+            .more_ft {
+                text-align: right;
+                color: #999;
+                font-size: .32rem;
+                &.arrow {
+                    padding-right: .36rem;
+                }
+              
+                &.arrow:after {
+                    border: 2px solid #c8c8cd;
+                    border-bottom-width: 0;
+                    border-left-width: 0;
+                    content: " ";
+                    top: 50%;
+                    right: 0;
+                    position: absolute;
+                    width: .26rem;
+                    height: .26rem;
+                    -webkit-transform: translateY(-50%) rotate(45deg);
+                    transform: translateY(-50%) rotate(45deg);
+                }
+            }
+        }
+        .more_cell:last-child {
+            border-bottom: none;
+        }
+    }
 }

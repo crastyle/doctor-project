@@ -9,11 +9,10 @@ export default {
       doctorID: ''
     }
   },
-  mounted() {
+  created() {
     let _this = this
     // 检测用户的绑定状态，如果已经绑定了医生的话，直接跳转到激活页面
     resource.checkStatus().then(res => {
-      console.log(res)
       if (res.body.result.bindDoctorStatus == 1) {
         _this.$router.replace('leave')
       } else {

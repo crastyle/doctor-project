@@ -42,58 +42,59 @@ export default {
 
       forkWeek: false,
       forkWeekValue: '请选择周期',
-      weeks: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+      // weeks: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
       formData: {
         leaveTime: new Date(this.leavePickerValue).getTime(),
-        remindWeek: '',
+        // remindWeek: '',
         remindHour: 0,
         remindMinute: 0,
-        remindWayList: [],
-        medicineList: []
+        // remindWayList: [],
+        remindWay: 2,
+        // medicineList: []
       },
-      weeksOptions: [{
-        name: '星期一',
-        method: () => {
-          this.forkWeekValue = '星期一'
-          this.formData.remindWeek = 1
-        }
-      }, {
-        name: '星期二',
-        method: () => {
-          this.forkWeekValue = '星期二'
-          this.formData.remindWeek = 2
-        }
-      }, {
-        name: '星期三',
-        method: () => {
-          this.forkWeekValue = '星期三'
-          this.formData.remindWeek = 3
-        }
-      }, {
-        name: '星期四',
-        method: () => {
-          this.forkWeekValue = '星期四'
-          this.formData.remindWeek = 4
-        }
-      }, {
-        name: '星期五',
-        method: () => {
-          this.forkWeekValue = '星期五'
-          this.formData.remindWeek = 5
-        }
-      }, {
-        name: '星期六',
-        method: () => {
-          this.forkWeekValue = '星期六'
-          this.formData.remindWeek = 6
-        }
-      }, {
-        name: '星期日',
-        method: () => {
-          this.forkWeekValue = '星期日'
-          this.formData.remindWeek = 7
-        }
-      }]
+      // weeksOptions: [{
+      //   name: '星期一',
+      //   method: () => {
+      //     this.forkWeekValue = '星期一'
+      //     this.formData.remindWeek = 1
+      //   }
+      // }, {
+      //   name: '星期二',
+      //   method: () => {
+      //     this.forkWeekValue = '星期二'
+      //     this.formData.remindWeek = 2
+      //   }
+      // }, {
+      //   name: '星期三',
+      //   method: () => {
+      //     this.forkWeekValue = '星期三'
+      //     this.formData.remindWeek = 3
+      //   }
+      // }, {
+      //   name: '星期四',
+      //   method: () => {
+      //     this.forkWeekValue = '星期四'
+      //     this.formData.remindWeek = 4
+      //   }
+      // }, {
+      //   name: '星期五',
+      //   method: () => {
+      //     this.forkWeekValue = '星期五'
+      //     this.formData.remindWeek = 5
+      //   }
+      // }, {
+      //   name: '星期六',
+      //   method: () => {
+      //     this.forkWeekValue = '星期六'
+      //     this.formData.remindWeek = 6
+      //   }
+      // }, {
+      //   name: '星期日',
+      //   method: () => {
+      //     this.forkWeekValue = '星期日'
+      //     this.formData.remindWeek = 7
+      //   }
+      // }]
     }
   },
   mounted: function () {
@@ -104,36 +105,32 @@ export default {
       console.log(new Date(this.leavePickerValue))
       this.$refs.picker.open()
     },
-
     setForkTimePicker: function () {
       this.$refs.forkPicker.open()
     },
     setForkWeek: function () {
       this.forkWeek = true
     },
-    onWeeksChange: function (picker, value) {
-
-    },
     activePlan() {
       this.formData.leaveTime = parseInt((new Date(this.leavePickerValue).getTime()) / 1000)
       this.formData.remindHour = this.forkTimePickerDate.split(':')[0]
       this.formData.remindMinute = this.forkTimePickerDate.split(':')[1]
-      if (!this.formData.remindWeek) {
-        Toast({
-          message: '请选择提醒周期',
-          duration: 2000
-        })
-        return
-      }
+      // if (!this.formData.remindWeek) {
+      //   Toast({
+      //     message: '请选择提醒周期',
+      //     duration: 2000
+      //   })
+      //   return
+      // }
   
-      if (!this.formData['medicineList'] || this.formData['medicineList'].length == 0) {
-        Toast({
-          message: '请选择所用药物',
-          duration: 2000
-        })
-        return
-      }
-      if (!this.formData['remindWayList'] || this.formData['remindWayList'].length == 0) {
+      // if (!this.formData['medicineList'] || this.formData['medicineList'].length == 0) {
+      //   Toast({
+      //     message: '请选择所用药物',
+      //     duration: 2000
+      //   })
+      //   return
+      // }
+      if (!this.formData['remindWay']) {
         Toast({
           message: '请选择提醒方式',
           duration: 2000
@@ -142,7 +139,6 @@ export default {
       }
       let _this = this
       resource.activePlan(this.formData).then(res => {
-        
         if (res.body.code == 0) {
           Toast({
             message: '您已经激活成功',

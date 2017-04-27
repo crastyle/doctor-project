@@ -22,6 +22,7 @@
                 <mt-datetime-picker ref="forkPicker" v-model="forkTimePickerDate" type="time"></mt-datetime-picker>
             </div>
         </div>
+        <!--
         <div class="item">
             <div class="item-cell arrow-right">
                 <div class="label">
@@ -31,16 +32,18 @@
                 <mt-actionsheet :actions="weeksOptions" v-model="forkWeek" cancelText=""></mt-actionsheet>
             </div>
         </div>
+        -->
         <div class="item">
             <div class="item-cell">
                 <div class="label">
                     提醒方式
                 </div>
                 <div class="values single-radio">
-                    <mt-checklist :value="wayValue" v-model="formData.remindWayList" :options="options"></mt-checklist>
+                    <mt-radio :value="wayValue" v-model="formData.remindWay" :options="options"></mt-radio>
                 </div>
             </div>
         </div>
+        <!--
         <div class="item">
             <div class="item-cell">
                 <div class="label">
@@ -51,6 +54,7 @@
                 </div>
             </div>
         </div>
+        -->
         <div class="section-button">
             <mt-button type="primary" @click="activePlan" size="large">激活出院日历</mt-button>
         </div>

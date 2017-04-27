@@ -32,10 +32,9 @@ export default {
             if (res.body.code == 0) {
               _this.$router.replace(_this.redirect)
             }
-            
           })
         } else {
-          _this.$router.push({ name: _this.redirect, params: { imgurl: imgurl } })
+          _this.$router.push({ name: _this.redirect, params: { imgurl: imgurl },query: {openId: this.$route.query.openId} })
         }
       })
     },

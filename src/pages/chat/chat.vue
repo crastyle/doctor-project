@@ -1,104 +1,35 @@
 <template>
   <div class="chatPage">
-    <header>张医生</header>
-    <div class="chat_body clearfix">
+    <mt-header :title="doctorInfo.name"></mt-header>
+    <div class="chat_body clearfix" id="content">
       <!-- 左边 文字 -->
-      <div class="left_flex">
-        <div class="left_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-        <div class="left_txt">
-          啦啦啦啦啦啦啦啦
-        </div>
-      </div>
-  
-      <!-- 左边 图片加类chat_image -->
-      <div class="left_flex">
-        <div class="left_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-        <div class="left_txt chat_image">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-      </div>
-  
-      <!-- 左边 语音加类left_voice -->
-      <div class="left_flex">
-        <div class="left_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-        <div class="left_txt left_voice">
-          <span>8"</span>
-        </div>
-      </div>
-  
       <!-- 左边 链接加类left_link -->
-      <div class="left_flex">
-        <div class="left_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
+      <div  v-bind:class="{'left_flex': chat.type==0, 'right_flex': chat.type==1}" v-for="chat in contentList"> 
+        <div class="left_header" v-bind:class="{'left_header': chat.type==0, 'right_header': chat.type==1}">
+          <img :src="chat.headImg" alt="">
         </div>
-        <router-link class="left_txt left_link" tag="div" to="https://mail.qq.com">
-          这是链接<a>https://mail.qq.com</a>
-        </router-link>
-      </div>
-  
-      <span class="time">2017年3月19号 20:03</span>
-  
-      <!-- 右边 -->
-      <div class="right_flex">
-        <div class="right_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
+         <div class="left_txt" v-bind:class="{'left_header': chat.type==0, 'right_txt': chat.type==1}">
+          {{chat.content}}
         </div>
-        <div class="right_txt">
-          啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
-        </div>
-      </div>
-  
-      <!-- 右边 图片加类chat_image -->
-      <div class="right_flex">
-        <div class="right_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-        <div class="right_txt chat_image">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-      </div>
-  
-      <!-- 右边 语音加类right_voice -->
-      <div class="right_flex">
-        <div class="right_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-        <div class="right_txt right_voice">
-          <span>8"</span>
-        </div>
-      </div>
-  
-      <!-- 左边 链接加类right_link -->
-      <div class="right_flex">
-        <div class="right_header">
-          <img src="../../assets/image/demo-avatar.png" alt="">
-        </div>
-        <router-link class="right_txt right_link" tag="div" to="https://mail.qq.com">
-          <a>https://mail.qq.com</a>
-        </router-link>
       </div>
     </div>
-  
     <div class="chat_zone">
-      <div class="chat_footer">
+      <div class="chat_footer" @click="changeStatus">
         <!-- 添加on为语音状态 -->
-        <i class="emotion"></i>
+        <i class="emotion" v-bind:class="{'on': !msgType}"></i>
       </div>
-      <div class="chat_footer chat_footer_center">
+      <div class="chat_footer chat_footer_center" v-if="msgType">
         <!-- 输入框状态 -->
-        <textarea name="" id=""></textarea>
+        <textarea name="" id="" v-model="chatContent"></textarea>
+        <!-- 语音状态-->
+      </div>
+      <div class="chat_footer chat_footer_center voice" v-if="!msgType">
+        <!-- 输入框状态 -->
         <!-- 语音状态-->
         <input type="button" value="按住说话" name="press">
       </div>
-      <div class="chat_footer">
-        <input type="file" name="file">
-        <input type="button" name="button" class="chat_image">
+      <div class="chat_footer" @click="sendMsg" v-if="msgType">
+        发送
       </div>
     </div>
   </div>

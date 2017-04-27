@@ -4,7 +4,7 @@
             请输入您的医生识别码
         </div>
         <div class="label-input">
-            <input placeholder="输入七位有效数字" v-model="doctorID" type="tel">
+            <input placeholder="请输入数字识别码" v-model="doctorID" type="tel">
         </div>
         <div class="bd-tips">
             或者点击这里<a href="javascript:;" @click="scanQR">扫描医生二维码</a>
