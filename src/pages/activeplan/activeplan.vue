@@ -22,17 +22,7 @@
                 <mt-datetime-picker ref="forkPicker" v-model="forkTimePickerDate" type="time"></mt-datetime-picker>
             </div>
         </div>
-        <!--
-        <div class="item">
-            <div class="item-cell arrow-right">
-                <div class="label">
-                    提醒周期
-                </div>
-                <div class="values" @click="setForkWeek">{{forkWeekValue}}</div>
-                <mt-actionsheet :actions="weeksOptions" v-model="forkWeek" cancelText=""></mt-actionsheet>
-            </div>
-        </div>
-        -->
+   
         <div class="item">
             <div class="item-cell">
                 <div class="label">

@@ -71,8 +71,26 @@ export default {
         }).then(res => {
           if (res.body.result.bind) {
             //检测用户状态 绑定医生？激活月视图？
+            let userid = res.body.result.u
             localStorage.setItem('userid', res.body.result.u)
             localStorage.setItem('token', res.body.result.t)
+
+            resource.rongyunAppKey().then(res => {
+              if (res.body.code == 0) {
+                base.initIm(res.body.result.appKey)
+                resource.newtoken({ userGid: userid }).then(res => {
+                  if (res.body.code == 0) {
+                    base.watchIM()
+                    base.receiveMsg()
+                    base.connectIM(res.body.result.token, function () {
+                      window.onLoadingIMStatus = true
+                      bus.$emit('imLoad', res.body.result.token)
+                    })
+                  }
+                })
+              }
+            })
+
             resource.checkStatus().then(res => {
               if (res.body.result.activeRemindStatus == 1) {
                 _this.$router.replace('keep')
@@ -152,13 +170,7 @@ export default {
         })
         return false
       }
-      if (!this.userInfo.sex) {
-        Toast({
-          message: '请选择您的性别',
-          duration: 2000
-        })
-        return false
-      }
+
       if (!base.validate.isTelephone(mobile)) {
         Toast({
           message: '请输入正确的手机号码',
@@ -191,7 +203,10 @@ export default {
                 if (res.body.code == 0) {
                   base.watchIM()
                   base.receiveMsg()
-                  base.connectIM(token)
+                  base.connectIM(token, function(){
+                    window.onLoadingIMStatus = true
+                    bus.$emit('imLoad', res.body.result.token)
+                  })
                 }
               })
             }

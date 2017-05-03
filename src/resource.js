@@ -177,7 +177,9 @@ export default {
     updateUserInfo(params) {
         return this.resource('patient/user/updateUserSelective', params)
     },
-
+    updatePlan(params) {
+        return this.resource('patient/plan/updatePlanSelective', params)
+    },
     bindDoctorInfo(params) {
         return this.resource('patient/myDoctor/bindDoctorInfo', params)
     },

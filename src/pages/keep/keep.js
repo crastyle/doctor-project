@@ -4,6 +4,7 @@ import vueEventCalendar from '../../components/calendar/'
 import resource from '../../resource'
 import base from '../../base'
 import { Toast } from 'mint-ui'
+import { bus } from '../../bus'
 Vue.use(vueEventCalendar, { locale: 'zh', color: '#1D8CDC' })
 export default {
   name: 'Keep',
@@ -34,8 +35,28 @@ export default {
       medicineList: [],
       currentDayMedicineList: [],
       unbind: false,
-      isDetail: false
+      isDetail: false,
+      msgCount: 0,
+      chatToken: ''
     }
+  },
+  created() {
+    // 如果有新消息进来
+    let _this = this
+    bus.$on('receiveMsg', function () {
+      _this.msgCount++
+    })
+    if (window.userChatToken) {
+      this.chatToken = window.userChatToken
+      _this.getUnReceiveMsg()
+    }
+    bus.$on('imLoad', function (token) {
+      console.log(token, 'keep')
+      window.userChatToken = token
+      _this.chatToken = token
+      _this.getUnReceiveMsg()
+    })
+
   },
   mounted() {
     let _this = this
@@ -51,10 +72,10 @@ export default {
       // _this.medicineList = res.body.result.medicine.split(',')
       let hour = res.body.result.remindHour
       let minute = res.body.result.remindMinute
-      
+
       hour = hour < 10 ? '0' + hour : hour
       minute = minute < 10 ? '0' + minute : minute
-      _this.remindTime =  hour + ':' + minute
+      _this.remindTime = hour + ':' + minute
       _this.checkInStatus = res.body.result.checkInStatus
       if (res.body.result.checkInStatus) {
         _this.calendarTransform = true
@@ -113,10 +134,10 @@ export default {
           let list = res.body.result
           for (let i = 0; i < list.length; i++) {
             if (list[i]['checkInStatus'] == 1)
-            _this.demoEvents.push({
-              date: base.formatEventDate(list[i]['checkInTime'] * 1000),
-              title: 'xxx'
-            })
+              _this.demoEvents.push({
+                date: base.formatEventDate(list[i]['checkInTime'] * 1000),
+                title: 'xxx'
+              })
           }
         }
       })
@@ -138,10 +159,10 @@ export default {
         for (var i = 0; i < _this.checklistOpt.length; i++) {
           _this.checklistOpt[i]['disabled'] = true
         }
-        if(res.body.result.medicine) {
+        if (res.body.result.medicine) {
           _this.medicineList = res.body.result.medicine.split(',')
         }
-        
+
       })
     },
     changeMonth(month) {
@@ -162,7 +183,18 @@ export default {
       this.$router.push({ name: 'Chat', query: { id: this.doctorInfo.doctorUserGid } })
     },
     getUnReceiveMsg() {
-      
+      RongIMClient.getInstance().hasRemoteUnreadMessages(this.chatToken, {
+        onSuccess: function (hasMessage) {
+          console.log(hasMessage)
+          if (hasMessage) {
+            // 有未读的消息
+          } else {
+            // 没有未读的消息
+          }
+        }, onError: function (err) {
+          // 错误处理...
+        }
+      });
     }
   }
 }

@@ -161,7 +161,7 @@ export default {
                 switch (message.messageType) {
                     case RongIMClient.MessageType.TextMessage:
                         // 发送的消息内容将会被打印
-                        console.log(message.content.content);
+                        console.log(message);
                         break;
                     case RongIMClient.MessageType.VoiceMessage:
                         // 对声音进行预加载                

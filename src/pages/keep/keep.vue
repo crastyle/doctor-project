@@ -20,7 +20,7 @@
             <div class="doctor-avatar" @click="goChat">
                 <div class="img-box">
                     <img :src="doctorInfo.headImg" alt="">
-                    <div class="co">1</div>
+                    <div class="co" v-if="msgCount">{{msgCount > 99 ? '...' : msgCount}}</div>
                 </div>
                 <div class="name">{{doctorInfo.doctorName}}</div>
             </div>

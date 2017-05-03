@@ -1,6 +1,7 @@
 import resource from '../../resource'
 import base from '../../base'
 import { bus } from '../../bus'
+import { Toast } from 'mint-ui'
 export default {
   name: 'Chat',
   data() {
@@ -17,12 +18,26 @@ export default {
   created() {
     let _this = this
     this.id = this.$route.query.id
-    resource.bindDoctorInfo().then(res => {
-      if (res.body.code == 0 && res.body.result.bindDoctorStatus == 1) {
-        _this.doctorInfo = res.body.result
-        _this.getHistoryRecord()
-      }
+    this.toast = Toast({
+      message: '加载中...'
     })
+    bus.$on('imLoad', function () {
+      resource.bindDoctorInfo().then(res => {
+        if (res.body.code == 0 && res.body.result.bindDoctorStatus == 1) {
+          _this.doctorInfo = res.body.result
+          _this.getHistoryRecord()
+        }
+      })
+    })
+
+    if (window.onLoadingIMStatus) {
+      resource.bindDoctorInfo().then(res => {
+        if (res.body.code == 0 && res.body.result.bindDoctorStatus == 1) {
+          _this.doctorInfo = res.body.result
+          _this.getHistoryRecord()
+        }
+      })
+    }
     resource.userInfo().then(res => {
       if (res.body.code == 0) {
         _this.userInfo = res.body.result
@@ -41,7 +56,7 @@ export default {
   },
   watch: {
     'contentList': function () {
-      setTimeout(function(){
+      setTimeout(function () {
         document.getElementById('content').scrollTop = document.getElementById('content').scrollHeight;
       }, 100)
     }
@@ -51,8 +66,10 @@ export default {
     getHistoryRecord() {
       let _this = this
       //getHistoryMessages
-      RongIMClient.getInstance().getHistoryMessages(RongIMLib.ConversationType.PRIVATE, this.$route.query.id, null, 20, {
+      RongIMClient.getInstance().getHistoryMessages(RongIMLib.ConversationType.PRIVATE, this.$route.query.id, 0, 20, {
         onSuccess: function (list, hasMsg) {
+          console.log(list)
+          _this.toast.close()
           for (let i = 0; i < list.length; i++) {
             if (list[i]['senderUserId'] === _this.$route.query.id) {
               _this.contentList.push({

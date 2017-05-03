@@ -11,7 +11,6 @@ import "./styles/reset-ui.scss"
 import resource from './resource'
 import base from './base'
 import { bus } from './bus'
-import Vuex from 'vuex'
 
 import "vconsole"
 Vue.config.productionTip = false
@@ -34,38 +33,25 @@ new Vue({
           resource.rongyunAppKey().then(res => {
             if (res.body.code == 0) {
               base.initIm(res.body.result.appKey)
-              if (!rongyunToken) {
-                base.watchIM()
-                base.receiveMsg()
-                base.connectIM(rongyunToken)
-                bus.$emit('imLoad')
-              } else {
-                resource.newtoken({ userGid: userid }).then(res => {
-                  if (res.body.code == 0) {
-                    base.watchIM()
-                    base.receiveMsg()
-                    base.connectIM(res.body.result.token, function() {
-                      bus.$emit('imLoad')
-                    })
-                  }
-                })
-              }
+              resource.newtoken({ userGid: userid }).then(res => {
+                if (res.body.code == 0) {
+                  base.watchIM()
+                  base.receiveMsg()
+                  let token = res.body.result.token
+                  base.connectIM(token, function () {
+                    window.onLoadingIMStatus = true
+                    bus.$emit('imLoad', token)
+                  })
+                }
+              })
             }
           })
-          //检测用户状态 绑定医生？激活月视图？
-          resource.checkStatus().then(res => {
-            if (res.body.result.activeRemindStatus == 1) {
-              _this.$router.replace('keep')
-            } else if (res.body.result.activeRemindStatus == 0) {
-              _this.$router.replace('activePlan')
-            } else if (res.body.result.bindDoctorStatus == 0) {
-              _this.$router.replace('bindid')
-            } 
-          })
+     
         } else {
           _this.$router.replace('login')
         }
       })
     }
+   
   }
 })

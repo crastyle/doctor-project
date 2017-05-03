@@ -100,7 +100,7 @@
 .doctor_dialog {
     .doctor_mask {
         position: fixed;
-        z-index: 1000;
+        z-index: 2;
         top: 0;
         right: 0;
         left: 0;
@@ -113,7 +113,7 @@
     }
     .doctor_message {
         position: fixed;
-        z-index: 5000;
+        z-index: 3;
         width: 80%;
         max-width: 5.9rem;
         top: 50%;
