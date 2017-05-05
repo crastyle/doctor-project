@@ -122,6 +122,7 @@ export default {
         for (let key in params) {
             formData.append(key, params[key])
         }
+        formData.append('bucket', 'patient')
         return this.resource('utility/uploadImageWithCrop', formData)
     },
 

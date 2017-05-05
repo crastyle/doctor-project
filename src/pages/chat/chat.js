@@ -11,7 +11,9 @@ export default {
       userInfo: {},
       chatContent: '',
       contentList: [],
-      msgType: true
+      msgType: true,
+      isPreview: false,
+      previewImage: ''
     }
   },
 
@@ -49,7 +51,8 @@ export default {
         _this.contentList.push({
           content: message.content.content,
           type: 0,
-          headImg: _this.doctorInfo.headImg
+          headImg: _this.doctorInfo.headImg,
+          extra: message.content.extra
         })
       }
     })
@@ -63,6 +66,13 @@ export default {
   },
 
   methods: {
+    closePreview() {
+      this.isPreview = false
+    },
+    showPreview(url) {
+      this.isPreview = true
+      this.previewImage = url
+    },
     getHistoryRecord() {
       let _this = this
       //getHistoryMessages
@@ -75,13 +85,15 @@ export default {
               _this.contentList.push({
                 content: list[i].content.content,
                 type: 0,
-                headImg: _this.doctorInfo.headImg
+                headImg: _this.doctorInfo.headImg,
+                extra: list[i].content.extra
               })
             } else if (list[i]['senderUserId'] === localStorage.getItem('userid')) {
               _this.contentList.push({
                 content: list[i].content.content,
                 type: 1,
-                headImg: _this.userInfo.headImg
+                headImg: _this.userInfo.headImg,
+                extra: list[i].content.extra
               })
             }
           }
@@ -99,10 +111,56 @@ export default {
     changeStatus() {
       this.msgType = !this.msgType
     },
+    sendImage(event) {
+      if (event.target.value) {
+        let _this = this
+        let options = {
+          image: event.target.files[0]
+        }
+        let toast = Toast({
+          message: '图片发送中'
+        })
+         resource.uploadImageWithCrop(options).then(res => {
+          if (res.body.code == 0) {
+            toast.close()
+            _this.chatContent = res.body.result.imageUrl
+            // 定义消息类型,文字消息使用 RongIMLib.TextMessage
+            var msg = new RongIMLib.TextMessage({ content: _this.chatContent, extra: "image"});
+            //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
+            //var msg = RongIMLib.TextMessage.obtain("hello");
+            var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
+            var targetId = this.$route.query.id; // 目标 Id
+            RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
+              // 发送消息成功
+              onSuccess: function (message) {
+                //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
+                _this.contentList.push({
+                  content: _this.chatContent,
+                  headImg: _this.userInfo.headImg,
+                  type: '1',
+                  extra: 'image'
+                })
+                _this.chatContent = ''
+                console.log('消息发送成功')
+              }
+            }
+            );
+          }
+        })
+      }
+    },
     sendMsg() {
       let _this = this
+      if (!this.chatContent) {
+        Toast({
+          message: '说点儿什么吧？',
+          duration: 1500
+        })
+        return false
+      }
+  
       // 定义消息类型,文字消息使用 RongIMLib.TextMessage
-      var msg = new RongIMLib.TextMessage({ content: this.chatContent, extra: "" });
+      var msg = new RongIMLib.TextMessage({ content: this.chatContent, extra: ''});
       //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
       //var msg = RongIMLib.TextMessage.obtain("hello");
       var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
@@ -116,6 +174,7 @@ export default {
             content: _this.chatContent,
             headImg: _this.userInfo.headImg,
             type: '1'
+            
           })
           _this.chatContent = ''
         },

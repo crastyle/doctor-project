@@ -156,12 +156,12 @@ export default {
         RongIMClient.setOnReceiveMessageListener({
             // 接收到的消息
             onReceived: function (message) {
+                console.log(message)
                 bus.$emit('receiveMsg', message)
                 // 判断消息类型
                 switch (message.messageType) {
                     case RongIMClient.MessageType.TextMessage:
                         // 发送的消息内容将会被打印
-                        console.log(message);
                         break;
                     case RongIMClient.MessageType.VoiceMessage:
                         // 对声音进行预加载                

@@ -1,7 +1,26 @@
 .chatPage {
+
     position: relative;
     height: 100%;
     font-size: .4rem;
+    .overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0,0,0,.8);
+        z-index: 100;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+        img {
+            width: auto;
+            height: auto;
+            max-width: 90%;
+        }
+    }
     header {
         height: 0.88rem;
         position: absolute;
@@ -9,7 +28,6 @@
         left: 0;
         right: 0;
         text-align: center;
-        background: #1d1d20;
         color: #fff;
         line-height: 0.88rem;
         z-index: 99;
@@ -34,9 +52,7 @@
             position: relative;
             text-align: center;
             &.chat_footer_center {
-                -webkit-box-flex: 3;
-                -webkit-flex: 3;
-                flex: 3;
+                flex: 4;
                 textarea,
                 input {
                     width: 100%;
@@ -47,10 +63,9 @@
                     -webkit-border-radius: 6px;
                     -moz-border-radius: 6px;
                     border-radius: 6px;
-                    margin: 0.17rem  .2rem .17rem 0;
+                    margin: 0.17rem 0;
                     color: #333;
                     padding: .1rem;
-                    
                 }
                 &.voice {
                     -webkit-box-flex: 4;
@@ -62,15 +77,13 @@
                 width: .64rem;
                 height: .64rem;
                 background: url("../../assets/image/icon_voiceinput.png") no-repeat center center;
-                background-size: auto 0.64rem;
+                background-size: 100%;
                 display: inline-block;
                 vertical-align: middle;
             }
             .on.emotion {
-                width: .64rem;
-                height: .64rem;
                 background: url("../../assets/image/icon_textinput.png") no-repeat center center;
-                background-size: auto 0.64rem;
+                background-size: 100%;
                 display: inline-block;
                 vertical-align: middle;
             }
@@ -84,10 +97,12 @@
                 width: 100%;
             }
             .chat_image {
-                width: 100%;
-                height: 100%;
+                width: .6rem;
+                height: .52rem;
                 background: url("../../assets/image/icon_image.png") no-repeat center center;
-                background-size: auto 0.64rem;
+                background-size: 100%;
+                display: inline-block;
+                vertical-align: middle;
             }
         }
     }
@@ -115,6 +130,12 @@
                     -moz-border-radius: 50%;
                     border-radius: 50%;
                     display: block;
+                }
+                .contentImage {
+                    width: auto;
+                    height: auto;
+                    max-width: 5rem;
+                    border-radius: 0;
                 }
             }
             .left_txt {

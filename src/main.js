@@ -11,10 +11,10 @@ import "./styles/reset-ui.scss"
 import resource from './resource'
 import base from './base'
 import { bus } from './bus'
-
+import VueTouch from 'vue-touch'
 import "vconsole"
 Vue.config.productionTip = false
-
+Vue.use(VueTouch, {name: 'v-touch'})
 resource.interceports()
 new Vue({
   el: '#app',
