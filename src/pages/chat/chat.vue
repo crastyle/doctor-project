@@ -1,7 +1,7 @@
 <template>
   <div class="chatPage">
     <div class="overlay" v-if="isPreview" @click="closePreview">
-      <img :src="previewImage" >
+      <img :src="previewImage">
     </div>
     <mt-header :title="doctorInfo.name"></mt-header>
     <div class="chat_body clearfix" id="content">
@@ -11,9 +11,12 @@
         <div class="left_header" v-bind:class="{'left_header': chat.type==0, 'right_header': chat.type==1}">
           <img :src="chat.headImg" alt="">
         </div>
-        <div class="left_txt" v-bind:class="{'left_header': chat.type==0, 'right_txt': chat.type==1}">
+        <div class="left_txt" v-bind:class="{'left_header': chat.type==0, 'right_txt': chat.type==1}" v-if="chat.extra!='voice'">
           <span v-if="chat.extra !='image'">{{chat.content}}</span>
-          <img v-if="chat.extra=='image'" class="contentImage" :src="chat.content" @click="showPreview(chat.content)">
+          <img v-if="chat.extra=='image'" :src="chat.content" class="contentImage" @click="showPreview(chat.content)">
+        </div>
+        <div class="left_txt" @click="playVoice(chat.content)" v-bind:class="{'left_header left_voice': chat.type==0, 'right_txt right_voice': chat.type==1}" v-if="chat.extra=='voice'">
+          <span>3"</span>
         </div>
       </div>
     </div>
@@ -47,14 +50,16 @@
       <div class="chat_footer chat_footer_center voice">
         <!-- 输入框状态 -->
         <!-- 语音状态-->
-        <input type="button" value="按住说话" name="press">
+        <button @touchstart="startVoice" @touchend="stopVoice" name="press" class="startVoice" v-bind:class="{'stopVoice': isStartVoice}">按住说话</button>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import './chat.scss';
+  @import './chat.scss';
 </style>
 
-<script src="./chat.js"></script>
+<script src="./chat.js">
+  
+</script>

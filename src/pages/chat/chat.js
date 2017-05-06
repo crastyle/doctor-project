@@ -13,7 +13,11 @@ export default {
       contentList: [],
       msgType: true,
       isPreview: false,
-      previewImage: ''
+      previewImage: '',
+      isStartVoice: false,
+      voiceId: '',
+      isPlaying: false,
+      isPlayId: ''
     }
   },
 
@@ -56,6 +60,26 @@ export default {
         })
       }
     })
+    resource.jsApiConfig().then(res => {
+      if (res.body.code == 0) {
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: res.body.result.appId, // 必填，公众号的唯一标识
+          timestamp: res.body.result.timestamp, // 必填，生成签名的时间戳
+          nonceStr: res.body.result.nonceStr, // 必填，生成签名的随机串
+          signature: res.body.result.signature,// 必填，签名，见附录1
+          jsApiList: ['startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function () {
+          wx.onVoiceRecordEnd({
+            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+            complete: function (res) {
+              _this.voiceId = res.localId
+            }
+          });
+        })
+      }
+    })
   },
   watch: {
     'contentList': function () {
@@ -66,6 +90,66 @@ export default {
   },
 
   methods: {
+    playVoice(serid) {
+      let _this = this
+      if (!this.isPlaying) {
+        wx.downloadVoice({
+          serverId: serid, // 需要下载的音频的服务器端ID，由uploadVoice接口获得
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            _this.isPlayId = res.localId
+            wx.playVoice({
+              localId: res.localId
+            })
+          }
+        });
+      } else {
+        wx.stopVoice({
+          localId: _this.isPlayId
+        })
+      }
+    },
+    startVoice() {
+      if (!this.isStartVoice) {
+        this.isStartVoice = true
+        wx.startRecord()
+      }
+    },
+    stopVoice() {
+      this.isStartVoice = false
+      let _this = this
+      wx.stopRecord({
+        success: function (res) {
+          _this.voiceId = res.localId
+          wx.uploadVoice({
+            localId: _this.voiceId, // 需要上传的音频的本地ID，由stopRecord接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+              var serverId = res.serverId; // 返回音频的服务器端ID
+              var msg = new RongIMLib.TextMessage({ content: serverId, extra: "voice" });
+              //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
+              //var msg = RongIMLib.TextMessage.obtain("hello");
+              var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
+              var targetId = _this.$route.query.id; // 目标 Id
+              RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
+                // 发送消息成功
+                onSuccess: function (message) {
+                  //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
+                  _this.contentList.push({
+                    content: serverId,
+                    headImg: _this.userInfo.headImg,
+                    type: '1',
+                    extra: 'voice'
+                  })
+                  console.log('消息发送成功')
+                }
+              }
+              )
+            }
+          })
+        }
+      })
+    },
     closePreview() {
       this.isPreview = false
     },
@@ -115,17 +199,18 @@ export default {
       if (event.target.value) {
         let _this = this
         let options = {
-          image: event.target.files[0]
+          image: event.target.files[0],
+          bucket: 'patient'
         }
         let toast = Toast({
           message: '图片发送中'
         })
-         resource.uploadImageWithCrop(options).then(res => {
+        resource.uploadImageWithCrop(options).then(res => {
           if (res.body.code == 0) {
             toast.close()
             _this.chatContent = res.body.result.imageUrl
             // 定义消息类型,文字消息使用 RongIMLib.TextMessage
-            var msg = new RongIMLib.TextMessage({ content: _this.chatContent, extra: "image"});
+            var msg = new RongIMLib.TextMessage({ content: _this.chatContent, extra: "image" });
             //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
             //var msg = RongIMLib.TextMessage.obtain("hello");
             var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
@@ -158,9 +243,9 @@ export default {
         })
         return false
       }
-  
+
       // 定义消息类型,文字消息使用 RongIMLib.TextMessage
-      var msg = new RongIMLib.TextMessage({ content: this.chatContent, extra: ''});
+      var msg = new RongIMLib.TextMessage({ content: this.chatContent, extra: '' });
       //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
       //var msg = RongIMLib.TextMessage.obtain("hello");
       var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
@@ -174,7 +259,7 @@ export default {
             content: _this.chatContent,
             headImg: _this.userInfo.headImg,
             type: '1'
-            
+
           })
           _this.chatContent = ''
         },
