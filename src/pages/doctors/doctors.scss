@@ -1,0 +1,26 @@
+.doctorsPage {
+    .sub-title {
+        font-size: 16px;
+        color: #000;
+        padding: .55rem .4rem;
+    }
+    .doctor-list {
+        .item {
+            display: flex;
+            .avatar {
+                flex: 2;
+            }
+            .info {
+                flex: 4;
+                .name {
+                    font-size: 21px;
+                    color: #000;
+                }
+                .position {
+                    font-size: 16px;
+                    color:　#000;
+                }
+            }
+        }
+    }
+}

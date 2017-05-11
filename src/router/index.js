@@ -12,6 +12,7 @@ import Keep from '../pages/keep/keep.vue'
 import Chat from '../pages/chat/chat.vue'
 import Cropper from '../pages/cropper/cropper.vue'
 import LoginForm from '../components/LoginForm.vue'
+import Doctors from '../pages/doctors/doctors.vue'
 //@import
 Vue.use(Router)
 
@@ -27,6 +28,7 @@ export default new Router({
     {path: '/keep',name: 'Keep',component: Keep},
     {path: '/chat',name: 'Chat',component: Chat},
     {path: '/loginform',name: 'LoginForm',component: LoginForm},
-    {path: '/cropper',name: 'Cropper',component: Cropper}//@register
+    {path: '/cropper',name: 'Cropper',component: Cropper},
+    {path: '/doctors',name: 'Doctors',component: Doctors}//@register
   ]
 })

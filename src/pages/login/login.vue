@@ -1,40 +1,64 @@
 <template>
     <div class="root">
-        <div class="loginPage">
-            <div class="avatar-content" @click="showLoginForm">
-                <img :src="userInfo.headImg" alt="" class="avatar">
-                <p class="tip">点击修改头像</p>
+        <div class="validMobile" v-if="false">
+            <div class="cell-input">
+                <input class="input-item block icon-mobile" placeholder="手机" v-model="userInfo.mobile">
+            </div>
+            <div class="cell-input">
+                <input class="input-item block icon-code" placeholder="验证码" v-model="userInfo.smsCode">
+                <button class="valid-button" @click="getCode" v-bind:class="{'disabled': buttonStatus}">{{validButtonText}}</button>
+            </div>
+            <div class="cell-input">
+                <a href="javascript:;" class="confirm-button" @click="validCode">登录</a>
             </div>
         </div>
-        <LoginForm v-if="activeLoginForm"></LoginForm>
-        <mt-field label="姓名" placeholder="输入姓名" v-model="userInfo.name"></mt-field>
-        <mt-field label="年龄" placeholder="请输入年龄" type="number" v-model="userInfo.age"></mt-field>
-        <a class="mint-cell mint-field">
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-                <div class="mint-cell-title"><span class="mint-cell-text">性别</span>
-                </div>
-                <div class="mint-cell-value">
-                    <div class="sex-value" @click="sex">{{sexValue}}</div>
-                    <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
+        <div class="fixUserInfo" v-if="true">
+            <div class="loginPage">
+                <div class="avatar-content" @click="showLoginForm">
+                    <img :src="userInfo.headImg" alt="" class="avatar">
+                    <p class="tip">修改头像</p>
                 </div>
             </div>
-            <div class="mint-cell-right"></div>
-        </a>
-        <mt-field label="手机号" placeholder="输入手机号" type="tel" v-model="userInfo.mobile"></mt-field>
-        <mt-field label="验证码" placeholder="输入验证码" v-model="userInfo.smsCode">
-            <button class="valid-button" @click="getCode"  v-bind:class="{'disabled': buttonStatus}">{{validButtonText}}</button>
-        </mt-field>
-        <div class="section-button">
-                <mt-button type="primary" size="large" @click="login">验证登录</mt-button>
+            <LoginForm v-if="activeLoginForm"></LoginForm>
+            <mt-field label="姓名" placeholder="输入姓名" v-model="userInfo.name"></mt-field>
+            <a class="mint-cell mint-field">
+                <div class="mint-cell-left"></div>
+                <div class="mint-cell-wrapper">
+                    <div class="mint-cell-title"><span class="mint-cell-text">出生年月</span>
+                    </div>
+                    <div class="mint-cell-value">
+                        <div class="sex-value arrow" @click="showBirthday">{{birthdayStr}}</div>
+                        <mt-datetime-picker ref="birthdayPicker" @confirm="setBirthday" v-model="birthday" type="date" year-format="{value}年" month-format="{value}月" date-format="{value}日" :startDate="startTime" :endDate="endTime"></mt-datetime-picker>
+                    </div>
+                </div>
+                <div class="mint-cell-right"></div>
+            </a>
+            <a class="mint-cell mint-field">
+                <div class="mint-cell-left"></div>
+                <div class="mint-cell-wrapper">
+                    <div class="mint-cell-title"><span class="mint-cell-text">性别</span>
+                    </div>
+                    <div class="mint-cell-value">
+                        <div class="sex-value arrow" @click="sex">{{sexValue}}</div>
+                        <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
+                    </div>
+                </div>
+                <div class="mint-cell-right"></div>
+            </a>
+            
+            
+            <div class="section-button">
+                <mt-button type="primary" size="large" @click="login">提交</mt-button>
+            </div>
         </div>
+    
     </div>
 </template>
 
 <style scoped lang="scss">
-    @import './login.scss';
+@import './login.scss';
 </style>
 
 <script src="./login">
-    
+
 </script>

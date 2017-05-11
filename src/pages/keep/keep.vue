@@ -3,7 +3,7 @@
         <a href="javascript:;" class="item-cell">
             <div class="cell-date">{{currentTime}}</div>
             <router-link to="more">
-                <div class="label">更多</div>
+                <div class="label">设置</div>
             </router-link>
         </a>
         <div class="more_cells" @click="bind" v-if="unbind">
@@ -16,40 +16,41 @@
                 </div>
             </div>
         </div>
-        <div class="doctor-msg" v-if="!unbind">
+        <div class="doctor-msg-info">
             <div class="doctor-avatar" @click="goChat">
                 <div class="img-box">
                     <img :src="doctorInfo.headImg" alt="">
                     <div class="co" v-if="msgCount">{{msgCount > 99 ? '...' : msgCount}}</div>
                 </div>
-                <div class="name">{{doctorInfo.doctorName}}</div>
+                <div class="name">咨询医生</div>
             </div>
             <div class="medicine-tip">
-                <div class="tip">出院第<em>{{leaveDay}}</em>天</div>
-                <div class="tip-ass" @click="showTips">{{leaveMessage}}</div>
+                <div class="tip" v-if="leaveDay > 0">出院第<em>{{leaveDay}}</em>天</div>
+                <div class="tip" v-if="leaveDay == 0">出院了</div>
+                <div class="tip-ass" @click="showTips">要记得吃药啊啊啊要记得吃药啊啊啊要记得吃药啊啊啊要记得吃药啊啊啊{{leaveMessage}}</div>
             </div>
         </div>
-        <div class="medicine-card" @click="backMonthDiary" v-bind:class="{'transition-hide': isTake}" v-if="!checkInStatus">
+   
+        <div class="medicine-card"  v-if="!checkInStatus">
             <div class="timer">
-                {{remindTime}} <i class="icon-love"></i>
+               请点击勾选今天服用的药品
             </div>
             <div class="medicine-list">
-                <div class="label">
-                    {{isDetail ? '当日所用药物': '服用药物'}}
-                </div>
     
                 <div class="values checklist">
-                    <mt-checklist :value="defaultChecklist" v-model="medicineList" :options="checklistOpt"></mt-checklist>
+                    <div class="med-item" v-for="(item, index) in checklistOpt">
+                        <div class="med-name">{{item.label}} <i class="icon-ok"></i></div>
+                        <div class="med-button">
+                            <a href="javascript:;" :class="{'disabled': index===1}">吃完点这</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="section-button" v-if="!isDetail">
-                <mt-button type="primary" size="large" @click="checkIn">吃完药请点这里</mt-button>
-            </div>
-            <div class="section-button" v-if="isDetail">
-                <mt-button type="primary" size="large" @click="backMonthDiary">返回查看</mt-button>
+            <div class="section-button">
+                <a href="javascript:;" class="show-calc-button" @click="showCalendar">用药日历</a>
             </div>
         </div>
-        <div class="calendar-card" v-show="checkInStatus" v-bind:class="{'transition-hide': !calendarTransform}">
+        <div class="calendar-card" v-show="checkInStatus">
             <vue-event-calendar :events="demoEvents" @click-day="clickDay" @change-month="changeMonth"></vue-event-calendar>
         </div>
     </div>

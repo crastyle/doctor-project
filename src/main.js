@@ -12,7 +12,6 @@ import resource from './resource'
 import base from './base'
 import { bus } from './bus'
 import VueTouch from 'vue-touch'
-import "vconsole"
 Vue.config.productionTip = false
 Vue.use(VueTouch, {name: 'v-touch'})
 resource.interceports()
@@ -24,7 +23,7 @@ new Vue({
   created() {
     let _this = this
     let route = this.$route.name
-    if (route !== 'Login' && route !== 'Cropper') {
+    if (route !== 'Login' && route !== 'Cropper' ) {
       // 如果是在注册页面，让他授权登录
       resource.userInfo().then(res => {
         if (res.body.code == 0) {

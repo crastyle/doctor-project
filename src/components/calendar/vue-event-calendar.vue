@@ -241,7 +241,6 @@ $icon-border-size: 1px;
           }
           .is-event{
             content: '';
-            border: 1px solid $base-orange;
             background-color: #fff;
             border-radius: 50%;
             width: 36px;

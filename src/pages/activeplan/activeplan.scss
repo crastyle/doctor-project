@@ -1,8 +1,13 @@
 @import "../../styles/app";
 .activeplanPage {
+    .sub-title {
+        font-size: .36rem;
+        color: #f23e27;
+        padding: .55rem 10px .3rem;
+        border-bottom: 1px solid #e5e5e5;
+    }
     .item {
         background: #fff;
-        padding-left: 10px;
     }
     .item-cell {
         display: block;
@@ -12,16 +17,18 @@
         border-bottom: 1px solid #e5e5e5;
         position: relative;
         div.label {
-            color: #787878;
-            font-size: 20px;
-            -webkit-flex: 1;
-            text-align: center;
+            color: #000;
+            font-size: 16px;
+            flex: 1;
+            padding-left: 15px;
         }
         div.values {
-            -webkit-flex: 3;
-            color: #C8C8C8;
-            font-size: 20px;
+            flex: 3;
+            color: #929292;
+            font-size: 16px;
             padding-left: 10px;
+            text-align: right;
+            padding-right: 30px;
         }
        
         .cell-assign {
@@ -32,7 +39,7 @@
         &.arrow-right:after {
             position: absolute;
             top: 50%;
-            right: .42rem;
+            right: 10px;
             content: '';
             background: url(../../assets/image/icon-arrow-right-gray.png) no-repeat;
             width: .19rem;
@@ -42,6 +49,6 @@
         }
     }
     .section-button {
-        margin-top: 100px;
+        margin-top: 20px;
     }
 }

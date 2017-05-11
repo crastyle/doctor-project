@@ -97,6 +97,7 @@ export default {
             console.log(event)
         },
         changedShow() { },
+        
         unbind: function () {
             MessageBox.confirm('确定解除绑定该医生吗').then(action => {
                 if (action === 'confirm') {

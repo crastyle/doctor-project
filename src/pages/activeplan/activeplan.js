@@ -10,17 +10,21 @@ export default {
   name: 'Activeplan',
   data() {
     return {
-      wayValue: [],
-      options: [{
-        label: '短信',
-        value: 2
+      endDate: new Date(),
+      remindWays: [{
+        name: '短信',
+        method: () => {
+          this.formData.remindWay = 2
+          this.remindWayStr = '短信'
+        }
       }, {
-        label: '电话',
-        value: 1
+        name: '电话',
+        method: () => {
+          this.formData.remindWay = 1
+          this.remindWayStr = '电话'
+        }
       }],
-      value: {
-        value: 1
-      },
+
       checklistOpt: [{
         label: '他汀（阿托伐他汀）',
         value: '他汀（阿托伐他汀）'
@@ -33,11 +37,11 @@ export default {
       }],
       defaultChecklist: [],
       leavePicker: false,
-      leavePickerValue: "请选择时间",
+      leavePickerValue: "请选择",
       leavePickerDate: new Date(),
 
       forkTimePicker: false,
-      forkTimePickerValue: "请选择时间",
+      forkTimePickerValue: "请选择",
       forkTimePickerDate: '12: 00',
 
       forkWeek: false,
@@ -46,15 +50,21 @@ export default {
         leaveTime: new Date(this.leavePickerValue).getTime(),
         remindHour: 0,
         remindMinute: 0,
-        remindWay: 2,
+        remindWay: '',
       },
-  
+      isRemindWay: false,
+      remindWayStr: '请选择'
     }
   },
   mounted: function () {
-    this.leavePickerValue = base.formatDate(Date.now())
   },
   methods: {
+    showRemindWay() {
+      this.isRemindWay = true
+    },
+    setLeaveValue() {
+      this.leavePickerValue = base.formatDate2(this.leavePickerDate)
+    },
     setLeavePicker: function () {
       console.log(new Date(this.leavePickerValue))
       this.$refs.picker.open()
@@ -66,7 +76,7 @@ export default {
       this.forkWeek = true
     },
     activePlan() {
-      this.formData.leaveTime = parseInt((new Date(this.leavePickerValue).getTime()) / 1000)
+      this.formData.leaveTime = parseInt((new Date(this.leavePickerDate).getTime()) / 1000)
       this.formData.remindHour = this.forkTimePickerDate.split(':')[0]
       this.formData.remindMinute = this.forkTimePickerDate.split(':')[1]
       if (!this.formData['remindWay']) {

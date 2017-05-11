@@ -1,10 +1,12 @@
 @import 'app';
 .mint-field .mint-cell-title {
     text-align: left;
-    width: 80px;
+    width: 120px;
     padding-left: .36rem;
 }
-
+.mint-field {
+    border-bottom: 1px solid #ededed;
+}
 .mint-field-other {
     height: 100%;
 }
@@ -17,10 +19,29 @@
         color: #757575;
     }
 }
+.mint-field-core {
+    text-align: right;
+}
 .sex-value {
     width: 100%;
     height:  100%;
     line-height: 48px;
+    padding-right: 20px;
+    text-align: right;
+    &.arrow {
+        position: relative;
+        &:after {
+            position: absolute;
+            content: '';
+            right: 0;
+            top: 50%;
+            margin-top: -10px;
+            background: url(../assets/image/icon-arrow-right-gray.png) no-repeat;
+            background-size: 100%; 
+            width: 10px;
+            height: 25px;
+        }
+    }
 }
 .single-radio {
     .mint-radiolist {
@@ -67,6 +88,9 @@
 }
 
 .cal-header {
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 0 !important;
+    background: transparent !important;
     .title {
         font-size: 20px;
         color: #787878;
@@ -74,11 +98,26 @@
 }
 .__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item.event {
 
-    .date-num {
-        color: #fff !important;
-    }
     .is-event {
-        background: #028BE6;
+        background: url(../assets/image/icon-ok.png) no-repeat center;
+        background-size: .6rem .46rem;
+
+    }
+}
+.__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item.fail {
+
+    .is-fail {
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 2;
+        margin-left: -18px;
+        margin-top: -19px;
+        background: url(../assets/image/icon-error.png) no-repeat center;
+        background-size: .32rem;
+
     }
 }
 .events-wrapper {
@@ -95,7 +134,12 @@
 .__vev_calendar-wrapper .cal-wrapper .cal-body .dates .item.today {
     color: #333;
     .is-today {
-        display: none;
+        left: 0;
+        margin-left: 0;
+        margin-left: 0;
+        width: 1.11rem;
+        height: .78rem;
+        border: none !important;
     }
 }
 .doctor_dialog .mint-cell-wrapper {

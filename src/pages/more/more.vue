@@ -91,50 +91,18 @@
   
       </div>
   
-      <div class="more_cells" v-if="isBind" @click="unbind">
-  
-        <div class="more_cell">
-  
-          <div class="more_hd">
-  
-            <label class="more_label" for="">重新绑定</label>
-  
+      <router-link to="doctors">
+        <div class="more_cells">
+          <div class="more_cell">
+            <div class="more_hd">
+              <label class="more_label" for="">我的医生</label>
+            </div>
+            <div class="more_ft arrow"></div>
           </div>
-  
-          <div class="more_ft arrow">
-  
-            解绑当前医生，绑定新医生
-  
-          </div>
-  
         </div>
-  
-      </div>
-  
-      <div class="more_cells" v-if="!isBind" @click="bind">
-  
-        <div class="more_cell">
-  
-          <div class="more_hd">
-  
-            <label class="more_label" for="">绑定医生</label>
-  
-          </div>
-  
-          <div class="more_ft arrow">
-  
-            绑定医生获得更多贴心服务
-  
-          </div>
-  
-        </div>
-  
-      </div>
-  
+      </router-link>
     </div>
-  
     <div class="doctor_dialog" v-if="showMobile">
-  
       <div class="doctor_mask doctor-mask_transparent"></div>
   
       <div class="doctor_message">

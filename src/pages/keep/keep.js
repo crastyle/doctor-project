@@ -11,7 +11,15 @@ export default {
   data() {
     return {
       isTake: false,
-      demoEvents: [],
+      demoEvents: [{
+        date: '2017/05/01',
+        title: 'asfasf',
+        fail: false
+      }, {
+        date: '2017/05/02',
+        title: '',
+        fail: true
+      }],
       calendarTransform: false,
       leaveDay: 7,
       leaveMessage: '要记得吃药哦',
@@ -32,7 +40,6 @@ export default {
         value: '其他'
       }],
       defaultChecklist: [],
-      medicineList: [],
       currentDayMedicineList: [],
       unbind: false,
       isDetail: false,
@@ -64,27 +71,11 @@ export default {
       _this.leaveDay = res.body.result.leaveDays
       _this.leaveMessage = res.body.result.leaveMessage
     })
-    resource.getTimestamp().then(res => {
-      _this.currentTime = base.formatDate2(res.body.result.timestamp * 1000)
 
-      return resource.diaryInfo({ diaryTime: res.body.result.timestamp })
-    }).then(res => {
-      // _this.medicineList = res.body.result.medicine.split(',')
-      let hour = res.body.result.remindHour
-      let minute = res.body.result.remindMinute
-
-      hour = hour < 10 ? '0' + hour : hour
-      minute = minute < 10 ? '0' + minute : minute
-      _this.remindTime = hour + ':' + minute
-      _this.checkInStatus = res.body.result.checkInStatus
-      if (res.body.result.checkInStatus) {
-        _this.calendarTransform = true
-      }
-    })
 
     resource.getTimestamp().then(res => {
       var date = new Date(res.body.result.timestamp * 1000)
-      _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
+      // _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
 
     })
 
@@ -97,7 +88,9 @@ export default {
     })
   },
   methods: {
-
+    showCalendar() {
+      this.checkInStatus = true
+    },
     showTips() {
       Toast({
         message: this.leaveMessage,
@@ -127,21 +120,21 @@ export default {
         }
       })
     },
-    loadMonthData(year, month) {
-      let _this = this
-      resource.monthDiary({ year: year, month: month }).then(res => {
-        if (res.body.code == 0) {
-          let list = res.body.result
-          for (let i = 0; i < list.length; i++) {
-            if (list[i]['checkInStatus'] == 1)
-              _this.demoEvents.push({
-                date: base.formatEventDate(list[i]['checkInTime'] * 1000),
-                title: 'xxx'
-              })
-          }
-        }
-      })
-    },
+    // loadMonthData(year, month) {
+    //   let _this = this
+    //   resource.monthDiary({ year: year, month: month }).then(res => {
+    //     if (res.body.code == 0) {
+    //       let list = res.body.result
+    //       for (let i = 0; i < list.length; i++) {
+    //         if (list[i]['checkInStatus'] == 1)
+    //           _this.demoEvents.push({
+    //             date: base.formatEventDate(list[i]['checkInTime'] * 1000),
+    //             title: 'xxx'
+    //           })
+    //       }
+    //     }
+    //   })
+    // },
     bind() {
       this.$router.push('bindid')
     },
@@ -149,13 +142,6 @@ export default {
       let _this = this
       _this.medicineList = []
       resource.diaryInfo({ diaryTime: parseInt(new Date(date).getTime() / 1000) }).then(res => {
-        _this.calendarTransform = false
-        setTimeout(() => {
-          _this.isTake = false
-          _this.checkInStatus = false
-          _this.isDetail = true
-        }, 350)
-
         for (var i = 0; i < _this.checklistOpt.length; i++) {
           _this.checklistOpt[i]['disabled'] = true
         }
@@ -168,17 +154,7 @@ export default {
     changeMonth(month) {
       this.loadMonthData(month.split('-')[0], month.split('-')[1])
     },
-    backMonthDiary() {
-      if (this.isDetail) {
-        this.isTake = true
-        setTimeout(() => {
-          this.checkInStatus = true
-        }, 300)
-        setTimeout(() => {
-          this.calendarTransform = true
-        }, 350)
-      }
-    },
+  
     goChat() {
       this.$router.push({ name: 'Chat', query: { id: this.doctorInfo.doctorUserGid } })
     },

@@ -2,16 +2,17 @@
 .keepPage {
     .item-cell {
         display: block;
-        height: 1.4rem;
-        background: url(../../assets/image/out-background.png) no-repeat;
-        background-size: 100%;
-        @include vertical();
+        height: .8rem;
+        line-height: .8rem;
+        background: $maincolor;
         -webkit-box-align: start;
         box-sizing: border-box;
         padding-left: 16px;
         position: relative;
+        text-align: center;
+        border-bottom: 1px solid #fff;
         .cell-date {
-            font-size: 20px;
+            font-size: 16px;
             color: #fff;
         }
         .cell-assign {
@@ -21,41 +22,177 @@
         .label {
             position: absolute;
             top: 50%;
-            right: .77rem;
+            right: 20px;
             color: #fff;
             transform: translateY(-50%);
-            font-size: 18px;
+            font-size: 16px;
         }
-        &:after {
-            position: absolute;
-            top: 50%;
-            right: .42rem;
-            content: '';
-            background: url(../../assets/image/icon-arrow-right-gray.png) no-repeat;
-            width: .19rem;
-            height: .34rem;
-            background-size: 100%;
-            transform: translateY(-50%);
-        }
+     
     }
     .section-button {
-        padding: 0 1.77rem;
-        position: absolute;
-        left: 0;
-        bottom: .2rem;
-        width: 100%;
+        width: 6.7rem;
+        height: .92rem;
+        margin: 10px auto;
         box-sizing: border-box;
-        .mint-button {
-            border-radius: 50px;
-            box-shadow: 0 3px 13px 0px #26a2ff;
+        .show-calc-button {
+            background: #9ae1ff;
+            height: .92rem;
+            display: block;
+            font-size: 16px;
+            text-align: center;
+            line-height: .92rem;
+            color: #00597f;
+            border: 1px solid #00597f;
+            border-radius: 3px;
         }
     }
-    .doctor-msg {
-        margin: .32rem .45rem;
+   
+    .medicine-card {
+        background: #fff;
+        min-height: 7.28rem;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        transition: .4s all;
+        .med-item {
+            display: flex;
+            padding: 8px 20px;
+            border-bottom: 1px solid #e2e2e2;
+            .med-name {
+                flex: 5;
+                font-size: 18px;
+                color: #000;
+                line-height: .75rem;
+                .icon-ok {
+                    width: .6rem;
+                    height: .49rem;
+                    background: url(../../assets/image/icon-ok.png) no-repeat;
+                    background-size: 100%;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-left: 10px;
+                }
+            }
+            .med-button {
+                flex: 1;
+                a {
+                    width: 1.84rem;
+                    height: .75rem;
+                    background: $maincolor;
+                    color: #fff;
+                    text-align: center;
+                    line-height: .75rem;
+                    font-size: 16px;
+                    display: block;
+                    border-radius: 6px;
+                    &.disabled {
+                        background: #d9d9d9;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        .timer {
+            font-size: 16px;
+            color: #000;
+            letter-spacing: 0px;
+            height: 1.15rem;
+            line-height: 1.15rem;
+            padding-left: 20px;
+            border-bottom: 1px solid #e2e2e2;
+            .icon-love {
+                background: url(../../assets/image/icon-heart.png) no-repeat;
+                width: .26rem;
+                height: .26rem;
+                background-size: .26rem;
+                display: inline-block;
+            }
+        }
+        .medicine-list {
+            .label {
+                font-size: .4rem;
+            }
+            li {
+                font-size: 23px;
+                line-height: 38px;
+                color: #787878;
+                letter-spacing: 0px;
+            }
+        }
+        &.transition-hide {
+            transform: perspective(600px) rotateY(90deg)
+        }
+    }
+
+    .calendar-card {
+        background: #f7f6f3;
+        transition: .4s all;
+    
+    }
+    .more_cells {
+        margin-bottom: .2rem;
+        background: $maincolor;
+        padding: 0 .2rem;
+        &:first-child {
+            margin-top: .2rem;
+        }
+        .more_cell {
+            padding: .2rem 0;
+            position: relative;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            border-bottom: 1px solid #D9D9D9;
+            .more_hd {
+                -webkit-box-flex: 1;
+                -webkit-flex: 1;
+                flex: 1;
+                text-align: left;
+                word-wrap: break-word;
+                word-break: break-all;
+                color: #fff;
+                font-size: .4rem;
+               
+            }
+            .more_ft {
+                text-align: right;
+                color: #fff;
+                font-size: .32rem;
+                &.arrow {
+                    padding-right: .36rem;
+                }
+              
+                &.arrow:after {
+                    border: 2px solid #c8c8cd;
+                    border-bottom-width: 0;
+                    border-left-width: 0;
+                    content: " ";
+                    top: 50%;
+                    right: 0;
+                    position: absolute;
+                    width: .26rem;
+                    height: .26rem;
+                    -webkit-transform: translateY(-50%) rotate(45deg);
+                    transform: translateY(-50%) rotate(45deg);
+                }
+            }
+        }
+        .more_cell:last-child {
+            border-bottom: none;
+        }
+    }
+    .doctor-msg-info {
+        background: $maincolor;
+        padding: .3rem 0;
         .doctor-avatar {
             @include vertical();
             float: left;
             height: 2.37rem;
+            width: 2.24rem;
+            border-right: 1px solid #00597f;
             .img-box {
                 display: block;
                 width: 1.5rem;
@@ -83,149 +220,33 @@
             }
             .name {
                 font-size: 16px;
-                color: #787878;
+                color: #fff;
                 text-align: center;
+                margin-top: 10px;
             }
         }
         .medicine-tip {
             height: 2.37rem;
             margin-left: 2.34rem;
-            background: #fff;
             position: relative;
-            border-radius: 8px;
-            box-shadow: 0 0 14px 0px rgba(0, 0, 0, 0.2);
             line-height: normal;
             @include vertical();
-            &:after {
-                content: '';
-                width: .54rem;
-                height: .54rem;
-                transform: rotate(45deg);
-                background: #fff;
-                position: absolute;
-                top: 50%;
-                margin-top: -.27rem;
-                left: -.27rem;
-            }
+            padding: 0 20px;
+            -webkit-box-align: start;
             .tip {
-                color: #028BE6;
+                color: #fff;
                 font-size: 28px;
-                font-weight: bold;
+                margin-bottom: 10px;
                 em {
-                    font-size: 45px;
+                    margin: 0 5px;
                 }
             }
             .tip-ass {
-                color: #787878;
-                font-size: 20px;
-                line-height: 20px;
-                height: 40px;
-                padding: 0 10px;
+                color: #fff;
+                font-size: 16px;
+                line-height: 24px;
                 @include ellipsisMulti(2);
             }
-        }
-    }
-    .medicine-card {
-        margin: 0 .45rem 0 .45rem;
-        background: #fff;
-        min-height: 7.28rem;
-        border-radius: 8px;
-        padding-left: .5rem;
-        position: relative;
-        overflow: hidden;
-        transition: .4s all;
-        .timer {
-            font-size: 40px;
-            color: #333333;
-            letter-spacing: 0px;
-            margin: .18rem 0;
-            border-bottom: 1px dashed #e2e2e2;
-            .icon-love {
-                background: url(../../assets/image/icon-heart.png) no-repeat;
-                width: .26rem;
-                height: .26rem;
-                background-size: .26rem;
-                display: inline-block;
-            }
-        }
-        .medicine-list {
-            .label {
-                font-size: .4rem;
-            }
-            li {
-                font-size: 23px;
-                line-height: 38px;
-                color: #787878;
-                letter-spacing: 0px;
-            }
-        }
-        &.transition-hide {
-            transform: perspective(600px) rotateY(90deg)
-        }
-    }
-
-    .calendar-card {
-        background: #fff;
-        margin-top: 30px;
-        transition: .4s all;
-        transform: perspective(600px) rotateY(0deg);
-        &.transition-hide {
-            transform: perspective(600px) rotateY(-90deg)
-        }
-    }
-    .more_cells {
-        margin-bottom: .2rem;
-        background: #fff;
-        padding: 0 .2rem;
-        &:first-child {
-            margin-top: .2rem;
-        }
-        .more_cell {
-            padding: .2rem 0;
-            position: relative;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            align-items: center;
-            border-bottom: 1px solid #D9D9D9;
-            .more_hd {
-                -webkit-box-flex: 1;
-                -webkit-flex: 1;
-                flex: 1;
-                text-align: left;
-                word-wrap: break-word;
-                word-break: break-all;
-                color: #333;
-                font-size: .4rem;
-               
-            }
-            .more_ft {
-                text-align: right;
-                color: #999;
-                font-size: .32rem;
-                &.arrow {
-                    padding-right: .36rem;
-                }
-              
-                &.arrow:after {
-                    border: 2px solid #c8c8cd;
-                    border-bottom-width: 0;
-                    border-left-width: 0;
-                    content: " ";
-                    top: 50%;
-                    right: 0;
-                    position: absolute;
-                    width: .26rem;
-                    height: .26rem;
-                    -webkit-transform: translateY(-50%) rotate(45deg);
-                    transform: translateY(-50%) rotate(45deg);
-                }
-            }
-        }
-        .more_cell:last-child {
-            border-bottom: none;
         }
     }
 }

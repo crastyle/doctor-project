@@ -10,16 +10,18 @@
         <span v-for="dayName in i18n[calendar.options.locale].dayNames" class="item">{{dayName}}</span>
       </div>
       <div class="dates" >
-        <div v-for="date in dayList" class="item"
+        <div v-for="(date, index) in dayList" class="item"
           :class="{
             today: date.status ? (today==date.date) : false,
-            event: date.status ? (date.title != undefined) : false
+            event: date.status ? (date.title != undefined && !date.fail ) : false,
+            fail: date.status ? (date.fail == true && !date.title) : false,
+            active: date.status ? date.isActive == true : false
           }">
-          <p class="date-num"
-            @click="handleChangeCurday(date)"
-            :style="{color: (date.title != undefined) ? calendar.options.color : 'inherit'}">{{date.status ? date.date.split('/')[2] : '&nbsp'}}</p>
-          <span v-if="date.status ? (today==date.date) : false" class="is-today" :style="style.todayStyle" ></span>
-          <span v-if="date.status ? (date.title != undefined) : false" class="is-event" :style="style.eventStyle"></span>
+          <p class="date-num" v-if="today == date.date"  @click="handleChangeCurday(date, index)">今天</p>
+          <p class="date-num" v-if="today != date.date"  @click="handleChangeCurday(date, index)" >{{date.status ? date.date.split('/')[2] : '&nbsp'}}</p>
+          <span v-if="date.status ? (today==date.date) : false"></span>
+          <span v-if="date.status ? (date.title != undefined && !date.fail ) : false" class="is-event"></span>
+          <span v-if="date.status ? (date.fail == true && !date.title) : false" class="is-fail"></span>
         </div>
       </div>
     </div>
@@ -29,7 +31,7 @@
 <script>
 import i18n from '../i18n.js'
 import { dateTimeFormatter, isEqualDateStr} from '../tools.js'
-
+import Vue from 'vue'
 const inBrowser = typeof window !== 'undefined'
 export default {
   name: 'cal-panel',
@@ -48,6 +50,8 @@ export default {
       required: true
     }
   },
+  mounted: function(){
+  },
   computed: {
     dayList () {
         let firstDay = new Date(this.calendar.params.curYear+'/'+(this.calendar.params.curMonth+1)+'/01')
@@ -65,15 +69,19 @@ export default {
             }
             tempItem = {
               date: `${item.getFullYear()}/${item.getMonth()+1}/${item.getDate()}`,
-              status: status
+              status: status,
+              isActive: false
             }
             this.events.forEach((event) => {
               if (isEqualDateStr(event.date, tempItem.date)) {
                 tempItem.title = event.title
+                tempItem.fail = event.fail
                 tempItem.desc = event.desc || ''
               }
             })
+
             tempArr.push(tempItem)
+         
         }
         return tempArr
     },
@@ -107,7 +115,11 @@ export default {
       this.$EventCalendar.preMonth()
       this.$emit('change-month', this.curYearMonth)
     },
-    handleChangeCurday (date) {
+    handleChangeCurday (date, index) {
+      // for(let i = 0;i< this.dayList.length; i++) {
+      //   this.dayList[i].isActive = false
+      // }
+      Vue.set(date, 'isActive', true)
       if (date.title != undefined) {
         this.$emit('cur-day-changed', date.date)
       }

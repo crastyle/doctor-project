@@ -67,6 +67,23 @@
                     color: #333;
                     padding: .1rem;
                 }
+                .startVoice {
+                    width: 100%;
+                    height: 0.86rem;
+                    border: 1px solid #ccc;
+                    background: #fff;
+                    font-size: .4rem;
+                    -webkit-border-radius: 6px;
+                    -moz-border-radius: 6px;
+                    border-radius: 6px;
+                    margin: 0.17rem 0;
+                    color: #333;
+                    padding: .1rem;
+                    &.stopVoice {
+                        background: #eee;
+                        color: #333;
+                    }
+                }
                 &.voice {
                     -webkit-box-flex: 4;
                     -webkit-flex: 4;
@@ -182,31 +199,18 @@
                         text-decoration: underline;
                     }
                 }
-                &:before {
-                    height: 0;
-                    width: 0;
-                    content: "";
-                    display: block;
-                    border-right: 0.3rem solid transparent;
-                    border-left: 0.3rem solid #DCDCDC;
-                    border-top: 0.3rem solid transparent;
-                    position: absolute;
-                    left: -0.18rem;
-                    top: 0.41rem;
-                    transform: rotate(45deg);
-                }
                 &:after {
-                    height: 0;
-                    width: 0;
+                    height: .3rem;
+                    width: .3rem;
                     content: "";
                     display: block;
-                    border-right: 0.3rem solid transparent;
-                    border-left: 0.3rem solid #fff;
-                    border-top: 0.3rem solid transparent;
                     position: absolute;
-                    left: -0.18rem;
-                    top: 0.4rem;
-                    transform: rotate(45deg);
+                    transform: rotate(-45deg);
+                    background: #fff;
+                    border-left: 1px solid #dcdcdc;
+                    left: -9px;
+                    border-top: 1px solid #dcdcdc;
+                    top: .28rem;
                 }
             }
         }

@@ -8,7 +8,7 @@
                 <div class="values" @click="setLeavePicker">
                     {{leavePickerValue}}
                 </div>
-                <mt-datetime-picker ref="picker" v-model="leavePickerDate" type="date"></mt-datetime-picker>
+                <mt-datetime-picker ref="picker" @confirm="setLeaveValue" year-format="{value}年" month-format="{value}月" date-format="{value}日" v-model="leavePickerDate" :endDate="endDate" type="date"></mt-datetime-picker>
             </div>
         </div>
         <div class="item">
@@ -24,13 +24,50 @@
         </div>
    
         <div class="item">
-            <div class="item-cell">
+            <div class="item-cell arrow-right">
                 <div class="label">
                     提醒方式
                 </div>
-                <div class="values single-radio">
-                    <mt-radio :value="wayValue" v-model="formData.remindWay" :options="options"></mt-radio>
+                <div class="values" @click="showRemindWay">
+                    {{remindWayStr}}
                 </div>
+                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
+            </div>
+        </div>
+        <div class="sub-title">
+            用药类别
+        </div>
+        <div class="item">
+            <div class="item-cell arrow-right">
+                <div class="label">
+                    他汀类药物
+                </div>
+                <div class="values" @click="showRemindWay">
+                    {{remindWayStr}}
+                </div>
+                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-cell arrow-right">
+                <div class="label">
+                    降压类药物
+                </div>
+                <div class="values" @click="showRemindWay">
+                    {{remindWayStr}}
+                </div>
+                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-cell arrow-right">
+                <div class="label">
+                    其他
+                </div>
+                <div class="values" @click="showRemindWay">
+                    {{remindWayStr}}
+                </div>
+                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
             </div>
         </div>
         <!--

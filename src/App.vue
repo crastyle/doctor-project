@@ -133,8 +133,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    background: #f2f2f2;
+    background: #FFF;
     color: #666;
     height: 100%;
+    position: relative;
   }
 </style>

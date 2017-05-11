@@ -22,7 +22,7 @@
     </div>
   
     <div class="chat_zone" v-if="msgType">
-      <div class="chat_footer" @click="changeStatus">
+      <div class="chat_footer" @click="changeStatus" v-if="isHidden"> 
         <!-- 添加on为语音状态 -->
         <i class="emotion"></i>
       </div>

@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import { Actionsheet, Field, Button, Toast } from 'mint-ui'
+import { Actionsheet, Field, Button, Toast,DatetimePicker } from 'mint-ui'
 import resource from '../../resource'
 import base from '../../base'
 import { bus } from '../../bus'
 import LoginForm from '../../components/LoginForm'
 Vue.component(Actionsheet.name, Actionsheet)
+Vue.component(DatetimePicker.name, DatetimePicker)
 Vue.component(Field.name, Field)
 Vue.component(Button.name, Button)
 export default {
@@ -37,7 +38,12 @@ export default {
         openId: ''
       },
       activeLoginForm: false,
-      sexValue: '男'
+      sexValue: '请选择',
+      birthday: '1970-01-01',
+      birthdayStr: '请选择',
+      startTime: new Date('1900/01/01'),
+      endTime: new Date(),
+      showUserInfo: false
     }
   },
   components: {
@@ -49,12 +55,11 @@ export default {
     }
   },
   created() {
-
     let code = base.getUrlparams('code')
     let openId = this.$route.query.openId
     let _this = this
 
-    if (!code && !openId) {
+    if (!code && !openId && base.isWechat()) {
       resource.jsApiConfig().then(res => {
         let redirect_uri = encodeURIComponent(location.href)
         let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
@@ -64,6 +69,11 @@ export default {
     if (code) {
       if (openId) {
         _this.userInfo.openId = openId
+        if (!_this.$route.params.imgurl) {
+          resource.checkBind({ openId: openId }).then(res => {
+            _this.userInfo.headImg = res.body.result.wechatHeadImg
+          })
+        }
       } else {
         resource.oath({ code: code }).then(res => {
           this.userInfo.openId = res.body.result.openId
@@ -90,7 +100,6 @@ export default {
                 })
               }
             })
-
             resource.checkStatus().then(res => {
               if (res.body.result.activeRemindStatus == 1) {
                 _this.$router.replace('keep')
@@ -100,14 +109,31 @@ export default {
                 _this.$router.replace('bindid')
               }
             })
-
+          } else {
+            this.userInfo.headImg = res.body.result.wechatHeadImg
           }
         })
       }
     }
   },
-
   methods: {
+    validCode() {
+      let _this = this
+      resource.validCode({
+        smsCode: this.userInfo.smsCode,
+        mobile: this.userInfo.mobile
+      }).then(res => {
+        if (res.body.code == 0) {
+          _this.showUserInfo = true
+        }
+      }) 
+    },
+    setBirthday() {
+      this.birthdayStr = base.formatDate2(this.birthday)
+    },
+    showBirthday() {
+      this.$refs.birthdayPicker.open()
+    },
     showLoginForm: function () {
       this.$router.push({ name: 'Cropper', query: { redirect: 'Login', openId: this.userInfo.openId } })
     },
@@ -124,7 +150,6 @@ export default {
         })
         return false
       }
-
       if (_this.buttonStatus) {
         return false
       }
@@ -203,7 +228,7 @@ export default {
                 if (res.body.code == 0) {
                   base.watchIM()
                   base.receiveMsg()
-                  base.connectIM(token, function(){
+                  base.connectIM(token, function () {
                     window.onLoadingIMStatus = true
                     bus.$emit('imLoad', res.body.result.token)
                   })
@@ -212,7 +237,6 @@ export default {
             }
           })
           setTimeout(() => {
-
             _this.$router.replace('bindid')
           }, 2000)
         }
