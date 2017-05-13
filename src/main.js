@@ -14,6 +14,7 @@ import { bus } from './bus'
 import VueTouch from 'vue-touch'
 Vue.config.productionTip = false
 Vue.use(VueTouch, {name: 'v-touch'})
+Vue.prototype.$static = 'http://localhost:8080/static/'
 resource.interceports()
 new Vue({
   el: '#app',

@@ -217,3 +217,27 @@
   border-radius: 5px;
   border: 1px solid #73C7FF;
 }
+
+.u-btn {
+    display: inline-block;
+    height: .92rem;
+    padding: 0 30px;
+    line-height: .92rem;
+    margin: 0 auto;
+    border-radius: 6px;
+    font-size: 16px;
+    &.btn-block {
+        width: 100%;
+        padding: 0;
+        display: block;
+        text-align: center;
+    }
+    &.btn-assert {
+        background: $maincolor;
+        color: #fff;
+    }
+    &.btn-dark {
+        background: #1c1c20;
+        color: #fff;
+    }
+}

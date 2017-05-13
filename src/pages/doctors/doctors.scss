@@ -1,24 +1,53 @@
+@import "../../styles/app";
 .doctorsPage {
     .sub-title {
         font-size: 16px;
         color: #000;
         padding: .55rem .4rem;
+        background: #f7f6f3;
     }
     .doctor-list {
+        border-top: 1px solid #e2e2e2;
         .item {
             display: flex;
+            padding: 20px 0;
+            border-bottom: 1px solid #e2e2e2;
+            background: #f7f6f3;
             .avatar {
                 flex: 2;
+                .img-box {
+                    width: 2rem;
+                    height: 2rem;
+                    margin: 0 auto;
+                    img {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                    }
+                    .icon-add {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                        background: url(../../assets/image/icon-add.png) no-repeat center #fff;
+                        background-size: .76rem;
+                    }
+                }
             }
             .info {
                 flex: 4;
+                @include vertical();
+                -webkit-box-align: start;
                 .name {
                     font-size: 21px;
                     color: #000;
                 }
                 .position {
                     font-size: 16px;
-                    color:　#000;
+                    color: #000;
+                }
+                .add-tip {
+                    font-size: 21px;
+                    color: $maincolor;
                 }
             }
         }

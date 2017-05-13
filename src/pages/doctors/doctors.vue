@@ -4,11 +4,24 @@
         <div class="doctor-list">
             <div class="item">
                 <div class="avatar">
-                    <img src="">
+                    <div class="img-box">
+                        <img :src="$static + 'ava.jpg'">
+                    </div>
                 </div>
                 <div class="info">
                     <div class="name">王龙医生</div>
                     <div class="position">北京市海淀区协和医院外科 主任</div>
+                </div>
+            </div>
+      
+            <div class="item">
+                <div class="avatar">
+                    <div class="img-box">
+                        <div class="icon-add"></div>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="add-tip">新增医生</div>
                 </div>
             </div>
         </div>

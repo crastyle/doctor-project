@@ -1,0 +1,39 @@
+.doctorPage {
+    overflow: hidden;
+    .avatar {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        margin: .7rem auto .35rem;
+    }
+    .name {
+        font-size: 21px;
+        color: #000;
+        text-align: center;
+        margin: 0 30px 10px;
+    }
+    .sub {
+        font-size: 16px;
+        color: #000;
+        text-align: center;
+        margin: 0 .6rem;
+    }
+    .section-button {
+        text-align: center;
+        .u-btn {
+            margin-top: 30px;
+            position: relative;
+        }
+        .new-msg {
+            width: 12px;
+            height: 12px;
+            display: block;
+            position: absolute;
+            right: 50%;
+            margin-right: -45px;
+            top: .2rem;
+            background: #f00;
+            border-radius: 50%;
+        }
+    }
+}

@@ -13,6 +13,7 @@ import Chat from '../pages/chat/chat.vue'
 import Cropper from '../pages/cropper/cropper.vue'
 import LoginForm from '../components/LoginForm.vue'
 import Doctors from '../pages/doctors/doctors.vue'
+import Doctor from '../pages/doctor/doctor.vue'
 //@import
 Vue.use(Router)
 
@@ -29,6 +30,7 @@ export default new Router({
     {path: '/chat',name: 'Chat',component: Chat},
     {path: '/loginform',name: 'LoginForm',component: LoginForm},
     {path: '/cropper',name: 'Cropper',component: Cropper},
-    {path: '/doctors',name: 'Doctors',component: Doctors}//@register
+    {path: '/doctors',name: 'Doctors',component: Doctors},
+    {path: '/doctor',name: 'Doctor',component: Doctor}//@register
   ]
 })
