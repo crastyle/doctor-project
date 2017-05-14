@@ -35,6 +35,39 @@ export default {
         label: '其他',
         value: '其他'
       }],
+      med1: [{
+        name: '阿托伐他汀',
+        method: () => {
+
+        }
+      }, {
+        name: '非强效他汀',
+        method: () => {
+
+        }
+      }],
+      med2: [{
+        name: '氨氯地平',
+        method: () => {
+
+        }
+      }, {
+        name: '非长效降压药',
+        method: () => {
+
+        }
+      }],
+      med3: [{
+        name: '有',
+        method: () => {
+
+        }
+      }, {
+        name: '无',
+        method: () => {
+          
+        }
+      }],
       defaultChecklist: [],
       leavePicker: false,
       leavePickerValue: "请选择",
@@ -51,9 +84,15 @@ export default {
         remindHour: 0,
         remindMinute: 0,
         remindWay: '',
+        med1: '',
+        med2: '',
+        med3: ''
       },
       isRemindWay: false,
-      remindWayStr: '请选择'
+      remindWayStr: '请选择',
+      isMed1: false,
+      isMed2: false,
+      isMed3: false
     }
   },
   mounted: function () {
@@ -61,6 +100,15 @@ export default {
   methods: {
     showRemindWay() {
       this.isRemindWay = true
+    },
+    showMed1() {
+      this.isMed1 = true
+    },
+    showMed2() {
+      this.isMed2 = true
+    },
+    showMed3() {
+      this.isMed3 = true
     },
     setLeaveValue() {
       this.leavePickerValue = base.formatDate2(this.leavePickerDate)

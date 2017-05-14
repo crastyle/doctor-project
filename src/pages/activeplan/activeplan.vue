@@ -42,10 +42,10 @@
                 <div class="label">
                     他汀类药物
                 </div>
-                <div class="values" @click="showRemindWay">
+                <div class="values" @click="showMed1">
                     {{remindWayStr}}
                 </div>
-                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
+                <mt-actionsheet :actions="med1" v-model="isMed1"></mt-actionsheet>
             </div>
         </div>
         <div class="item">
@@ -53,10 +53,10 @@
                 <div class="label">
                     降压类药物
                 </div>
-                <div class="values" @click="showRemindWay">
+                <div class="values" @click="showMed2">
                     {{remindWayStr}}
                 </div>
-                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
+                <mt-actionsheet :actions="med2" v-model="isMed2"></mt-actionsheet>
             </div>
         </div>
         <div class="item">
@@ -64,10 +64,10 @@
                 <div class="label">
                     其他
                 </div>
-                <div class="values" @click="showRemindWay">
+                <div class="values" @click="showMed3">
                     {{remindWayStr}}
                 </div>
-                <mt-actionsheet :actions="remindWays" v-model="isRemindWay"></mt-actionsheet>
+                <mt-actionsheet :actions="med3" v-model="isMed3"></mt-actionsheet>
             </div>
         </div>
         <!--
