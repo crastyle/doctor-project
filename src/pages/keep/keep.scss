@@ -1,5 +1,32 @@
 @import "../../styles/app";
 .keepPage {
+    position: relative;
+    .overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,.7);
+        z-index: 10;
+        @include vertical();
+        .overlay-tip {
+            width: 85%;
+            border-radius: 12px;
+            padding: 20px 0;
+            background: #fff;
+            font-size: 16px;
+        }
+    }
+    .icon-ok {
+        width: .6rem;
+        height: .49rem;
+        background: url(../../assets/image/icon-ok.png) no-repeat;
+        background-size: 100%;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+    }
     .item-cell {
         display: block;
         height: .8rem;
@@ -27,7 +54,6 @@
             transform: translateY(-50%);
             font-size: 16px;
         }
-     
     }
     .section-button {
         width: 6.7rem;
@@ -46,7 +72,6 @@
             border-radius: 3px;
         }
     }
-   
     .medicine-card {
         background: #fff;
         min-height: 7.28rem;
@@ -63,18 +88,10 @@
                 font-size: 18px;
                 color: #000;
                 line-height: .75rem;
-                .icon-ok {
-                    width: .6rem;
-                    height: .49rem;
-                    background: url(../../assets/image/icon-ok.png) no-repeat;
-                    background-size: 100%;
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-left: 10px;
-                }
             }
             .med-button {
                 flex: 1;
+                font-size: 10px;
                 a {
                     width: 1.84rem;
                     height: .75rem;
@@ -123,11 +140,9 @@
             transform: perspective(600px) rotateY(90deg)
         }
     }
-
     .calendar-card {
         background: #f7f6f3;
         transition: .4s all;
-    
     }
     .more_cells {
         margin-bottom: .2rem;
@@ -155,7 +170,6 @@
                 word-break: break-all;
                 color: #fff;
                 font-size: .4rem;
-               
             }
             .more_ft {
                 text-align: right;
@@ -164,7 +178,6 @@
                 &.arrow {
                     padding-right: .36rem;
                 }
-              
                 &.arrow:after {
                     border: 2px solid #c8c8cd;
                     border-bottom-width: 0;
@@ -184,9 +197,23 @@
             border-bottom: none;
         }
     }
+    .msg-box {
+        width: 7.5rem;
+        overflow: hidden;
+        .msg-info-list {
+            width: 15rem;
+        }
+    }
     .doctor-msg-info {
         background: $maincolor;
         padding: .3rem 0;
+        float: left;
+        width: 7.5rem;
+        
+        &.transform {
+            transition: .5s all;
+            transform: translateX(-7.5rem);
+        }
         .doctor-avatar {
             @include vertical();
             float: left;

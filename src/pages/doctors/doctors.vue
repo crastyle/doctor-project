@@ -13,17 +13,19 @@
                     <div class="position">北京市海淀区协和医院外科 主任</div>
                 </div>
             </div>
-      
-            <div class="item">
-                <div class="avatar">
-                    <div class="img-box">
-                        <div class="icon-add"></div>
+            
+            <router-link to="bindid">
+                <div class="item">
+                    <div class="avatar">
+                        <div class="img-box">
+                            <div class="icon-add"></div>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div class="add-tip">新增医生</div>
                     </div>
                 </div>
-                <div class="info">
-                    <div class="add-tip">新增医生</div>
-                </div>
-            </div>
+            </router-link>
         </div>
     </div>
 </template>

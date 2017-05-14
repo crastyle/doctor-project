@@ -31,20 +31,26 @@ export default {
       currentTime: '',
       checklistOpt: [{
         label: '他汀（阿托伐他汀）',
-        value: '他汀（阿托伐他汀）'
+        value: '他汀（阿托伐他汀）',
+        isActive: false
       }, {
         label: '长效降压（氨氯地平)',
-        value: '长效降压（氨氯地平)'
+        value: '长效降压（氨氯地平)',
+        isActive: false
       }, {
         label: '其他',
-        value: '其他'
+        value: '其他',
+        isActive: false
       }],
       defaultChecklist: [],
       currentDayMedicineList: [],
       unbind: false,
       isDetail: false,
       msgCount: 0,
-      chatToken: ''
+      chatToken: '',
+      showDialog: false,
+      checkInList: [],
+      showMessage: false   // 点击当天的值
     }
   },
   created() {
@@ -88,6 +94,17 @@ export default {
     })
   },
   methods: {
+    takeMedicine(item) {
+      this.checkInList = []
+      item.isActive = true
+      let _this = this
+      for(let i = 0; i < this.checklistOpt.length; i++ ) {
+        if (this.checklistOpt[i]['isActive']) {
+          this.checkInList.push(this.checklistOpt[i])
+        }
+      }
+      console.log(this.checkInList)
+    },
     showCalendar() {
       this.checkInStatus = true
     },
@@ -95,29 +112,6 @@ export default {
       Toast({
         message: this.leaveMessage,
         duration: 5000
-      })
-    },
-    checkIn() {
-      let _this = this
-      resource.getTimestamp().then(res => {
-        return resource.checkIn({ diaryTime: res.body.result.timestamp, medicineList: _this.medicineList })
-      }).then(res => {
-        if (res.body.code == 0) {
-          resource.getTimestamp().then(res => {
-            var date = new Date(res.body.result.timestamp * 1000)
-            _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
-          })
-          _this.demoEvents.push({
-            date: base.formatEventDate(Date.now())
-          })
-          _this.isTake = true
-          setTimeout(() => {
-            _this.checkInStatus = true
-          }, 300)
-          setTimeout(() => {
-            _this.calendarTransform = true
-          }, 350)
-        }
       })
     },
     // loadMonthData(year, month) {
@@ -139,7 +133,16 @@ export default {
       this.$router.push('bindid')
     },
     clickDay(date) {
+      if(base.formatEventDate(new Date()) === base.formatEventDate(date)) {
+        this.checkInStatus = false
+        return false
+      }
       let _this = this
+      this.showMessage = true
+      setTimeout(() => {
+        this.showMessage = false
+      }, 500)
+      
       _this.medicineList = []
       resource.diaryInfo({ diaryTime: parseInt(new Date(date).getTime() / 1000) }).then(res => {
         for (var i = 0; i < _this.checklistOpt.length; i++) {
@@ -148,7 +151,6 @@ export default {
         if (res.body.result.medicine) {
           _this.medicineList = res.body.result.medicine.split(',')
         }
-
       })
     },
     changeMonth(month) {

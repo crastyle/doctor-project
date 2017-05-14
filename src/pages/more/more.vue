@@ -18,17 +18,11 @@
           </div>
           <div class="more_ft">
             <img :src="userInfo.headImg" alt="" class="headImg">
-  
           </div>
-  
         </div>
-  
         <div class="more_cell" @click="updateName">
-  
           <div class="more_hd">
-  
             <label class="more_label" for="">姓名</label>
-  
           </div>
   
           <div class="more_ft arrow" @click="changedShow">

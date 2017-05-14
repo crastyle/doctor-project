@@ -12,22 +12,16 @@ export default {
   created() {
     let _this = this
     // 检测用户的绑定状态，如果已经绑定了医生的话，直接跳转到激活页面
-    resource.checkStatus().then(res => {
-      if (res.body.result.bindDoctorStatus == 1) {
-        _this.$router.replace('leave')
-      } else {
-        resource.jsApiConfig().then(res => {
-          if (res.body.code == 0) {
-            wx.config({
-              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-              appId: res.body.result.appId, // 必填，公众号的唯一标识
-              timestamp: res.body.result.timestamp, // 必填，生成签名的时间戳
-              nonceStr: res.body.result.nonceStr, // 必填，生成签名的随机串
-              signature: res.body.result.signature,// 必填，签名，见附录1
-              jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-            });
-          }
-        })
+    resource.jsApiConfig().then(res => {
+      if (res.body.code == 0) {
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: res.body.result.appId, // 必填，公众号的唯一标识
+          timestamp: res.body.result.timestamp, // 必填，生成签名的时间戳
+          nonceStr: res.body.result.nonceStr, // 必填，生成签名的随机串
+          signature: res.body.result.signature,// 必填，签名，见附录1
+          jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
       }
     })
 

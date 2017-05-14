@@ -1,7 +1,14 @@
 .bindidPage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #f5f5f5;
     div.tips {
         font-size: .34rem;
         padding: 20px 15px;
+        color: #f00;
     }
     .label-input {
         font-size: .34rem;

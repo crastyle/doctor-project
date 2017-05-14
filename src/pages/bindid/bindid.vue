@@ -1,7 +1,7 @@
 <template>
     <div class="bindidPage">
         <div class="tips">
-            请输入您的医生识别码
+            同一家医院的某一科室，只能绑定一位医生
         </div>
         <div class="label-input">
             <input placeholder="请输入数字识别码" v-model="doctorID" type="tel">
