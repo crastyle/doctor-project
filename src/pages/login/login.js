@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Actionsheet, Field, Button, Toast,DatetimePicker } from 'mint-ui'
+import { Actionsheet, Field, Button, Toast, DatetimePicker } from 'mint-ui'
 import resource from '../../resource'
 import base from '../../base'
 import { bus } from '../../bus'
@@ -30,20 +30,19 @@ export default {
       buttonStatus: false,
       userInfo: {
         name: '',
-        age: '',
-        sex: 1,
+        birthDay: '',
+        sex: '',
         mobile: '',
-        smsCode: '',
         headImg: '',
-        openId: ''
+        openId: '',
+        smsCode: ''
       },
       activeLoginForm: false,
       sexValue: '请选择',
       birthday: '1970-01-01',
       birthdayStr: '请选择',
       startTime: new Date('1900/01/01'),
-      endTime: new Date(),
-      showUserInfo: false
+      endTime: new Date()
     }
   },
   components: {
@@ -53,131 +52,42 @@ export default {
     if (this.$route.params.imgurl) {
       this.userInfo.headImg = this.$route.params.imgurl
     }
-  },
-  created() {
-    let code = base.getUrlparams('code')
-    let openId = this.$route.query.openId
-    let _this = this
-
-    if (!code && !openId && base.isWechat()) {
-      resource.jsApiConfig().then(res => {
-        let redirect_uri = encodeURIComponent(location.href)
-        let codeUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.body.result.appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect `
-        window.location.href = codeUrl
+    if (window.localStorage.getItem('tempMobile')) {
+      this.userInfo.mobile = localStorage.getItem('tempMobile')
+      this.userInfo.smsCode = localStorage.getItem('tempSmsCode')
+      this.userInfo.openId = localStorage.getItem('tempOpenId')
+      let _this = this
+      resource.checkBind({ openId: this.userInfo.openId }).then(res => {
+        if (!res.body.result.bind && !_this.$route.params.imgurl) {
+          this.userInfo.headImg = res.body.result.wechatHeadImg
+        }
       })
     }
-    if (code) {
-      if (openId) {
-        _this.userInfo.openId = openId
-        if (!_this.$route.params.imgurl) {
-          resource.checkBind({ openId: openId }).then(res => {
-            _this.userInfo.headImg = res.body.result.wechatHeadImg
-          })
-        }
-      } else {
-        resource.oath({ code: code }).then(res => {
-          this.userInfo.openId = res.body.result.openId
-          return resource.checkBind({ openId: res.body.result.openId })
-        }).then(res => {
-          if (res.body.result.bind) {
-            //检测用户状态 绑定医生？激活月视图？
-            let userid = res.body.result.u
-            localStorage.setItem('userid', res.body.result.u)
-            localStorage.setItem('token', res.body.result.t)
-
-            resource.rongyunAppKey().then(res => {
-              if (res.body.code == 0) {
-                base.initIm(res.body.result.appKey)
-                resource.newtoken({ userGid: userid }).then(res => {
-                  if (res.body.code == 0) {
-                    base.watchIM()
-                    base.receiveMsg()
-                    base.connectIM(res.body.result.token, function () {
-                      window.onLoadingIMStatus = true
-                      bus.$emit('imLoad', res.body.result.token)
-                    })
-                  }
-                })
-              }
-            })
-            resource.checkStatus().then(res => {
-              if (res.body.result.activeRemindStatus == 1) {
-                _this.$router.replace('keep')
-              } else if (res.body.result.activeRemindStatus == 0) {
-                _this.$router.replace('activePlan')
-              } else if (res.body.result.bindDoctorStatus == 0) {
-                _this.$router.replace('bindid')
-              }
-            })
-          } else {
-            this.userInfo.headImg = res.body.result.wechatHeadImg
-          }
-        })
-      }
-    }
   },
+
   methods: {
-    validCode() {
-      let _this = this
-      resource.validCode({
-        smsCode: this.userInfo.smsCode,
-        mobile: this.userInfo.mobile
-      }).then(res => {
-        if (res.body.code == 0) {
-          _this.showUserInfo = true
-        }
-      }) 
-    },
     setBirthday() {
       this.birthdayStr = base.formatDate2(this.birthday)
+      this.userInfo.birthDay = parseInt(new Date(this.birthday).getTime() / 1000)
     },
     showBirthday() {
       this.$refs.birthdayPicker.open()
     },
-    showLoginForm: function () {
-      this.$router.push({ name: 'Cropper', query: { redirect: 'Login', openId: this.userInfo.openId } })
+    uploadHead: function () {
+      this.$router.push({
+        name: 'Cropper',
+        query: {
+          redirect: 'Login'
+        }
+      })
     },
     sex: function () {
       this.sheetVisible = true
     },
-    getCode: function () {
-      let second = 60
-      let _this = this
-      if (!base.validate.isTelephone(this.userInfo.mobile)) {
-        Toast({
-          message: '请输入正确的手机号码',
-          duration: 2000
-        })
-        return false
-      }
-      if (_this.buttonStatus) {
-        return false
-      }
-      _this.buttonStatus = true
-      this.validButtonText = `${second}重新获取`
-      resource.smsCode({
-        mobile: this.userInfo.mobile
-      }).then(res => {
-        Toast({
-          message: '验证码发送成功',
-          duration: 1500
-        })
-        let timer = setInterval(() => {
-          second--
-          _this.validButtonText = `${second}重新获取`
-          if (second === 0) {
-            _this.buttonStatus = false
-            _this.validButtonText = '获取验证码'
-            clearInterval(timer)
-          }
-        }, 1000)
-      })
-
-    },
-    login: function () {
+    loginUserInfo: function () {
       let name = this.userInfo.name
       let mobile = this.userInfo.mobile
-      let age = this.userInfo.age
+      let birthday = this.userInfo.birthDay
       let code = this.userInfo.smsCode
       let sex = this.userInfo.sex
       let _this = this
@@ -188,28 +98,21 @@ export default {
         })
         return false
       }
-      if (!base.validate.isNumber(age)) {
+      if (sex == '') {
         Toast({
-          message: '年龄不能为空',
+          message: '请选择您的性别',
+          duration: 2000
+        })
+        return false
+      }
+      if (!birthday) {
+        Toast({
+          message: '请选择生日',
           duration: 2000
         })
         return false
       }
 
-      if (!base.validate.isTelephone(mobile)) {
-        Toast({
-          message: '请输入正确的手机号码',
-          duration: 2000
-        })
-        return false
-      }
-      if (!base.validate.isValicode(code)) {
-        Toast({
-          message: '验证码不正确',
-          duration: 2000
-        })
-        return false
-      }
       resource.register(this.userInfo).then(res => {
         if (res.body.code == 0) {
           Toast({
@@ -217,6 +120,9 @@ export default {
             duration: 2000,
             position: 'middle'
           })
+          localStorage.removeItem('tempMobile')
+          localStorage.removeItem('tempSmsCode')
+          localStorage.removeItem('tempOpenId')
           let token = res.body.result.t
           let userid = res.body.result.u
           window.localStorage.setItem('userid', userid)
@@ -237,7 +143,7 @@ export default {
             }
           })
           setTimeout(() => {
-            _this.$router.replace('bindid')
+            _this.$router.replace('activePlan')
           }, 2000)
         }
       })

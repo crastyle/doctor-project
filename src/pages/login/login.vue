@@ -1,20 +1,9 @@
 <template>
     <div class="root">
-        <div class="validMobile" v-if="false">
-            <div class="cell-input">
-                <input class="input-item block icon-mobile" placeholder="手机" v-model="userInfo.mobile">
-            </div>
-            <div class="cell-input">
-                <input class="input-item block icon-code" placeholder="验证码" v-model="userInfo.smsCode">
-                <button class="valid-button" @click="getCode" v-bind:class="{'disabled': buttonStatus}">{{validButtonText}}</button>
-            </div>
-            <div class="cell-input">
-                <a href="javascript:;" class="confirm-button" @click="validCode">登录</a>
-            </div>
-        </div>
-        <div class="fixUserInfo" v-if="true">
+        
+        <div class="fixUserInfo">
             <div class="loginPage">
-                <div class="avatar-content" @click="showLoginForm">
+                <div class="avatar-content" @click="uploadHead">
                     <img :src="userInfo.headImg" alt="" class="avatar">
                     <p class="tip">修改头像</p>
                 </div>
@@ -45,10 +34,8 @@
                 </div>
                 <div class="mint-cell-right"></div>
             </a>
-            
-            
             <div class="section-button">
-                <mt-button type="primary" size="large" @click="login">提交</mt-button>
+                <mt-button type="primary" size="large" @click="loginUserInfo">提交</mt-button>
             </div>
         </div>
     

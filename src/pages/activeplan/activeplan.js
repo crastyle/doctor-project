@@ -38,34 +38,34 @@ export default {
       med1: [{
         name: '阿托伐他汀',
         method: () => {
-
+          this.med1Name = '阿托伐他汀'
         }
       }, {
         name: '非强效他汀',
         method: () => {
-
+          this.med1Name = '非强效他汀'
         }
       }],
       med2: [{
         name: '氨氯地平',
         method: () => {
-
+          this.med2Name = '氨氯地平'
         }
       }, {
         name: '非长效降压药',
         method: () => {
-
+          this.med2Name = '非长效降压药'
         }
       }],
       med3: [{
         name: '有',
         method: () => {
-
+          this.med3Name = '其他'
         }
       }, {
         name: '无',
         method: () => {
-          
+          this.med3Name = '无'
         }
       }],
       defaultChecklist: [],
@@ -80,19 +80,20 @@ export default {
       forkWeek: false,
       forkWeekValue: '请选择周期',
       formData: {
-        leaveTime: new Date(this.leavePickerValue).getTime(),
+        leaveTime: '',
         remindHour: 0,
         remindMinute: 0,
         remindWay: '',
-        med1: '',
-        med2: '',
-        med3: ''
+        medicineList: []
       },
       isRemindWay: false,
       remindWayStr: '请选择',
       isMed1: false,
       isMed2: false,
-      isMed3: false
+      isMed3: false,
+      med1Name: '',
+      med2Name: '',
+      med3Name: ''
     }
   },
   mounted: function () {
@@ -112,6 +113,7 @@ export default {
     },
     setLeaveValue() {
       this.leavePickerValue = base.formatDate2(this.leavePickerDate)
+      this.formData.leaveTime =  parseInt(new Date(this.leavePickerDate).getTime() / 1000)
     },
     setLeavePicker: function () {
       console.log(new Date(this.leavePickerValue))
@@ -124,15 +126,35 @@ export default {
       this.forkWeek = true
     },
     activePlan() {
-      this.formData.leaveTime = parseInt((new Date(this.leavePickerDate).getTime()) / 1000)
+      
       this.formData.remindHour = this.forkTimePickerDate.split(':')[0]
       this.formData.remindMinute = this.forkTimePickerDate.split(':')[1]
+      this.formData.medicineList = []
+      if (!this.formData['leaveTime']) {
+        Toast({
+          message: '请选择出院时间',
+          duration: 2000
+        })
+        return
+      }
       if (!this.formData['remindWay']) {
         Toast({
           message: '请选择提醒方式',
           duration: 2000
         })
         return
+      }
+      if (!this.med1Name || !this.med2Name || !this.med3Name) {
+        Toast({
+          message: '请选择用药类别',
+          duration: 2000
+        })
+        return
+      }
+      this.formData.medicineList.push(this.med1Name)
+      this.formData.medicineList.push(this.med2Name)
+      if (this.med3Name === '其他') {
+        this.formData.medicineList.push(this.med3Name)
       }
       let _this = this
       resource.activePlan(this.formData).then(res => {

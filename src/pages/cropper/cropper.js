@@ -27,14 +27,16 @@ export default {
       this.cropperImagesOption.width = parseInt(this.cropperImagesOption.width)
       resource.uploadImageWithCrop(this.cropperImagesOption).then(res => {
         let imgurl = res.body.result.imageUrl
-        if(_this.redirect == "More") {
-          resource.updateUserInfo({headImg: imgurl}).then(res => {
+        if (_this.redirect == "More") {
+          resource.updateUserInfo({ headImg: imgurl }).then(res => {
             if (res.body.code == 0) {
               _this.$router.replace(_this.redirect)
             }
           })
         } else {
-          _this.$router.push({ name: _this.redirect, params: { imgurl: imgurl },query: {openId: this.$route.query.openId} })
+          _this.$router.push({
+            name: _this.redirect, params: { imgurl: imgurl }
+          })
         }
       })
     },

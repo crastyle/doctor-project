@@ -8,18 +8,18 @@ export default {
             req.method = "POST"
             let u = window.localStorage.getItem('userid')
             let t = window.localStorage.getItem('token')
-            if (!u || u !== "undefined") {
-                if (!req.body) {
-                    req.body = {}
+            if (req.url.indexOf('uploadImageWithCropByBase64') > 0) {
+            } else {
+                if (!u || u !== "undefined") {
+                    if (!req.body) {
+                        req.body = {}
+                    }
+                    req.body['u'] = u
+                    req.body['t'] = t
+                    req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : 'wechat'
                 }
-                req.body['u'] = u
-                req.body['t'] = t
-                req.body['c'] = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') >= 0 ? 'wechat' : 'wechat'
-
-                // req.body['u'] = '156e6fe21f5f45dbb1198d1bc3223cd6'
-                // req.body['t'] = 'oipgNwtZu3Pzr9seSLMtKH7EJ2mg'
-                // req.body['c'] = 'wechat'
             }
+
             let toast = Toast({
                 message: '请求中...'
             })
@@ -85,6 +85,9 @@ export default {
      */
     checkStatus(params) {
         return this.resource('patient/user/checkStatus', params)
+    },
+    checkMobile(params) {
+        return this.resource('patient/user/checkMobile', params)
     },
 
     /**
@@ -170,7 +173,22 @@ export default {
     userInfo() {
         return this.resource('patient/user/userInfo')
     },
-
+    uploadImageWithBase64Crop(params, base64) {
+        let postStr = ''
+        if (params.width != undefined) {
+            postStr += `width=${params.width}&`
+        }
+        if (params.height != undefined) {
+            postStr += `height=${params.height}&`
+        }
+        if (params.x != undefined) {
+            postStr += `x=${parmas.x}&`
+        }
+        if (params.y != undefined) {
+            postStr += `y=${params.y}&`
+        }
+        return this.resource(`utility/uploadImageWithCropByBase64?bucket=doctor&${postStr}`, base64)
+    },
     planInfo() {
         return this.resource('patient/plan/planInfo')
     },
@@ -180,10 +198,15 @@ export default {
     updatePlan(params) {
         return this.resource('patient/plan/updatePlanSelective', params)
     },
+    defaultDoctor(params) {
+        return this.resource('patient/myDoctor/defultDoctorInfo', params)
+    },
     bindDoctorInfo(params) {
         return this.resource('patient/myDoctor/bindDoctorInfo', params)
     },
-
+    bindDoctorList(params) {
+        return this.resource('patient/myDoctor/bindDoctorList', params)
+    },
     rongyunAppKey() {
         return this.resource('rongyun/gateway/rongyunAppKey')
     },

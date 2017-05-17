@@ -43,7 +43,7 @@
                     他汀类药物
                 </div>
                 <div class="values" @click="showMed1">
-                    {{remindWayStr}}
+                    {{med1Name || "点击选择"}}
                 </div>
                 <mt-actionsheet :actions="med1" v-model="isMed1"></mt-actionsheet>
             </div>
@@ -54,7 +54,7 @@
                     降压类药物
                 </div>
                 <div class="values" @click="showMed2">
-                    {{remindWayStr}}
+                    {{med2Name || "点击选择"}}
                 </div>
                 <mt-actionsheet :actions="med2" v-model="isMed2"></mt-actionsheet>
             </div>
@@ -65,7 +65,7 @@
                     其他
                 </div>
                 <div class="values" @click="showMed3">
-                    {{remindWayStr}}
+                    {{med3Name || "点击选择"}}
                 </div>
                 <mt-actionsheet :actions="med3" v-model="isMed3"></mt-actionsheet>
             </div>

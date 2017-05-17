@@ -15,11 +15,11 @@
       </div>
       <div class="dates">
         <div v-for="(date, index) in dayList" class="item" :class="{
-              today: date.status ? (today==date.date) : false,
-              event: date.status ? (date.title != undefined && !date.fail ) : false,
-              fail: date.status ? (date.fail == true && !date.title) : false,
-              active: date.status ? date.isActive == true : false
-            }">
+                today: date.status ? (today==date.date) : false,
+                event: date.status ? (date.title != undefined && !date.fail ) : false,
+                fail: date.status ? (date.fail == true && !date.title) : false,
+                active: date.status ? date.isActive == true : false
+              }">
           <p class="date-num" v-if="today == date.date" @click="handleChangeCurday(date, index)">今天</p>
           <p class="date-num" v-if="today != date.date" @click="handleChangeCurday(date, index)">{{date.status ? date.date.split('/')[2] : '&nbsp'}}</p>
           <span v-if="date.status ? (today==date.date) : false"></span>
@@ -59,41 +59,9 @@
       }
     },
     mounted: function() {
-      let firstDay = new Date(this.calendar.params.curYear + '/' + (this.calendar.params.curMonth + 1) + '/01')
-      let startTimestamp = firstDay - 1000 * 60 * 60 * 24 * firstDay.getDay()
-      let item, status, tempArr = [],
-        tempItem
-      if (this.calendar.options.locale === 'es') {
-        startTimestamp = startTimestamp + 1000 * 60 * 60 * 24
-      }
-      for (let i = 0; i < 42; i++) {
-        item = new Date(startTimestamp + i * 1000 * 60 * 60 * 24)
-        if (this.calendar.params.curMonth === item.getMonth()) {
-          status = 1
-        } else {
-          status = 0
-        }
-        tempItem = {
-          date: `${item.getFullYear()}/${item.getMonth()+1}/${item.getDate()}`,
-          status: status,
-          isActive: false
-        }
-        this.events.forEach((event) => {
-          if (isEqualDateStr(event.date, tempItem.date)) {
-            tempItem.title = event.title
-            tempItem.fail = event.fail
-            tempItem.desc = event.desc || ''
-          }
-        })
-  
-        tempArr.push(tempItem)
-  
-      }
-      this.dayList = tempArr
-  
+      this.loadMonthData()
     },
     computed: {
-      
       today() {
         let dateObj = new Date()
         return `${dateObj.getFullYear()}/${dateObj.getMonth()+1}/${dateObj.getDate()}`
@@ -116,13 +84,45 @@
       }
     },
     methods: {
-  
+      loadMonthData() {
+        let firstDay = new Date(this.calendar.params.curYear + '/' + (this.calendar.params.curMonth + 1) + '/01')
+        let startTimestamp = firstDay - 1000 * 60 * 60 * 24 * firstDay.getDay()
+        let item, status, tempArr = [],
+          tempItem
+        if (this.calendar.options.locale === 'es') {
+          startTimestamp = startTimestamp + 1000 * 60 * 60 * 24
+        }
+        for (let i = 0; i < 42; i++) {
+          item = new Date(startTimestamp + i * 1000 * 60 * 60 * 24)
+          if (this.calendar.params.curMonth === item.getMonth()) {
+            status = 1
+          } else {
+            status = 0
+          }
+          tempItem = {
+            date: `${item.getFullYear()}/${item.getMonth()+1}/${item.getDate()}`,
+            status: status,
+            isActive: false
+          }
+          this.events.forEach((event) => {
+            if (isEqualDateStr(event.date, tempItem.date)) {
+              tempItem.title = event.title
+              tempItem.fail = event.fail
+              tempItem.desc = event.desc || ''
+            }
+          })
+          tempArr.push(tempItem)
+        }
+        this.dayList = tempArr
+      },
       nextMonth() {
         this.$EventCalendar.nextMonth()
+        this.loadMonthData()
         this.$emit('change-month', this.curYearMonth)
       },
       preMonth() {
         this.$EventCalendar.preMonth()
+        this.loadMonthData()
         this.$emit('change-month', this.curYearMonth)
       },
       handleChangeCurday(date, index) {

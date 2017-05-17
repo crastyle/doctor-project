@@ -79,14 +79,19 @@ export default {
                 userGid: '',
                 mobile: '',
                 name: '',
-                age: '',
+                birthday: '',
                 sex: '',
                 headImg: '',
                 bindDoctorStatus: '',
                 smsCode: ''
             },
             showMobile: false,
-            sheetVisible: false
+            sheetVisible: false,
+            doctorList: [],
+            startTime: new Date('1900/01/01'),
+            endTime: new Date(),
+            birthday: '',
+            birthdayStr: ''
         }
     },
     methods: {
@@ -97,7 +102,7 @@ export default {
             console.log(event)
         },
         changedShow() { },
-        
+
         unbind: function () {
             MessageBox.confirm('确定解除绑定该医生吗').then(action => {
                 if (action === 'confirm') {
@@ -170,68 +175,37 @@ export default {
         },
 
         updateName() {
-
             let _this = this
-
             MessageBox.prompt('请输入姓名').then((value, action) => {
-
                 if (value.value) {
-
                     resource.updateUserInfo({
-
                         name: value.value
-
                     }).then(res => {
-
                         if (res.body.code == 0) {
-
                             _this.userInfo.name = value.value
-
                         }
-
                     })
-
                 }
-
             })
-
         },
 
-        updateAge() {
-
-            let _this = this
-
-            MessageBox.prompt('请输入年龄').then((value, action) => {
-
-                if (value.value) {
-
-                    resource.updateUserInfo({
-
-                        age: value.value
-
-                    }).then(res => {
-
-                        if (res.body.code == 0) {
-
-                            _this.userInfo.age = value.value
-
-                        }
-
-                    })
-
-                }
-
-            })
-
+        showBirthday() {
+            this.$refs.birthdayPicker.open()
         },
-
         updateSex() {
             this.sheetVisible = true
-
         },
-
+        setBirthday() {
+            console.log(new Date(base.formatEventDate(this.birthday)).getTime())
+            resource.updateUserInfo({
+                birthDay: parseInt(new Date(this.birthday).getTime() / 1000)
+            }).then(res => {
+                if (res.body.code == 0) {
+                    this.birthdayStr = base.formatDate2(this.birthday)
+                }
+            })
+        },
         updateHead() {
-
             this.$router.push({
 
                 name: 'Cropper',
@@ -259,7 +233,6 @@ export default {
             let _this = this
             let mobile = this.mobile
 
-            console.log(mobile, this.userInfo.mobile)
 
             if (mobile == this.userInfo.mobile) {
                 Toast({
@@ -268,7 +241,7 @@ export default {
                 })
                 return false
             }
-            
+
             if (!base.validate.isTelephone(mobile)) {
                 Toast({
                     message: '请输入正确的手机号码',
@@ -331,11 +304,18 @@ export default {
             if (res.body.code == 0) {
                 _this.userInfo = res.body.result
                 _this.mobile = JSON.parse(JSON.stringify(_this.userInfo))['mobile']
+                _this.birthdayStr = base.formatDate2(res.body.result.birthDay * 1000)
+                _this.birthday = new Date(res.body.result.birthDay * 1000)
             }
         })
         resource.planInfo().then(res => {
             if (res.body.code == 0) {
                 _this.remindWay = res.body.result.remindWay
+            }
+        })
+        resource.bindDoctorList().then(res => {
+            if (res.body.code == 0) {
+                this.doctorList = res.body.result
             }
         })
     },

@@ -1,0 +1,78 @@
+@import '../../styles/app';
+.validMobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: url(../../assets/login-background.png) no-repeat;
+    background-size: cover;
+    @include vertical();
+    .mint-cell {
+        background: transparent;
+    }
+    .cell-input {
+        width: 5.9rem;
+        height: .82rem;
+        position: relative;
+        margin-bottom: .46rem;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .confirm-button {
+        width: 5.9rem;
+        height: .82rem;
+        border-radius: 10px;
+        background: #fff;
+        color: $maincolor;
+        text-align: center;
+        line-height: .82rem;
+        display: block;
+        font-size: 16px;
+    }
+    .input-item {
+        width: 5.9rem;
+        height: .82rem;
+        border: 1px solid #fff;
+        color: #fff;
+        display: block;
+        position: relative;
+        box-sizing: border-box;
+        padding-left: 35px;
+        border-radius: 10px;
+        font-size: 16px;
+        &::-webkit-input-placeholder {
+            color: #fff;
+        }
+        &.icon-mobile {
+            background: url(../../assets/image/icon-login-mobile.png) no-repeat left 10px center;
+            background-size: .34rem .53rem;
+        }
+        &.icon-code {
+            background: url(../../assets/image/icon-login-code.png) no-repeat left 10px center;
+            background-size: .34rem .46rem;
+        }
+    }
+    .valid-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2rem;
+        height: .82rem;
+        border: 1px solid #fff;
+        color: $maincolor;
+        background: #fff;
+        outline: none;
+        &.disabled {
+            border: 1px solid #ccc;
+            background: #ccc;
+            color: #fff;
+        }
+    }
+}
+
+
+
+.section-button {
+    padding: 16px;
+}

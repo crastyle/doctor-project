@@ -14,12 +14,14 @@ import Cropper from '../pages/cropper/cropper.vue'
 import LoginForm from '../components/LoginForm.vue'
 import Doctors from '../pages/doctors/doctors.vue'
 import Doctor from '../pages/doctor/doctor.vue'
+import Register from '../pages/register/register.vue'
 //@import
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {path: '/',name: 'Login',component: Login},
+    {path: '/',name: 'Register',component: Register},
+    {path: '/login',name: 'Login',component: Login},
     {path: '/more',name: 'More',component: More},
     {path: '/bindid',name: 'Bindid',component: Bindid},
     {path: '/bindcard',name: 'Bindcard',component: Bindcard},

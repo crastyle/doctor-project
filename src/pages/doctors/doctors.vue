@@ -1,19 +1,19 @@
 <template>
     <div class="doctorsPage">
-        <div class="sub-title">您已经绑定了2位医生</div>
+        <div class="sub-title" v-if="doctors.length > 0">您已经绑定了{{doctors.length}}位医生</div>
+        <div class="sub-title" v-if="!doctors || doctors.length ==0">您暂时还未绑定医生</div>
         <div class="doctor-list">
-            <div class="item">
+            <div class="item" v-for='(doctor, index) in doctors' @click="goDoctor(doctor)">
                 <div class="avatar">
                     <div class="img-box">
-                        <img :src="$static + 'ava.jpg'">
+                        <img :src="doctor.headImg">
                     </div>
                 </div>
                 <div class="info">
-                    <div class="name">王龙医生</div>
-                    <div class="position">北京市海淀区协和医院外科 主任</div>
+                    <div class="name">{{doctor.name}}</div>
+                    <div class="position">{{doctor.hospital}}{{doctor.department}} {{doctor.title}}</div>
                 </div>
             </div>
-            
             <router-link to="bindid">
                 <div class="item">
                     <div class="avatar">

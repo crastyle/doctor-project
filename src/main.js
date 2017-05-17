@@ -24,7 +24,7 @@ new Vue({
   created() {
     let _this = this
     let route = this.$route.name
-    if (route !== 'Login' && route !== 'Cropper' ) {
+    if (route !== 'Login' && route !== 'Cropper' && route !== 'Register') {
       // 如果是在注册页面，让他授权登录
       resource.userInfo().then(res => {
         if (res.body.code == 0) {

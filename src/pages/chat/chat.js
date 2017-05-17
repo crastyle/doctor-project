@@ -1,7 +1,9 @@
 import resource from '../../resource'
 import base from '../../base'
 import { bus } from '../../bus'
-import { Toast } from 'mint-ui'
+import { Toast, Header } from 'mint-ui'
+import Vue from 'vue'
+Vue.component(Header.name, Header)
 export default {
   name: 'Chat',
   data() {
@@ -17,7 +19,8 @@ export default {
       isStartVoice: false,
       voiceId: '',
       isPlaying: false,
-      isPlayId: ''
+      isPlayId: '',
+      isHidden: false
     }
   },
 
@@ -28,8 +31,8 @@ export default {
       message: '加载中...'
     })
     bus.$on('imLoad', function () {
-      resource.bindDoctorInfo().then(res => {
-        if (res.body.code == 0 && res.body.result.bindDoctorStatus == 1) {
+      resource.defaultDoctor().then(res => {
+        if (res.body.code == 0) {
           _this.doctorInfo = res.body.result
           _this.getHistoryRecord()
         }
@@ -38,7 +41,7 @@ export default {
 
     if (window.onLoadingIMStatus) {
       resource.bindDoctorInfo().then(res => {
-        if (res.body.code == 0 && res.body.result.bindDoctorStatus == 1) {
+        if (res.body.code == 0) {
           _this.doctorInfo = res.body.result
           _this.getHistoryRecord()
         }
@@ -196,41 +199,44 @@ export default {
       this.msgType = !this.msgType
     },
     sendImage(event) {
+      let _this = this
+      console.log(event.target.value)
       if (event.target.value) {
-        let _this = this
-        let options = {
-          image: event.target.files[0],
-          bucket: 'patient'
-        }
+        let URL = window.URL || window.webkitURL;
+        let src = URL.createObjectURL(event.target.files[0])
         let toast = Toast({
           message: '图片发送中'
         })
-        resource.uploadImageWithCrop(options).then(res => {
-          if (res.body.code == 0) {
-            toast.close()
-            _this.chatContent = res.body.result.imageUrl
-            // 定义消息类型,文字消息使用 RongIMLib.TextMessage
-            var msg = new RongIMLib.TextMessage({ content: _this.chatContent, extra: "image" });
-            //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
-            //var msg = RongIMLib.TextMessage.obtain("hello");
-            var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
-            var targetId = this.$route.query.id; // 目标 Id
-            RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
-              // 发送消息成功
-              onSuccess: function (message) {
-                //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
-                _this.contentList.push({
-                  content: _this.chatContent,
-                  headImg: _this.userInfo.headImg,
-                  type: '1',
-                  extra: 'image'
-                })
-                _this.chatContent = ''
-                console.log('消息发送成功')
+        base.uglyImage(src, { width: 640 }, function (url) {
+          return resource.uploadImageWithBase64Crop({
+            bucket: 'doctor'
+          }, url).then(res => {
+            if (res.body.code == 0) {
+              toast.close()
+              _this.chatContent = res.body.result.imageUrl
+              // 定义消息类型,文字消息使用 RongIMLib.TextMessage
+              var msg = new RongIMLib.TextMessage({ content: _this.chatContent, extra: "image" });
+              //或者使用RongIMLib.TextMessage.obtain 方法.具体使用请参见文档
+              //var msg = RongIMLib.TextMessage.obtain("hello");
+              var conversationtype = RongIMLib.ConversationType.PRIVATE; // 私聊
+              var targetId = _this.$route.query.id; // 目标 Id
+              RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
+                // 发送消息成功
+                onSuccess: function (message) {
+                  //message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
+                  _this.contentList.push({
+                    content: _this.chatContent,
+                    headImg: _this.userInfo.headImg,
+                    type: '1',
+                    extra: 'image'
+                  })
+                  _this.chatContent = ''
+                  console.log('消息发送成功')
+                }
               }
+              );
             }
-            );
-          }
+          })
         })
       }
     },
