@@ -1,5 +1,5 @@
 import resource from './resource'
-import {bus} from './bus'
+import { bus } from './bus'
 export default {
     validate: {
         isTelephone(val) {
@@ -49,33 +49,39 @@ export default {
             }
         }
     },
-    uglyImage(path, obj, callback) {
+    uglyImage(path, callback, orient) {
         var img = new Image();
         img.src = path;
+
         img.onload = function () {
+
             var that = this;
+            let x = 0, y = 0;
             // 默认按比例压缩
-            var w = that.width,
-                h = that.height,
-                scale = w / h;
-            w = obj.width || w;
-            h = obj.height || (w / scale);
-            var quality = 0.5;  // 默认图片质量为0.7
-            //生成canvas
-            var canvas = document.createElement('canvas');
+
+            var canvas = document.createElement('canvas')
             var ctx = canvas.getContext('2d');
-            // 创建属性节点
-            var anw = document.createAttribute("width");
-            anw.nodeValue = w;
-            var anh = document.createAttribute("height");
-            anh.nodeValue = h;
-            canvas.setAttributeNode(anw);
-            canvas.setAttributeNode(anh);
-            ctx.drawImage(that, 0, 0, w, h);
-            // 图像质量
-            if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
-                quality = obj.quality;
+
+            var windowWidth = document.documentElement.clientWidth;
+            if (orient && orient == 6) {
+                canvas.width = height;
+                canvas.height = width;
+                ctx.save()
+                ctx.translate(width / 2, height / 2);//设置画布上的(0,0)位置，也就是旋转的中心点
+                ctx.rotate(90 * Math.PI / 180);//把画布旋转90度
+                ctx.drawImage(img, Number(y) - height / 2, Number(x) - width / 2, windowWidth, height * (windowWidth / width));//把图片绘制在画布translate之前的中心点，
+                ctx.restore();//恢复状态
+            } else {
+                var width = img.width;
+                var height = img.height;
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, x, y, width, height);
+                // ctx.translate(ctx.width / 2, ctx.height / 2);//设置画布上的(0,0)位置，也就是旋转的中心点
+                // ctx.rotate(90 * Math.PI / 180);//把画布旋转90度
+                // ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, -width/2, -height/2, width, height);//把图片绘制在画布translate之前的中心点，
             }
+            var quality = 0.3;
             // quality值越小，所绘制出的图像越模糊
             var base64 = canvas.toDataURL('image/jpeg', quality);
             // 回调函数返回base64的值
@@ -111,7 +117,7 @@ export default {
         return `${year}年${month}月${day}日`
     },
     formatEventDate(time) {
-          let date = new Date(time)
+        let date = new Date(time)
         let year = date.getFullYear()
         let month = date.getMonth() + 1
         let day = date.getDate()
@@ -146,7 +152,7 @@ export default {
                         console.log('域名不正确');
                         break;
                     case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:
-                    location.reload()
+                        location.reload()
                         console.log('网络不可用');
                         break;
                 }
@@ -189,7 +195,15 @@ export default {
         RongIMClient.setOnReceiveMessageListener({
             // 接收到的消息
             onReceived: function (message) {
-                console.log(message)
+                if (!localStorage.getItem('unlist')) {
+                    localStorage.setItem('unlist', message.targetId)
+                } else {
+                    let unlist = localStorage.getItem('unlist').split(',')
+                    if (unlist.indexOf(message.targetId) < 0) {
+                        unlist.push(message.targetId)
+                        localStorage.setItem('unlist', unlist)
+                    }
+                }
                 bus.$emit('receiveMsg', message)
                 // 判断消息类型
                 switch (message.messageType) {

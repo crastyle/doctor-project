@@ -20,6 +20,7 @@ export default {
                 }
             }
 
+
             let toast = Toast({
                 message: '请求中...'
             })
@@ -32,13 +33,18 @@ export default {
                     })
                     return
                 }
-                if (res.ok && res.body.code !== 0) {
-                    Toast({
-                        message: res.body.message,
-                        duration: 2000
-                    })
-                    return
+                if (req.url.indexOf('userInfo') > 0) {
+
+                } else {
+                    if (res.ok && res.body.code !== 0) {
+                        Toast({
+                            message: res.body.message,
+                            duration: 2000
+                        })
+                        return
+                    }
                 }
+
             })
         })
     },
@@ -182,7 +188,7 @@ export default {
             postStr += `height=${params.height}&`
         }
         if (params.x != undefined) {
-            postStr += `x=${parmas.x}&`
+            postStr += `x=${params.x}&`
         }
         if (params.y != undefined) {
             postStr += `y=${params.y}&`

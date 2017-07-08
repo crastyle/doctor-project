@@ -1,0 +1,14 @@
+.redirectPage {
+    .section-button {
+        padding-top: .8rem;
+        border-bottom: 1px solid #e2e2e2;
+        &:last-child {
+            border: none;
+        }
+        .tip {
+            font-size: 15px;
+            color: #000;
+            margin: .4rem 0 .6rem;
+        }
+    }
+}

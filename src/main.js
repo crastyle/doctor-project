@@ -12,8 +12,10 @@ import resource from './resource'
 import base from './base'
 import { bus } from './bus'
 import VueTouch from 'vue-touch'
+import { Toast } from 'mint-ui'
+// import 'vconsole'
 Vue.config.productionTip = false
-Vue.use(VueTouch, {name: 'v-touch'})
+Vue.use(VueTouch, { name: 'v-touch' })
 Vue.prototype.$static = 'http://localhost:8080/static/'
 resource.interceports()
 new Vue({
@@ -24,34 +26,48 @@ new Vue({
   created() {
     let _this = this
     let route = this.$route.name
+    let toast = ''
     if (route !== 'Login' && route !== 'Cropper' && route !== 'Register') {
-      // 如果是在注册页面，让他授权登录
-      resource.userInfo().then(res => {
-        if (res.body.code == 0) {
-          let userid = res.body.result.userGid
-          let rongyunToken = res.body.result.rongyunToken
-          resource.rongyunAppKey().then(res => {
-            if (res.body.code == 0) {
-              base.initIm(res.body.result.appKey)
-              resource.newtoken({ userGid: userid }).then(res => {
-                if (res.body.code == 0) {
-                  base.watchIM()
-                  base.receiveMsg()
-                  let token = res.body.result.token
-                  base.connectIM(token, function () {
-                    window.onLoadingIMStatus = true
-                    bus.$emit('imLoad', token)
-                  })
-                }
-              })
-            }
-          })
-     
-        } else {
-          _this.$router.replace('login')
-        }
-      })
+      if (!localStorage.getItem('userid')) {
+        toast = Toast({
+          message: '您还没有注册',
+          duration: 2000
+        })
+        setTimeout(() => {
+          _this.$router.replace('/')
+        }, 2000)
+      } else {
+        resource.userInfo().then(res => {
+          if (res.body.code == 0) {
+            let userid = res.body.result.userGid
+            let rongyunToken = res.body.result.rongyunToken
+            resource.rongyunAppKey().then(res => {
+              if (res.body.code == 0) {
+                base.initIm(res.body.result.appKey)
+                resource.newtoken({ userGid: userid }).then(res => {
+                  if (res.body.code == 0) {
+                    base.watchIM()
+                    base.receiveMsg()
+                    let token = res.body.result.token
+                    base.connectIM(token, function () {
+                      window.onLoadingIMStatus = true
+                      bus.$emit('imLoad', token)
+                    })
+                  }
+                })
+              }
+            })
+          } else {
+            toast = Toast({
+              message: '您还没有注册',
+              duration: 2000
+            })
+            setTimeout(() => {
+              _this.$router.replace('/')
+            }, 2000)
+          }
+        })
+      }
     }
-   
   }
 })

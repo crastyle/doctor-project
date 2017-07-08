@@ -21,7 +21,7 @@
       </div>
     </div>
   
-    <div class="chat_zone" v-if="msgType">
+    <div class="chat_zone" :class="{'bottom': isbottom}" v-if="msgType">
       <div class="chat_footer" @click="changeStatus" v-if="isHidden"> 
         <!-- 添加on为语音状态 -->
         <i class="emotion"></i>
@@ -33,7 +33,7 @@
       </div>
       <div class="chat_footer chat_footer_center" v-if="msgType">
         <!-- 输入框状态 -->
-        <textarea name="" id="" v-model="chatContent"></textarea>
+        <textarea name="" id="" v-model="chatContent" @focus="showBottom" @blur="hideBottom" ></textarea>
         <!-- 语音状态-->
       </div>
   

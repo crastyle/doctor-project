@@ -33,6 +33,9 @@
         z-index: 99;
     }
     .chat_zone {
+        &.bottom {
+            bottom: .8rem;
+        }
         background: #F9F9F9;
         border-top: 1px solid #DCDCDC;
         height: 1.2rem;

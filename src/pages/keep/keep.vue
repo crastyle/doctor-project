@@ -1,8 +1,7 @@
 <template>
     <div class="keepPage">
-        <div class="overlay" v-if="showDialog">
+        <div class="overlay" @click="hideOk" v-if="isOk">
             <div class="overlay-tip">
-                <i class="icon-ok"></i> 恭喜您
             </div>
         </div>
         <a href="javascript:;" class="item-cell">
@@ -25,7 +24,11 @@
                     <div class="medicine-tip">
                         <div class="tip" v-if="leaveDay > 0">出院第<em>{{leaveDay}}</em>天</div>
                         <div class="tip" v-if="leaveDay == 0">出院了</div>
-                        <div class="tip-ass" @click="showTips">{{leaveMessage}}</div>
+                        <div class="tip-ass" @click="showTips" v-if="!medicineList">{{leaveMessage}}</div>
+                        <div class="tip-ass" @click="showTips" v-if="medicineList.length > 0">
+                            <p>今日所用药物</p>
+                            <p>{{medicineList}}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="doctor-msg-info" :class="{'transform': showMessage}">
@@ -39,7 +42,11 @@
                     <div class="medicine-tip">
                         <div class="tip" v-if="leaveDay > 0">出院第<em>{{leaveDay}}</em>天</div>
                         <div class="tip" v-if="leaveDay == 0">出院了</div>
-                        <div class="tip-ass" @click="showTips">要记得吃药啊啊啊要记得吃药啊啊啊要记得吃药啊啊啊要记得吃药啊啊啊{{leaveMessage}}</div>
+                        <div class="tip-ass" @click="showTips" v-if="!medicineList">{{leaveMessage}}</div>
+                        <div class="tip-ass" @click="showTips" v-if="medicineList">
+                            <p>今日所用药物</p>
+                            <p>{{medicineList}}</p>
+                        </div>
                     </div>
                 </div>
             </div>

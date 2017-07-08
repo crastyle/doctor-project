@@ -1,4 +1,9 @@
 .cropperPage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     header{
             height:50px;
             background: #005fb3;
@@ -46,11 +51,33 @@
         }
         #image-area{
             text-align:center;
-            height:500px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
         }
         #viewPic{
             max-width:300px;
             display: inline-block;
         }
-        
+        .ctrl {
+            width: 1.36rem;
+            height: 1.36rem;
+            position: absolute;
+            bottom: .4rem;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.36rem;
+            &.confirm {
+                background: #0691cd;
+                right: .86rem;
+            }
+            &.cancel {
+                background: #242424;
+                left: .86rem;
+            }
+        }
 }

@@ -2,6 +2,7 @@ var cropper = require('./cropperController')
 import $ from 'jquery'
 import "../../styles/cropper.scss"
 import resource from '../../resource'
+import base from '../../base'
 export default {
   name: 'Cropper',
   data() {
@@ -15,7 +16,8 @@ export default {
         width: 0,
         bucket: 'patient'
       },
-      redirect: ''
+      redirect: '',
+      base64: ''
     }
   },
   methods: {
@@ -25,23 +27,20 @@ export default {
       this.cropperImagesOption.y = parseInt(this.cropperImagesOption.y)
       this.cropperImagesOption.height = parseInt(this.cropperImagesOption.height)
       this.cropperImagesOption.width = parseInt(this.cropperImagesOption.width)
-      resource.uploadImageWithCrop(this.cropperImagesOption).then(res => {
+      resource.uploadImageWithBase64Crop(this.cropperImagesOption, this.base64).then(res => {
         let imgurl = res.body.result.imageUrl
         if (_this.redirect == "More") {
           resource.updateUserInfo({ headImg: imgurl }).then(res => {
             if (res.body.code == 0) {
-              _this.$router.replace(_this.redirect)
+              _this.$router.replace({ name: _this.redirect })
             }
           })
         } else {
-          _this.$router.push({
+          _this.$router.replace({
             name: _this.redirect, params: { imgurl: imgurl }
           })
         }
       })
-    },
-    change(event) {
-      this.cropperImagesOption.image = event.target.files[0]
     }
   },
   mounted() {
@@ -50,11 +49,13 @@ export default {
     _this.redirect = this.$route.query.redirect
     $(function () {
       var $image = $('#viewPic');  //预览图片的容器
-      var $inputImage = $('#upload');  // 上传图片file控件
-      var $uploadBtn = $('#J-submit');  // 保存按钮
-
+     
+      let width = document.documentElement.clientWidth;
       var options = {    // 裁剪的参数,正方形比例.
         aspectRatio: 1 / 1,
+        cropBoxResizable: false,
+        minCropBoxHeight: width,
+        minCropBoxWidth: width,
         crop: function (e) {
           _this.cropperImagesOption.x = e.x;
           _this.cropperImagesOption.y = e.y;
@@ -63,39 +64,19 @@ export default {
         }
       };
 
-      $image.cropper(options);
-
-
       // Import image
       var URL = window.URL || window.webkitURL;
       var blobURL;
+      base.uglyImage(_this.$route.query.src, function (url) {
+        $image.cropper(options);
+        $image.one('built.cropper', function () {
 
-      $inputImage.change(function () {
-        var files = this.files;
-        var file;
-
-        if (!$image.data('cropper')) {
-          return;
-        }
-
-        if (files && files.length) {
-          file = files[0];
-          $uploadBtn.show();
-
-          if (/^image\/\w+$/.test(file.type)) {
-            blobURL = URL.createObjectURL(file);
-            $image.one('built.cropper', function () {
-
-              // Revoke when load complete
-              URL.revokeObjectURL(blobURL);
-            }).cropper('reset').cropper('replace', blobURL);
-
-            $inputImage.val('');
-          } else {
-            window.alert('Please choose an image file.');
-          }
-        }
-      });
+          // Revoke when load complete
+          URL.revokeObjectURL(url);
+          _this.base64 = url
+       
+        }).cropper('reset').cropper('replace', url);
+      }, _this.$route.query.orient)
     });
   }
 }

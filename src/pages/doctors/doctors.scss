@@ -19,6 +19,17 @@
                     width: 2rem;
                     height: 2rem;
                     margin: 0 auto;
+                    position: relative;
+                    .new {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                        background: #f00;
+                        display: block;
+                        position: absolute;
+                        right: .1rem;
+                        top: .3rem;
+                    }
                     img {
                         width: 2rem;
                         height: 2rem;

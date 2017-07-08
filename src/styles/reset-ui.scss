@@ -4,15 +4,17 @@
     width: 120px;
     padding-left: .36rem;
 }
+.mint-button--primary {
+    background: $maincolor;
+}
 .mint-field {
     border-bottom: 1px solid #ededed;
 }
 .mint-field-other {
     height: 100%;
 }
-
 .mint-button--primary {
-    background-color: #028BE6;
+    background-color: $maincolor;
 }
 .form-label {
     .sex-value {
@@ -172,8 +174,8 @@
   background-color: transparent;
 }
 .doctor_dialog .mint-radio-input:checked + .mint-radio-core {
-  background-color: #028BE6;
-  border-color: #028BE6;
+  background-color: $maincolor;
+  border-color: $maincolor;
 }
 .doctor_dialog .mint-radio-core::after {
   border: 2px solid transparent;
@@ -307,4 +309,29 @@
         border-right: 0;
         font-weight: bold;
     }
+}
+
+// cropper 
+
+.cropper-bg {
+    background: #fff;
+}
+.cropper-dashed.dashed-h {
+    display: none;
+}
+.cropper-dashed.dashed-v {
+    display: none;
+}
+.cropper-point.point-se {
+    width: 0;
+    height: 0;
+}
+.cropper-view-box {
+    outline: 1px solid #fff;
+}
+.cropper-line {
+    background: #fff;
+}
+.cropper-point {
+    background: #fff;
 }

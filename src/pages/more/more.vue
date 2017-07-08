@@ -33,27 +33,26 @@
   
         </div>
   
-        <div class="more_cell" >
+        <div class="more_cell" @click="showBirthday">
           <div class="more_hd">
             <label class="more_label" for="">出生年月</label>
           </div>
           <div class="more_ft arrow">
-            <div @click="showBirthday">
+            <div>
               {{birthdayStr}}
             </div>
-            <mt-datetime-picker ref="birthdayPicker" @confirm="setBirthday" v-model="birthday" type="date" year-format="{value}年" month-format="{value}月" date-format="{value}日" :startDate="startTime" :endDate="endTime"></mt-datetime-picker>
           </div>
         </div>
-        <div class="more_cell">
+        <mt-datetime-picker ref="birthdayPicker" @confirm="setBirthday" v-model="birthday" type="date" year-format="{value}年" month-format="{value}月" date-format="{value}日" :startDate="startTime" :endDate="endTime"></mt-datetime-picker>
+        <div class="more_cell" @click="updateSex">
           <div class="more_hd">
             <label class="more_label" for="">性别</label>
           </div>
-          <div class="more_ft arrow" @click="updateSex">
+          <div class="more_ft arrow">
             {{userInfo.sex == 1 ? "男" : "女"}}
           </div>
-          <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
         </div>
-  
+        <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
         <div class="more_cell" @click="updateMobile">
   
           <div class="more_hd">
@@ -123,9 +122,9 @@
 </template>
 
 <style lang='scss' scoped>
-@import './more.scss';
+  @import './more.scss';
 </style>
 
 <script src='./more'>
-
+  
 </script>

@@ -20,7 +20,8 @@ export default {
       voiceId: '',
       isPlaying: false,
       isPlayId: '',
-      isHidden: false
+      isHidden: false,
+      isbottom: false
     }
   },
 
@@ -31,7 +32,7 @@ export default {
       message: '加载中...'
     })
     bus.$on('imLoad', function () {
-      resource.defaultDoctor().then(res => {
+      resource.bindDoctorInfo({doctorUserGid: this.id}).then(res => {
         if (res.body.code == 0) {
           _this.doctorInfo = res.body.result
           _this.getHistoryRecord()
@@ -40,7 +41,7 @@ export default {
     })
 
     if (window.onLoadingIMStatus) {
-      resource.bindDoctorInfo().then(res => {
+      resource.bindDoctorInfo({doctorUserGid: this.id}).then(res => {
         if (res.body.code == 0) {
           _this.doctorInfo = res.body.result
           _this.getHistoryRecord()
@@ -93,6 +94,14 @@ export default {
   },
 
   methods: {
+    showBottom(){
+      console.log('11')
+      this.isbottom = true
+    },
+    hideBottom() {
+      console.log('22')
+      this.isbottom = false
+    },
     playVoice(serid) {
       let _this = this
       if (!this.isPlaying) {
@@ -207,7 +216,7 @@ export default {
         let toast = Toast({
           message: '图片发送中'
         })
-        base.uglyImage(src, { width: 640 }, function (url) {
+        base.uglyImage(src, function (url) {
           return resource.uploadImageWithBase64Crop({
             bucket: 'doctor'
           }, url).then(res => {

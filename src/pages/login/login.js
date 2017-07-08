@@ -4,6 +4,8 @@ import resource from '../../resource'
 import base from '../../base'
 import { bus } from '../../bus'
 import LoginForm from '../../components/LoginForm'
+import exif from '../../exif'
+import $ from 'jquery'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(DatetimePicker.name, DatetimePicker)
 Vue.component(Field.name, Field)
@@ -31,7 +33,7 @@ export default {
       userInfo: {
         name: '',
         birthDay: '',
-        sex: '',
+        sex: undefined,
         mobile: '',
         headImg: '',
         openId: '',
@@ -64,22 +66,39 @@ export default {
       })
     }
   },
-
+  beforeRouteLeave(to, from, next) {
+    document.querySelector('body').style.overflow = "hidden"
+    document.querySelector('body').style.position = "fixed"
+    next()
+  },
   methods: {
     setBirthday() {
       this.birthdayStr = base.formatDate2(this.birthday)
       this.userInfo.birthDay = parseInt(new Date(this.birthday).getTime() / 1000)
+      document.querySelector('body').style.overflow = "auto"
+      document.querySelector('body').style.position = "relative"
     },
     showBirthday() {
+      document.querySelector('body').style.overflow = "hidden"
+      document.querySelector('body').style.position = "fixed"
       this.$refs.birthdayPicker.open()
     },
-    uploadHead: function () {
-      this.$router.push({
-        name: 'Cropper',
-        query: {
-          redirect: 'Login'
-        }
-      })
+    uploadHead: function (e) {
+      let _this = this
+      if (e.target.value) {
+        let src = URL.createObjectURL(e.target.files[0])
+        let file = e.target.files[0]
+        exif.getData(file, function () {
+          _this.$router.push({
+            name: 'Cropper',
+            query: {
+              redirect: 'Login',
+              src: src,
+              orient: exif.getTag(this, 'Orientation')
+            }
+          })
+        })
+      }
     },
     sex: function () {
       this.sheetVisible = true
@@ -89,8 +108,8 @@ export default {
       let mobile = this.userInfo.mobile
       let birthday = this.userInfo.birthDay
       let code = this.userInfo.smsCode
-      let sex = this.userInfo.sex
       let _this = this
+      console.log(this.userInfo)
       if (!base.validate.isUserName(name)) {
         Toast({
           message: '请输入正确的姓名',
@@ -98,7 +117,7 @@ export default {
         })
         return false
       }
-      if (sex == '') {
+      if (this.userInfo.sex == undefined) {
         Toast({
           message: '请选择您的性别',
           duration: 2000
@@ -112,6 +131,7 @@ export default {
         })
         return false
       }
+
 
       resource.register(this.userInfo).then(res => {
         if (res.body.code == 0) {
@@ -143,7 +163,7 @@ export default {
             }
           })
           setTimeout(() => {
-            _this.$router.replace('activePlan')
+            _this.$router.replace('redirect')
           }, 2000)
         }
       })

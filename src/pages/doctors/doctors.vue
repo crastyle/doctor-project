@@ -7,6 +7,7 @@
                 <div class="avatar">
                     <div class="img-box">
                         <img :src="doctor.headImg">
+                        <i class="new" v-if="doctor.isNew"></i>
                     </div>
                 </div>
                 <div class="info">

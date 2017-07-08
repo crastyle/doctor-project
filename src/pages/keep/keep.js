@@ -13,14 +13,14 @@ export default {
       isTake: false,
       demoEvents: [],
       calendarTransform: false,
-      leaveDay: 7,
-      leaveMessage: '要记得吃药哦',
+      leaveDay: 0,
+      leaveMessage: '',
       medicineList: [],
       remindTime: '',
       checkInStatus: false,
       dateValue: '',
       doctorInfo: {},
-      currentTime: '',
+      currentTime: base.formatDate2(new Date()),
       checklistOpt: [],
       defaultMedicineList: [],
       unbind: false,
@@ -30,83 +30,97 @@ export default {
       showDialog: false,
       checkInList: [],
       showMessage: false,   // 点击当天的值
-      defaultDoctor: {}
+      defaultDoctor: {},
+      leaveTime: 0,
+      isOk: false
     }
   },
   created() {
-    // 如果有新消息进来
     let _this = this
-    resource.defaultDoctor().then(res => {
-      if (res.body.code == 0) {
-        this.defaultDoctor = res.body.result
-      }
-    })
-    bus.$on('receiveMsg', function (message) {
+    // 如果有新消息进来
+    if (!localStorage.getItem('userid')) {
+      Toast({
+        message: '您还没有注册',
+        duration: 2000
+      })
+      setTimeout(() => {
+        _this.$router.replace('/')
+      }, 2000)
+    } else {
       resource.defaultDoctor().then(res => {
         if (res.body.code == 0) {
-          if (message.senderUserId == res.body.result.doctorUserGid) {
-            _this.msgCount++
-          }
+          this.defaultDoctor = res.body.result
         }
       })
-    })
-    if (window.userChatToken) {
-      this.chatToken = window.userChatToken
-      _this.getUnReceiveMsg()
-    }
-    bus.$on('imLoad', function (token) {
-      console.log(token, 'keep')
-      window.userChatToken = token
-      _this.chatToken = token
-      _this.getUnReceiveMsg()
-    })
-
-  },
-  mounted() {
-    let _this = this
-    resource.console().then(res => {
-      _this.leaveDay = res.body.result.leaveDays
-      _this.leaveMessage = res.body.result.leaveMessage
-    })
-
-    resource.getTimestamp().then(res => {
-      var date = new Date(res.body.result.timestamp * 1000)
-      // _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
-    })
-    // 获取激活日历的计划信息
-    resource.planInfo().then(res => {
-      if (res.body.code == 0) {
-        for (let i = 0; i < res.body.result.medicineList.length; i++) {
-          _this.checklistOpt.push({
-            isActive: false,
-            name: res.body.result.medicineList[i]
-          })
+      bus.$on('receiveMsg', function (message) {
+        resource.defaultDoctor().then(res => {
+          if (res.body.code == 0) {
+            if (message.senderUserId == res.body.result.doctorUserGid) {
+              _this.msgCount++
+            }
+          }
+        })
+      })
+      if (window.userChatToken) {
+        this.chatToken = window.userChatToken
+        _this.getUnReceiveMsg()
+      }
+      bus.$on('imLoad', function (token) {
+        window.userChatToken = token
+        _this.chatToken = token
+        _this.getUnReceiveMsg()
+      })
+      resource.console().then(res => {
+        if (res.body.code == 0) {
+          _this.leaveDay = res.body.result.leaveDays
+          _this.leaveMessage = res.body.result.leaveMessage
+        } else {
+          _this.$router.replace('activePlan')
         }
-        return resource.getTimestamp()
-      }
-      // 获取系统的时间戳
-    }).then(res => {
-      if (res.body.code == 0) {
-        return resource.diaryInfo({ diaryTime: res.body.result.timestamp })
-      }
-      // 获取当日的打卡情况
-    }).then(res => {
-      if (res.body.code == 0) {
-        if (res.body.result.medicineList != undefined) {
-          let ms = res.body.result.medicineList
-          for (let i = 0; i < _this.checklistOpt.length; i++) {
-            for (let j = 0; j < ms.length; j++) {
-              if (_this.checklistOpt[i]['name'] == ms[j]) {
-                _this.checklistOpt[i]['isActive'] = true
+      })
+
+      resource.getTimestamp().then(res => {
+        var date = new Date(res.body.result.timestamp * 1000)
+        // _this.loadMonthData(date.getFullYear(), date.getMonth() + 1)
+      })
+      // 获取激活日历的计划信息
+      resource.planInfo().then(res => {
+        if (res.body.code == 0) {
+          for (let i = 0; i < res.body.result.medicineList.length; i++) {
+            _this.checklistOpt.push({
+              isActive: false,
+              name: res.body.result.medicineList[i]
+            })
+          }
+          _this.leaveTime = res.body.result.leaveTime
+          return resource.getTimestamp()
+        }
+        // 获取系统的时间戳
+      }).then(res => {
+        if (res.body.code == 0) {
+          return resource.diaryInfo({ diaryTime: res.body.result.timestamp })
+        }
+        // 获取当日的打卡情况
+      }).then(res => {
+        if (res.body.code == 0) {
+          if (res.body.result.medicineList != undefined) {
+            let ms = res.body.result.medicineList
+            for (let i = 0; i < _this.checklistOpt.length; i++) {
+              for (let j = 0; j < ms.length; j++) {
+                if (_this.checklistOpt[i]['name'] == ms[j]) {
+                  _this.checklistOpt[i]['isActive'] = true
+                }
               }
             }
           }
         }
-      }
-    })
-
+      })
+    }
   },
   methods: {
+    hideOk() {
+      this.isOk = false
+    },
     takeMedicine(item) {
       this.checkInList = []
       item.isActive = true
@@ -118,6 +132,7 @@ export default {
       }
       resource.getTimestamp().then(res => {
         if (res.body.code == 0) {
+          _this.isOk = true
           return resource.checkIn({ diaryTime: res.body.result.timestamp, medicineList: _this.checkInList })
         }
       })
@@ -151,39 +166,36 @@ export default {
       this.$router.push('bindid')
     },
     clickDay(date) {
+      let _this = this
       if (base.formatEventDate(new Date()) === base.formatEventDate(date)) {
         this.checkInStatus = false
         return false
       }
-      let _this = this
-      this.showMessage = true
-      setTimeout(() => {
-        this.showMessage = false
-      }, 500)
-
-      _this.medicineList = []
+      if (this.currentTime === base.formatDate2(date)) {
+        return false
+      }
       resource.diaryInfo({ diaryTime: parseInt(new Date(date).getTime() / 1000) }).then(res => {
-        for (var i = 0; i < _this.checklistOpt.length; i++) {
-          _this.checklistOpt[i]['disabled'] = true
+        if (res.body.code == 0 && res.body.result.checkInStatus == 1) {
+          _this.showMessage = true
+          setTimeout(() => {
+            _this.showMessage = false
+          }, 500)
+          _this.medicineList = res.body.result.medicineList.join(',')
+          _this.currentTime = base.formatDate2(res.body.result.diaryTime * 1000)
+          _this.leaveDay = (res.body.result.diaryTime - _this.leaveTime) / 60 / 60 / 24
         }
-        if (res.body.result.medicine) {
-          _this.medicineList = res.body.result.medicine.split(',')
-        }
+
       })
     },
     changeMonth(month) {
-      console.log(month)
       this.loadMonthData(month.split('-')[0], month.split('-')[1])
     },
-
     goChat() {
-      console.log(this.defaultDoctor.doctorUserGid)
       this.$router.push({ name: 'Chat', query: { id: this.defaultDoctor.doctorUserGid } })
     },
     getUnReceiveMsg() {
       RongIMClient.getInstance().hasRemoteUnreadMessages(this.chatToken, {
         onSuccess: function (hasMessage) {
-          console.log(hasMessage)
           if (hasMessage) {
             // 有未读的消息
           } else {

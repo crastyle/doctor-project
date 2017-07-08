@@ -37,6 +37,7 @@ export default {
       resource.oath({ code: code }).then(res => {
         return resource.checkBind({ openId: res.body.result.openId })
       }).then(res => {
+        
         if (res.body.result.bind) {
           //检测用户状态 绑定医生？激活月视图？
           let userid = res.body.result.u
@@ -59,10 +60,10 @@ export default {
             }
           })
           resource.checkStatus().then(res => {
-            if (res.body.result.activeRemindStatus == 1) {
+            if (res.body.result.activeRemindStatus == 0) {
+              _this.$router.replace('redirect')
+            } else {
               _this.$router.replace('keep')
-            } else if (res.body.result.activeRemindStatus == 0) {
-              _this.$router.replace('activePlan')
             }
           })
         } else {

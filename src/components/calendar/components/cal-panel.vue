@@ -44,8 +44,7 @@
     name: 'cal-panel',
     data() {
       return {
-        i18n,
-        dayList: []
+        i18n
       }
     },
     props: {
@@ -58,33 +57,9 @@
         required: true
       }
     },
-    mounted: function() {
-      this.loadMonthData()
-    },
+   
     computed: {
-      today() {
-        let dateObj = new Date()
-        return `${dateObj.getFullYear()}/${dateObj.getMonth()+1}/${dateObj.getDate()}`
-      },
-      curYearMonth() {
-        let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth+1}/01`))
-        return dateTimeFormatter(tempDate, this.i18n[this.calendar.options.locale].format)
-      },
-      style() {
-        let style = {
-          todayStyle: {
-            backgroundColor: this.calendar.options.color,
-            borderColor: this.calendar.options.color
-          },
-          eventStyle: {
-            borderColor: this.calendar.options.color
-          }
-        }
-        return style
-      }
-    },
-    methods: {
-      loadMonthData() {
+      dayList() {
         let firstDay = new Date(this.calendar.params.curYear + '/' + (this.calendar.params.curMonth + 1) + '/01')
         let startTimestamp = firstDay - 1000 * 60 * 60 * 24 * firstDay.getDay()
         let item, status, tempArr = [],
@@ -113,16 +88,38 @@
           })
           tempArr.push(tempItem)
         }
-        this.dayList = tempArr
+        return tempArr
+          
       },
+      today() {
+        let dateObj = new Date()
+        return `${dateObj.getFullYear()}/${dateObj.getMonth()+1}/${dateObj.getDate()}`
+      },
+      curYearMonth() {
+        let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth+1}/01`))
+        return dateTimeFormatter(tempDate, this.i18n[this.calendar.options.locale].format)
+      },
+      style() {
+        let style = {
+          todayStyle: {
+            backgroundColor: this.calendar.options.color,
+            borderColor: this.calendar.options.color
+          },
+          eventStyle: {
+            borderColor: this.calendar.options.color
+          }
+        }
+        return style
+      }
+    },
+    methods: {
+     
       nextMonth() {
         this.$EventCalendar.nextMonth()
-        this.loadMonthData()
         this.$emit('change-month', this.curYearMonth)
       },
       preMonth() {
         this.$EventCalendar.preMonth()
-        this.loadMonthData()
         this.$emit('change-month', this.curYearMonth)
       },
       handleChangeCurday(date, index) {

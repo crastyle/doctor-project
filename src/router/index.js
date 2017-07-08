@@ -15,6 +15,7 @@ import LoginForm from '../components/LoginForm.vue'
 import Doctors from '../pages/doctors/doctors.vue'
 import Doctor from '../pages/doctor/doctor.vue'
 import Register from '../pages/register/register.vue'
+import Redirect from '../pages/redirect/redirect.vue'
 //@import
 Vue.use(Router)
 
@@ -33,6 +34,7 @@ export default new Router({
     {path: '/loginform',name: 'LoginForm',component: LoginForm},
     {path: '/cropper',name: 'Cropper',component: Cropper},
     {path: '/doctors',name: 'Doctors',component: Doctors},
-    {path: '/doctor',name: 'Doctor',component: Doctor}//@register
+    {path: '/doctor',name: 'Doctor',component: Doctor},
+    {path: '/redirect',name: 'Redirect',component: Redirect}//@register
   ]
 })
